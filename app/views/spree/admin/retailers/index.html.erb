@@ -1,0 +1,62 @@
+<div class="toolbar" data-hook="toolbar">
+  <ul class="actions">
+    <li id="new_retailer_link">
+      <%= button_link_to t(:new_retailer), new_object_url, {:remote => true, :icon => 'add', :id => 'admin_new_retailer'} %>
+    </li>
+  </ul>
+  <br class="clear" />
+</div>
+
+<h1><%= t(:listing_retailers) %></h1>
+
+<div id="new_retailer" data-hook></div>
+
+<table class="index" id="listing_retailers">
+  <tr>
+    <th>Name</th>
+    <th>Payment method</th>
+    <th>State</th>
+    <th>Addresses</th>
+    <th>Contact methods</th>
+    <th>Logo</th>
+    <th data-hook="admin_products_index_header_actions"></th>
+  </tr>
+
+<% @retailers.each do |retailer| %>
+  <tr>
+    <td><%= retailer.name %></td>
+    <td><%= retailer.payment_method.name %></td>
+    <td><%= retailer.state %></td>
+    <td>
+		  Physical: <%= retailer.physical_address.to_string if retailer.physical_address_id %><br />
+		  Mailing: <%= retailer.mailing_address.to_string if retailer.mailing_address_id %>
+    </td>
+    <td>
+		  Phone: <%= retailer.phone %><br />
+		  Fax: <%= retailer.fax %><br />
+		  Mobile: <%= retailer.mobile %>
+    </td>
+    <td><%= image_tag(retailer.logo.url(:mini)) %></td>
+    <td><%= link_to 'Show', admin_retailer_path(retailer) %>
+    <%= link_to 'Edit', edit_admin_retailer_path(retailer) %>
+    <%= link_to 'Destroy', admin_retailer_path(retailer), confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= paginate @retailers %>
+
+<% content_for :sidebar do %>
+  <div class="box" data-hook="admin_retailers_index_search">
+    <h3><%= t(:search) %></h3>
+    <%= form_for [:admin, @search] do |f| %>
+      <p>
+        <%= t(:name) %><br />
+        <%= f.text_field :name_contains, :size =>18 %>
+      </p>
+      <div data-hook="admin_retailers_index_search_buttons">
+        <p><%= button t(:search) %></p>
+      </div>
+    <% end %>
+  </div>
+<% end %>

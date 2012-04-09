@@ -1,0 +1,114 @@
+<p id="notice"><%= notice %></p>
+<h1><%= @retailer.name %></h1>
+<table class="index">
+	<tr>
+		<th style="width:200px;">Setting</th>
+		<th>Value</th>
+	</tr>
+	<tr>
+		<td>State</td>
+		<td><%= @retailer.state %></td>
+	</tr>
+	<tr>
+		<td>Name</td>
+		<td><%= @retailer.name %>  <%= image_tag @retailer.logo.url %></td>
+	</tr>
+	<tr>
+		<td>DBA Name</td>
+		<td><%= @retailer.dba_name %></td>
+	</tr>
+	<tr>
+		<td>Tax ID</td>
+		<td><%= @retailer.taxid %></td>
+	</tr>
+	<tr>
+		<td>Merchant Account</td>
+		<td><%= @retailer.merchant_account %></td>
+	</tr>
+	
+	<tr>
+		<td>Authorize.net Login</td>
+		<td><%= @retailer.gateway_login %></td>
+	</tr>
+	<tr>
+		<td>Authorize.net Password</td>
+		<td><%= @retailer.gateway_password %></td>
+	</tr>
+
+	<tr>
+		<td>Fedex Key</td>
+		<td><%= @retailer.fedex_key %></td>
+	</tr>
+	<tr>
+		<td>Fedex Account Number</td>
+		<td><%= @retailer.fedex_account %></td>
+	</tr>
+	<tr>
+		<td>Fedex Password</td>
+		<td><%= @retailer.fedex_password %></td>
+	</tr>
+	<tr>
+		<td>Fedex Meter</td>
+		<td><%= @retailer.fedex_meter %></td>
+	</tr>
+	<tr>
+		<td>Fedex Password</td>
+		<td><%= @retailer.fedex_password %></td>
+	</tr>
+	
+	
+	<tr>
+		<td>Physical Address</td>
+		<td><%= @retailer.physical_address.to_string %></td>
+	</tr>
+	<tr>
+		<td>Mailing Address</td>
+		<td><%= @retailer.mailing_address.to_string %></td>
+	</tr>
+	<tr>
+		<td>Tax Rates</td>
+		<td><%= (@retailer.tax_rates.map {|tax_rate| tax_rate.to_string}).join(", ") %></td>
+	</tr>
+	<tr>
+		<td>Retailer Admins</td>
+		<td><% @retailer.users.each do |user| %>
+	  	<%= link_to user.email, edit_admin_user_path(user) %><br />
+	  <% end %></td>
+	</tr>
+	<tr>
+		<td>Phone</td>
+		<td><%= @retailer.phone %></td>
+	</tr>
+	<tr>
+		<td>Fax</td>
+		<td><%= @retailer.fax %></td>
+	</tr>
+	<tr>
+		<td>Mobile</td>
+		<td><%= @retailer.mobile %></td>
+	</tr>
+	<tr>
+		<td>Equipment</td>
+		<td><%= [(@retailer.has_pc ? "PC" : nil), (@retailer.has_internet ? "Internet" : nil), (@retailer.has_wireless ? "Wireless" : nil), (@retailer.has_printer ? "Printer" : nil)].join(', ') %></td>
+	</tr>
+	<tr>
+		<td>Location</td>
+		<td>Lat: <%= @retailer.latitude %>, Long: <%= @retailer.longitude %></td>
+	</tr>
+	
+	<tr>
+		<td>Created At</td>
+		<td><%= @retailer.created_at %></td>
+	</tr>
+	<tr>
+		<td>Updated At</td>
+		<td><%= @retailer.updated_at %></td>
+	</tr>
+
+
+
+</table>
+
+
+<%= link_to 'Edit', edit_admin_retailer_path(@retailer) %> |
+<%= link_to 'Back', admin_retailers_path %>

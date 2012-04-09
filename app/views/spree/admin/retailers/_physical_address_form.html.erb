@@ -1,0 +1,31 @@
+<%= f.fields_for :physical_address do |address_form| %>
+<table>
+	<tr>
+    <td><%= address_form.label :address1, t(:street_address) + ':' %></td>
+    <td><%= address_form.text_field :address1 %></td>
+    <td><%= address_form.label :address2, t(:street_address_2) + ':' %></td>
+    <td><%= address_form.text_field :address2 %></td>
+  </tr>
+  <tr>
+    <td><%= address_form.label :city, t(:city) + ':' %></td>
+    <td><%= address_form.text_field :city %></td>
+    <td><%= address_form.label :zipcode, t(:zip) + ':' %></td>
+    <td><%= address_form.text_field :zipcode, :style => 'width: 100px;' %></td>
+  </tr>
+  <tr>
+    <td><%= address_form.label :state_id, t(:state) + ':' %></td>
+    <td>
+      <span>
+				<%= address_form.text_field :state_name, :style => "width:150px; display: #{address_form.object.country.states.empty? ? 'block' : 'none' };", :disabled => !address_form.object.country.states.empty? %>
+        <%= address_form.collection_select :state_id, address_form.object.country.states.sort, :id, :name, {:include_blank => true}, {:style => "width:150px; display: #{address_form.object.country.states.empty? ? 'none' : 'block' };", :disabled => address_form.object.country.states.empty?} %>
+      </span>
+    </td>
+    <td colspan="2">
+      <%= address_form.hidden_field :firstname %>
+      <%= address_form.hidden_field :lastname %>
+      <%= address_form.hidden_field :phone %>
+      <%= address_form.hidden_field :country_id %>
+    </td>
+  </tr>
+</table>
+<% end %>
