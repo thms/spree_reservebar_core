@@ -8,7 +8,7 @@ module Spree
     accepts_nested_attributes_for :physical_address, :reject_if => :all_blank
     accepts_nested_attributes_for :mailing_address, :reject_if => :all_blank
   
-    has_and_belongs_to_many :orders, :join_table => :spree_retailers_orders
+    has_and_belongs_to_many :orders, :join_table => :spree_orders_retailers
     has_and_belongs_to_many :users, :join_table => :spree_retailers_users
     has_and_belongs_to_many :tax_rates, :join_table => :spree_retailers_tax_rates
   

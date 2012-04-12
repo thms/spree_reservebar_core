@@ -4,6 +4,7 @@ module SpreeReservebarCore
 
       def add_javascripts
         append_file "app/assets/javascripts/store/all.js", "//= require store/spree_reservebar_core\n" 
+        append_file "app/assets/javascripts/admin/all.js", "//= require admin/spree_reservebar_core\n" 
       end
 
       def add_stylesheets

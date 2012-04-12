@@ -1,0 +1,4 @@
+<% if current_user.has_role?("admin") %>
+<%= collection_select :retailer, :id, Spree::Retailer.all, :id, :name, :prompt => "All Retailers", :selected => session[:current_retailer_id] %>
+<br class="clear" />
+<% end %>

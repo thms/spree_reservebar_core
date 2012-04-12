@@ -7,3 +7,4 @@ module Spree
 end
 
 require 'spree/reservebar_core/engine'
+require 'spree/reservebar_core/retailer_selector'

@@ -1,0 +1,29 @@
+<% if @user.respond_to?(:retailer) %>
+  <div data-hook="admin_user_form_retailers">
+    <p>
+      <%= label_tag nil, t(:retailers) %><br />
+      <%= select :user, :retailer_id, @retailers.map{|r| [r.name, r.id]}, :include_blank => true %>
+    </p>
+  </div>
+	<script language="javascript" type="text/javascript"> 
+	$(document).ready(function(){ 
+		$('#user_retailer_id').change(function(){ 
+			var p1=$(this).children('option:selected').val();
+			if (p1 == "") {
+				$('#user_role_retailer').removeAttr("checked");
+			} else {
+				$('#user_role_retailer').attr("checked",'true');
+			}
+		})
+
+		$('form.edit_user :radio').change(function(){ 
+			if ($(this).attr("value") == "retailer") {
+				$('#user_retailer_id').children('option:last').attr("selected",'true');
+			} else {
+				$('#user_retailer_id').children('option:first').attr("selected",'true');
+			}
+		})
+
+	}) 
+	</script>
+<% end %>
