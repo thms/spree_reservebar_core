@@ -25,7 +25,7 @@
 <% @retailers.each do |retailer| %>
   <tr>
     <td><%= retailer.name %></td>
-    <td><%= retailer.payment_method.name %></td>
+    <td><%= retailer.payment_method.name_with_type %></td>
     <td><%= retailer.state %></td>
     <td>
 		  Physical: <%= retailer.physical_address.to_string if retailer.physical_address_id %><br />

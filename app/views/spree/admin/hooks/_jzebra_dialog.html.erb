@@ -1,0 +1,195 @@
+<!--- jZebra's main JavaScript functions.  Use these! --> 
+ <script type="text/javascript">
+    var sleepCounter = 0;
+ 
+    function findPrinters() {
+       var applet = document.jZebra;
+       if (applet != null) {
+          // Searches for locally installed printer with "zebra" in the name
+          applet.findPrinter("zebra");
+       }
+       monitorFinding2();
+    }
+
+    function printLabel() {
+       var applet = document.jZebra;
+       if (applet != null) {
+          // Send characters/raw commands to applet using "append"
+          // Hint:  Carriage Return = \r, New Line = \n, Escape Double Quotes= \"
+          // Note:  "Unescape" is optional and is used to fix "%20" type URL encoded fields
+			applet.findPrinter($("#printerList option:selected").text());
+            while (!applet.isDoneFinding()) {
+                // Wait
+            }
+     		applet.appendFile($("#jzebra_dialog").attr("url"));
+          	applet.print();
+	 }
+	alert("Printing ...");
+	hidePrintDialog();
+              
+    }
+
+    
+    
+    function chr(i) {
+       return String.fromCharCode(i);
+    }
+    
+    
+    function monitorPrinting() {
+    	      //"alert\(\"Data sent to printer successfully\"\)"
+    	      monitorApplet("isDonePrinting()", 'alert("Data sent to printer [" + document.jZebra.getPrinter() + "] successfully.")', "monitor printing job");
+    }
+    
+    /**
+     * Monitors the Java applet until it is complete with the specified function
+     *    appletFunction:  should return a "true" or "false"
+     *    finishedFunction:  will be called if the function completes without error
+     *    description:  optional description for errors, etc
+     *
+     * Example:
+     *    monitorApplet('isDoneFinding()', 'alert(\\"Success\\")', '');
+     */
+    function monitorApplet(appletFunction, finishedFunction, description) {
+    	var NOT_LOADED = "jZebra hasn't loaded yet.";
+    	var INVALID_FUNCTION = 'jZebra does not recognize function: "' + appletFunction; + '"';
+    	var INVALID_PRINTER = "jZebra could not find the specified printer";
+    	if (document.jZebra != null) {
+    		var finished = false;
+    		try {
+    		   finished = eval('document.jZebra.' + appletFunction);
+    		} catch (err) {
+    		   alert('jZebra Exception:  ' + INVALID_FUNCTION);
+    		   return;
+    		}
+	   if (!finished) {
+	      window.setTimeout('monitorApplet("' + appletFunction + '", "' + 
+	      	      finishedFunction.replace(/\"/g,'\\"') + '", "' + description + '")', 100);
+	   } else {
+	   	var p = document.jZebra.getPrinterName();
+	   	if (p == null) {
+	   		alert("jZebra Exception:  " + INVALID_PRINTER);
+	   		return;
+	   	}
+		var e = document.jZebra.getException();
+	      	if (e != null) {
+	      		var desc = description == "" ? "" : " [" + description + "] ";
+	      		alert("jZebra Exception: " + desc + document.jZebra.getExceptionMessage());
+	      		document.jZebra.clearException();
+	   	} else {
+	   		eval(finishedFunction);
+	   	}
+	   }
+	} else {
+	   alert("jZebra Exception:  " + NOT_LOADED);
+	}
+    }
+        
+ 
+ 
+    function monitorFinding2() {
+	var applet = document.jZebra;
+	if (applet != null) {
+	   if (!applet.isDoneFinding()) {
+	      window.setTimeout('monitorFinding2()', 100);
+	   } else {
+	   	   var listing = applet.getPrinters();
+	   	   var printers = listing.split(',');
+	   	   for(var i in printers){
+	   	   	   document.getElementById("printerList").options[i]=new Option(printers[i]);
+                         //alert(printers[i]);
+            	   }
+	   }
+	} else {
+          alert("Applet not loaded!");
+      }
+    }
+    
+    function monitorAppending() {
+	var applet = document.jZebra;
+	if (applet != null) {
+	   if (!applet.isDoneAppending()) {
+	      window.setTimeout('monitorAppending()', 100);
+	   } else {
+	      applet.print(); // Don't print until all of the data has been appended
+            monitorPrinting();
+	   }
+	} else {
+          alert("Applet not loaded!");
+      }
+    }   
+
+	function monitorLoading() {
+		var applet = document.jZebra;
+		if (document.jZebra != null) {
+			try {
+				if (document.jZebra.isActive()) {
+					document.getElementById("version").innerHTML = "<strong>Status:</strong>  jZebra " + applet.getVersion() + " loaded.";
+				}
+			} catch (err) {
+				// Firefox fix
+				window.setTimeout("monitorLoading()", 500);
+			}  
+		} else {
+			window.setTimeout("monitorLoading()", 100);
+		}
+	}
+
+	function monitorLoadingThenCall(doneFunc) {
+		var applet = document.jZebra;
+		if (document.jZebra != null) {
+			try {
+				if (document.jZebra.isActive()) {
+					document.getElementById("version").innerHTML = "<strong>Status:</strong>  jZebra " + applet.getVersion() + " loaded.";
+					eval(doneFunc);
+				}
+			} catch (err) {
+				// Firefox fix
+				doneFunc =  "'" + doneFunc.replace(/\"/g,'\\"') + "'";
+				window.setTimeout("monitorLoadingThenCall(" + doneFunc + ")", 500);
+			}  
+		} else {
+		doneFunc =  "'" + doneFunc.replace(/\"/g,'\\"') + "'";
+			window.setTimeout("monitorLoadingThenCall(" + doneFunc + ")", 100);
+		}
+	}
+
+
+
+	function showPrintDialog(shipment_number, label_url) {
+		$("#jzebra_dialog").param
+		$("#jzebra_shipment").html(shipment_number);
+		$("#jzebra_dialog").attr("url", label_url);
+		$("#jzebra_dialog").show();
+		monitorLoadingThenCall('findPrinters()');
+	}
+	
+	function hidePrintDialog() {
+		$("#jzebra_dialog").hide();
+	}
+
+
+</script>
+
+<div id='jzebra_dialog' style="z-index:100;display:none;position:absolute;left:400px;border:2px solid #666;width:300px;height:200px;background:#fff;padding:8px;">
+
+	<p id="version"><strong>Status:</strong>  Determining jZebra version. Please wait...</p>
+    <hr/>
+    <applet name="jZebra" code="jzebra.PrintApplet.class" alt="jZebra did not load properly" archive="<%= asset_path('admin/jzebra.jar') -%>" width="0" height="0">
+       <param name="printer" value="zebra">
+    </applet><br><br>
+   
+	<table>
+		<tr>
+			<td>Shipment</td>
+			<td id='jzebra_shipment'></td>
+		</tr>
+		<tr>
+			<td>Select Printer</td>
+			<td><select id="printerList"></select></td>
+		</tr>
+      </table>
+ 	<a href="javascript:printLabel();" class="button"><span>Print</span></a>
+	<a href="javascript:hidePrintDialog();" class="button"><span>Cancel</span></a>
+</div>
+
