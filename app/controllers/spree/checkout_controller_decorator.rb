@@ -2,7 +2,7 @@ require 'spree/reservebar_core/retailer_selector'
 require 'exceptions'
 
 Spree::CheckoutController.class_eval do
-  #before_filter :set_gift_params, :only => :update
+  before_filter :set_gift_params, :only => :update
   
   # if we don't have a retailer in the state, we need to send a warning flag and thorug th usr back to the address state
   rescue_from Exceptions::NoRetailerInStateError, :with => :rescue_from_no_retailer_in_state_error
@@ -30,10 +30,8 @@ Spree::CheckoutController.class_eval do
   def before_address
     @order.bill_address ||= Spree::Address.default
     @order.ship_address ||= Spree::Address.default
-    ##@order.gift.destroy if request.put? && @order.gift
-    ##@order.gift_id = nil if request.put?
-    Rails.logger.warn "++++++++++++++++=========="
-    #@order.gift ||= Gift.new(:sender_id => current_order.user_id)
+    @order.gift.destroy if request.put? && @order.gift
+    @order.gift_id = nil if request.put?
   end
   
 	protected

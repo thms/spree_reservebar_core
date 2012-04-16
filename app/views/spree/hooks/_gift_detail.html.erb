@@ -1,0 +1,11 @@
+<% if gift = @order.gift %>
+<div style="margin:12px;">
+	<h3>Gift Detail</h3>
+	<ul style="">
+		<li><b><%= t('gift.recipient') %></b>: <%= gift.recipient %></li>
+		<li><b><%= t('gift.email') %></b>: <%= gift.email %></li>
+		<li><b><%= t('gift.phone') %></b>: <%= gift.phone %></li>
+		<li><b><%= t('gift.message') %></b>: <%= gift.message %></li>
+	</ul>
+</div>
+<% end %>

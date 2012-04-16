@@ -1,0 +1,84 @@
+<% if @order.state == 'address' %>
+<div id="checkout-gift" data-hook="checkout_gift_box">
+  <%= form.check_box :is_gift %>&nbsp;
+  <%= form.label :is_gift, "I want to send this as a gift" %>
+</div>
+<fieldset id="gift_form" data-hook>
+  <% @order.gift ||= Spree::Gift.new(:sender_id => @order.user_id) %>
+  <%= form.fields_for :gift do |gift_form| %>
+    <legend><%= t('gift.title')%></legend>
+    <div class="gift_inner" data-hook="gift_inner">
+    	<p class="field" id="gfirst_name">
+        <%= gift_form.label :first_name, t('gift.first_name') %><span class="req">*</span><br />
+        <%= gift_form.text_field :first_name %>
+      </p>
+    	<p class="field" id="glast_name">
+        <%= gift_form.label :last_name, t('gift.last_name') %><span class="req">*</span><br />
+        <%= gift_form.text_field :last_name %>
+      </p>
+    	<p class="field" id="gemail">
+        <%= gift_form.label :email, t('gift.email') %><span class="req">*</span><br />
+        <%= gift_form.text_field :email %>
+      </p>
+    	<p class="field" id="gphone">
+        <%= gift_form.label :phone, t('gift.phone') %><span class="req">*</span><br />
+        <%= gift_form.text_field :phone %>
+      </p>
+    	<p class="field" id="gmessage">
+        <%= gift_form.label :message, t('gift.message') %><br />
+        <%= gift_form.text_area :message, :rows => 4 %>
+      </p>
+      <%= gift_form.hidden_field :sender_id %>
+    </div>
+  <% end %>
+</fieldset>
+<% end %>
+
+<%= javascript_tag do %>
+	$(document).ready(function(){
+	  if ($("#order_is_gift").is(":checked"))
+	  	{
+	  		$("#gift_form").css("display","block");
+	  	}
+	  else
+	  	{
+	  		$("#gift_form").css("display","none");
+	  	}
+	  
+	  $("#order_is_gift").click(function(){
+		if ($("#order_is_gift").is(":checked"))
+			{
+				$("#gift_form").show("fast");
+			}
+		else
+			{
+				$("#gift_form").hide("fast");
+			}
+	  });
+
+	  $("#order_is_legal_age").rules("add", {
+			required: true,
+			messages: {
+				required: "You must agree that you are of legal drinking age to place an order."
+			}
+		});
+	  
+	  $("#order_gift_attributes_first_name").rules("add", {
+			required: "#order_is_gift:checked"
+		});
+
+	  $("#order_gift_attributes_last_name").rules("add", {
+			required: "#order_is_gift:checked"
+		});
+
+	  $("#order_gift_attributes_email").rules("add", {
+			required: "#order_is_gift:checked",
+			email: true
+		});
+
+	  $("#order_gift_attributes_phone").rules("add", {
+			required: "#order_is_gift:checked"
+		});
+	  
+	});
+<% end %>

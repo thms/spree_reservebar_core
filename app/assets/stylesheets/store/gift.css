@@ -1,0 +1,13 @@
+#gift_form {
+  margin-top: 10px;
+  border: 1px solid #d9d9db;
+  padding: 10px;
+}
+#gift_form legend {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  color: #00adee;
+  padding: 5px;
+  margin-left: 15px;
+}

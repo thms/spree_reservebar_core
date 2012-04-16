@@ -1,0 +1,13 @@
+<% if gift = @order.gift %>
+<div data-hook="admin_order_show_gift_detail">
+	<div class='adr'>
+		<h4>Gift Detail</h4>
+		<p><%= t('gift.recipient') %>: <%= gift.recipient %><br />
+		<%= t('gift.email') %>: <%= gift.email %><br />
+		<%= t('gift.phone') %>: <%= gift.phone %><br />
+		<%= t('gift.message') %>: <%= gift.message %></p>
+	</div>
+	<hr />
+</div>
+<% end %>
+    

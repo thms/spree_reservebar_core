@@ -1,3 +1,4 @@
+// Reloads page when selected retailer changes on admin
 jQuery(document).ready(function(){  
   jQuery("#retailer_id").change(function(){
   	var retailer_id = jQuery("#retailer_id :selected").val();

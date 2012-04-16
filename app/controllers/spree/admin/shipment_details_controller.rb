@@ -45,7 +45,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :address1       => shipping_address.address1,
           :address2       => shipping_address.address2
       )
-      if false ## TODO; reenable gifts shipment.order.is_gift?
+      if shipment.order.is_gift?
         # Find the email address of the giftee for this order
         recipient_email = shipment.order.gift.email
       else

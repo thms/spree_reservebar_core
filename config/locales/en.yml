@@ -7,8 +7,8 @@ en:
   gift:
     title: Recipient information
     recipient: Recipient
-    firstname: First Name
-    lastname: Last Name
+    first_name: First Name
+    last_name: Last Name
     email: Email
     phone: Phone
     Message: Message

@@ -1,18 +1,18 @@
 Spree::Order.class_eval do
-	attr_accessible :is_legal, :is_gift, :gift_attributes
+	attr_accessible :is_legal_age, :is_gift, :gift_attributes
 	attr_accessor :is_gift
 
 	has_and_belongs_to_many :retailers, :join_table => :spree_orders_retailers
-	## TODO: reenable giftsbelongs_to :gift
+	belongs_to :gift
 	
-	## accepts_nested_attributes_for :gift
+	accepts_nested_attributes_for :gift
 	
 	state_machine :initial => :cart, :use_transactions => false do
-		##before_transition :to => 'delivery', :do => :validate_legal_drinking_age?
+		before_transition :to => 'delivery', :do => :validate_legal_drinking_age?
 		
 		after_transition :to => 'complete' do |order, transition|
 			order.finalize!
-			##order.gift_notification if order.is_gift?
+			order.gift_notification if order.is_gift?
 		end
 		
 	end
@@ -35,7 +35,7 @@ Spree::Order.class_eval do
 	end
 	
 	def validate_legal_drinking_age?
-		is_legal
+		is_legal_age
 	end
 
 	def is_gift

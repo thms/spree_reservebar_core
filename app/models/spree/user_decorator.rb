@@ -1,10 +1,11 @@
 Spree::User.class_eval do
 
 	has_and_belongs_to_many :retailers, :join_table => :spree_retailers_users
-	# TODO: Reenable
-	##has_many :sent_gifts, :class_name => "Gift", :foreign_key => "sender_id"
-	
+	has_many :sent_gifts, :class_name => "Gift", :foreign_key => "sender_id"
+
+	# Only if the user has role retailer_admin...:
 	#belongs_to :retailer
+	
 	attr_accessor :retailer_id
 	attr_accessible :retailer_id
 	
