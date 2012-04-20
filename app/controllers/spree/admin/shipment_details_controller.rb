@@ -21,9 +21,9 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         weight + (line_item.variant.weight ? (line_item.quantity * line_item.variant.weight * multiplier) : Spree::ActiveShipping::Config[:default_weight])
       end
       # TODO: make proper weight and size calulations
-      package = Package.new(10, [10,10,10], :units => Spree::ActiveShipping::Config[:units].to_sym)
+      package = Spree::ActiveShipping::Package.new(10, [10,10,10], :units => Spree::ActiveShipping::Config[:units].to_sym)
       # make request to fedex
-      shipper = Location.new(
+      shipper = ActiveMerchant::Shipping::Location.new(
           :name           => retailer.physical_address.name, 
           :company_name   => retailer.name,
           :country        => retailer.physical_address.country.iso, 
@@ -35,7 +35,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :address1       => retailer.physical_address.address1, 
           :address2       => (Rails.env == 'production' ? retailer.physical_address.address2 : "Do Not Delete - Test Account")
       )
-      recipient = Location.new(
+      recipient = ActiveMerchant::Shipping::Location.new(
           :name           => shipping_address.name, 
           :country        => shipping_address.country.iso, 
           :province       => shipping_address.state.abbr, 
@@ -52,21 +52,23 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         recipient_email = shipment.order.email
       end
       Rails.logger.warn "Instantiating FedEx ..."
-      fedex = FedEx.new(retailer.shipping_config)
+      fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
       Rails.logger.warn "Calling FedEx ..."
       Rails.logger.warn package.inspect
       Rails.logger.warn shipper.inspect
       Rails.logger.warn recipient.inspect
       Rails.logger.warn recipient_email
+      # TODO: Pass delivery type
       response = fedex.ship(shipper, recipient, package, 
           :payor_account_number => retailer.shipping_config[:account], 
           :shipper_email => shipment.order.email, # TODO: this may need to be retailer's email address
           :recipient_email => recipient_email, 
           :alcohol => true, 
-          :invoice_number => '123', 
+          :invoice_number => '123', #TODO: Use real invoice number
           :po_number => shipment.order.number,
           :image_type => ActiveShipping::DEFAULT_IMAGE_TYPE,
-          :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE
+          :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE,
+          :service_type => shipment.shipping_method.calculator.class.service_type
       )
       Rails.logger.warn "Fedex Call: #{response.success?.to_s}"
     
@@ -113,7 +115,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
   
 
   private
-  # Custom token based authorization for printng. Required, becuase jZebra does not send session cookies.
+  # Custom token based authorization for printing. Required, because jZebra does not send session cookies.
   def check_authorization
     load_shipment_detail
     session[:access_token] ||= params[:token]
