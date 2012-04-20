@@ -30,12 +30,13 @@ module Spree
     end
   
     # get the fedex credentials
+    # TODO: change again so that it is correct in production
     def shipping_config
-      if Rails.env == "production"
-        {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter }
-      else
+##      if Rails.env == "production"
+##        {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter }
+##      else
         {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter, :test => true }
-      end
+##      end
     end
 
   end

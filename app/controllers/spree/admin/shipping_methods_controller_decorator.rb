@@ -22,7 +22,8 @@ Spree::Admin::ShippingMethodsController.class_eval do
         :zip            => retailer.physical_address.zipcode, 
         :phone          => retailer.phone, 
         :address1       => retailer.physical_address.address1, 
-        :address2       => (Rails.env == 'production' ? retailer.physical_address.address2 : "Do Not Delete - Test Account")
+        ##:address2       => (Rails.env == 'production' ? retailer.physical_address.address2 : "Do Not Delete - Test Account")
+        :address2       => "Do Not Delete - Test Account")
     )
     if shipping_method.calculator.class.service_type == 'FEDEX_GROUND'
       recipient = ActiveMerchant::Shipping::Location.new(
