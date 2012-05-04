@@ -21,7 +21,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         weight + (line_item.variant.weight ? (line_item.quantity * line_item.variant.weight * multiplier) : Spree::ActiveShipping::Config[:default_weight])
       end
       # TODO: make proper weight and size calulations
-      package = Spree::ActiveShipping::Package.new(10, [10,10,10], :units => Spree::ActiveShipping::Config[:units].to_sym)
+      package = ActiveShipping::Package.new(10, [10,10,10], :units => Spree::ActiveShipping::Config[:units].to_sym)
       # make request to fedex
       shipper = ActiveMerchant::Shipping::Location.new(
           :name           => retailer.physical_address.name, 
