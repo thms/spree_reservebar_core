@@ -12,14 +12,15 @@ module Spree
     has_and_belongs_to_many :users, :join_table => :spree_retailers_users
     has_and_belongs_to_many :tax_rates, :join_table => :spree_retailers_tax_rates
   
-    validates :name, :payment_method, :phone, :presence => true
+    validates :name, :payment_method, :phone, :email, :presence => true
   
     has_attached_file :logo,
                       :styles => { :mini => '48x48>', :thumb => '240x240>' },
                       :default_style => :thumb,
                       :url => "/system/retailers/:attachment/:id/:style/:basename.:extension",
                       :path => ":rails_root/public/system/retailers/:attachment/:id/:style/:basename.:extension"
-
+    scope :active, where(:state => 'active')
+                      
   	state_machine :initial => 'new' do
       event :activate do
         transition :from => ['new', 'suspended'], :to => 'active'

@@ -25,6 +25,24 @@ module Spree
           format.json { render json: @retailer }
         end
       end
+      
+      # GET /retailers/1/activate
+      def activate
+        @retailer = Retailer.find(params[:retailer_id])
+        @retailer.activate!
+        flash[:notice] = "Retailer #{@retailer.name} has been activated."
+        redirect_to request.referrer
+      end
+
+      # GET /retailers/1/suspend
+      def suspend
+        @retailer = Retailer.find(params[:retailer_id])
+        @retailer.suspend!
+        flash[:notice] = "Retailer #{@retailer.name} has been suspended."
+        redirect_to request.referrer
+      end
+      
+      
 
       # GET /retailers/new
       # GET /retailers/new.json
@@ -105,6 +123,7 @@ module Spree
 
       end
   
+      # Deprecated, we are using tax rates based on shipping addresses
       def save_retailer_tax_rates
         return unless params[:retailer]
         return unless @retailer.respond_to?(:tax_rates)

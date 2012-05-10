@@ -7,12 +7,36 @@
 	</tr>
 	<tr>
 		<td>State</td>
-		<td><%= @retailer.state %></td>
+		<td><%= @retailer.state.titleize %> -- 
+		<%= link_to 'Activate', admin_retailer_activate_path(@retailer), :confirm => "You are about to activate retailer #{@retailer.name}. Are you sure?" unless @retailer.state == 'active' %>
+		<%= link_to 'Suspend', admin_retailer_suspend_path(@retailer), :confirm => "You are about to suspend retailer #{@retailer.name}. Are you sure?" if @retailer.state == 'active' %>		
+		
+		</td>
 	</tr>
 	<tr>
 		<td>Name</td>
 		<td><%= @retailer.name %>  <%= image_tag @retailer.logo.url %></td>
 	</tr>
+
+	<tr>
+		<td>Is Super Retailer</td>
+		<td><%= check_box_tag '', 'super_retailer', @retailer.is_super_retailer, :disabled => true %></td>
+	</tr>
+	<tr>
+		<td>Ships Wine To</td>
+		<td><%= @retailer.ships_wine_to %></td>
+	</tr>
+	<tr>
+		<td>Ships Spirits To</td>
+		<td><%= @retailer.ships_spirits_to %></td>
+	</tr>
+	<tr>
+		<td>Ships Champagne To</td>
+		<td><%= @retailer.ships_champagne_to %></td>
+	</tr>
+	
+	<tr><td colspan=2 style="background-color:#ccc;"></td></tr>
+	
 	<tr>
 		<td>DBA Name</td>
 		<td><%= @retailer.dba_name %></td>
@@ -35,6 +59,9 @@
 		<td><%= @retailer.gateway_password %></td>
 	</tr>
 
+	<tr><td colspan=2 style="background-color:#ccc;"></td></tr>
+	
+
 	<tr>
 		<td>Fedex Key</td>
 		<td><%= @retailer.fedex_key %></td>
@@ -56,6 +83,8 @@
 		<td><%= @retailer.fedex_password %></td>
 	</tr>
 	
+	<tr><td colspan=2 style="background-color:#ccc;"></td></tr>
+	
 	
 	<tr>
 		<td>Physical Address</td>
@@ -64,10 +93,6 @@
 	<tr>
 		<td>Mailing Address</td>
 		<td><%= @retailer.mailing_address.to_string %></td>
-	</tr>
-	<tr>
-		<td>Tax Rates</td>
-		<td><%= (@retailer.tax_rates.map {|tax_rate| tax_rate.to_string}).join(", ") %></td>
 	</tr>
 	<tr>
 		<td>Retailer Admins</td>

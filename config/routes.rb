@@ -4,7 +4,10 @@ Spree::Core::Engine.routes.prepend do
     
     match '/get_retailer_data' => 'overview#get_retailer_data'
     match '/orders/get_retailer_data' => 'orders#get_retailer_data'
-    resources :retailers
+    resources :retailers do
+      get :activate
+      get :suspend
+    end
 
     resources :orders do
       resources :shipments do

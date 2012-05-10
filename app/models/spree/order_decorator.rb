@@ -45,4 +45,16 @@ Spree::Order.class_eval do
 	def is_gift?
 		gift.present?
 	end
+	
+	# get all shipping categories for an order
+	# this is based on what
+	def shipping_categories
+	  self.line_items.collect {|l| l.product.shipping_category_id}.uniq
+  end
+  
+  # returns true, if the order only has products in the wine category
+  def has_only_wine?
+    self.shipping_categories.count == 1 && 
+    self.shipping_categories.first == Spree::ShippingCategory.find_by_name('Wine')
+  end
 end

@@ -20,8 +20,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       weight = shipment.line_items.inject(0) do |weight, line_item|
         weight + (line_item.variant.weight ? (line_item.quantity * line_item.variant.weight * multiplier) : Spree::ActiveShipping::Config[:default_weight])
       end
-      # TODO: make proper weight and size calulations
-      package = ActiveMerchant::Shipping::Package.new(10, [10,10,10], :units => Spree::ActiveShipping::Config[:units].to_sym)
+      package = ActiveMerchant::Shipping::Package.new(weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
       # make request to fedex
       shipper = ActiveMerchant::Shipping::Location.new(
           :name           => retailer.physical_address.name, 
@@ -58,13 +57,12 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       Rails.logger.warn shipper.inspect
       Rails.logger.warn recipient.inspect
       Rails.logger.warn recipient_email
-      # TODO: Pass delivery type
       response = fedex.ship(shipper, recipient, package, 
           :payor_account_number => retailer.shipping_config[:account], 
-          :shipper_email => shipment.order.email, # TODO: this may need to be retailer's email address
+          :shipper_email => retailer.email, 
           :recipient_email => recipient_email, 
           :alcohol => true, 
-          :invoice_number => '123', #TODO: Use real invoice number
+          :invoice_number => shipment.number, 
           :po_number => shipment.order.number,
           :image_type => ActiveShipping::DEFAULT_IMAGE_TYPE,
           :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE,

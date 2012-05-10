@@ -18,7 +18,6 @@
     <th>State</th>
     <th>Addresses</th>
     <th>Contact methods</th>
-    <th>Logo</th>
     <th data-hook="admin_products_index_header_actions"></th>
   </tr>
 
@@ -26,7 +25,10 @@
   <tr>
     <td><%= retailer.name %></td>
     <td><%= retailer.payment_method.name_with_type %></td>
-    <td><%= retailer.state %></td>
+    <td><%= retailer.state.titleize %> 
+		<%= link_to 'Activate', admin_retailer_activate_path(retailer), :confirm => "You are about to activate retailer #{retailer.name}. Are you sure?" unless retailer.state == 'active' %>
+		<%= link_to 'Suspend', admin_retailer_suspend_path(retailer), :confirm => "You are about to suspend retailer #{retailer.name}. Are you sure?" if retailer.state == 'active' %>		
+	</td>
     <td>
 		  Physical: <%= retailer.physical_address.to_string if retailer.physical_address_id %><br />
 		  Mailing: <%= retailer.mailing_address.to_string if retailer.mailing_address_id %>
@@ -34,9 +36,9 @@
     <td>
 		  Phone: <%= retailer.phone %><br />
 		  Fax: <%= retailer.fax %><br />
-		  Mobile: <%= retailer.mobile %>
+		  Mobile: <%= retailer.mobile %><br />
+		  Email: <%= retailer.email %>
     </td>
-    <td><%= image_tag(retailer.logo.url(:mini)) %></td>
     <td><%= link_to 'Show', admin_retailer_path(retailer) %>
     <%= link_to 'Edit', edit_admin_retailer_path(retailer) %>
     <%= link_to 'Destroy', admin_retailer_path(retailer), confirm: 'Are you sure?', method: :delete %></td>
