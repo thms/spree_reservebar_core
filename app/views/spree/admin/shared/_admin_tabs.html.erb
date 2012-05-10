@@ -1,0 +1,11 @@
+<% if current_user.has_role? 'retailer' %>
+	<ul>
+		<%= tab :overview, :route => :admin %>
+		<%= tab :orders, :payments, :creditcard_payments, :shipments, :creditcards, :return_authorizations %>
+		<%= tab :reports %>
+	</ul>
+<% else %>
+	<ul data-hook="admin_tabs">
+	  <%= render :partial => 'spree/admin/shared/tabs' %>
+	</ul>
+<% end %>
