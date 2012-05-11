@@ -22,7 +22,12 @@
                 // Wait
             }
      		applet.appendFile($("#jzebra_dialog").attr("url"));
-          	applet.print();
+			//wait for appending to finish before attempting to print: (monitorAppending will print when ready)
+			while (!applet.isDoneAppending()) {
+				//Wait
+			}
+			applet.print();
+          	//applet.monitorAppending();
 	 }
 	alert("Printing ...");
 	hidePrintDialog();
@@ -112,7 +117,7 @@
 	      window.setTimeout('monitorAppending()', 100);
 	   } else {
 	      applet.print(); // Don't print until all of the data has been appended
-            monitorPrinting();
+          monitorPrinting();
 	   }
 	} else {
           alert("Applet not loaded!");

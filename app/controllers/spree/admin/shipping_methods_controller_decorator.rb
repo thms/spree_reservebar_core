@@ -3,6 +3,12 @@ Spree::Admin::ShippingMethodsController.class_eval do
   skip_before_filter :admin_required, :only => :print_test_label
   skip_before_filter :authorize_admin, :only => :print_test_label
   
+  def print_test_label_dummy
+    headers['Content-Type'] = "text/plain"
+    headers['Content-Disposition'] = "attachment; filename=label_test.epl2"
+    render :text => "Hello" 
+  end
+
   def print_test_label
     require 'base64'
     # Create dummy shipment 
@@ -22,8 +28,7 @@ Spree::Admin::ShippingMethodsController.class_eval do
         :zip            => retailer.physical_address.zipcode, 
         :phone          => retailer.phone, 
         :address1       => retailer.physical_address.address1, 
-        ##:address2       => (Rails.env == 'production' ? retailer.physical_address.address2 : "Do Not Delete - Test Account")
-        :address2       => "Do Not Delete - Test Account"
+        :address2       => (Rails.env == 'production' ? retailer.physical_address.address2 : "Do Not Delete - Test Account")
     )
     if shipping_method.calculator.class.service_type == 'FEDEX_GROUND'
       recipient = ActiveMerchant::Shipping::Location.new(
@@ -54,7 +59,6 @@ Spree::Admin::ShippingMethodsController.class_eval do
     Rails.logger.warn "Instantiating Fedex ..."
     
     fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
-    # TODO: add the package type
     Rails.logger.warn "Calling Fedex ..."
     response = fedex.ship(shipper, recipient, package, 
         :payor_account_number => retailer.shipping_config[:account], 
@@ -68,8 +72,8 @@ Spree::Admin::ShippingMethodsController.class_eval do
         :service_type => shipping_method.calculator.class.service_type
     )
     Rails.logger.warn "Got response from Fedex"
-    headers['Content-Type'] = "application/epl2"
-    headers['Content-Disposition'] = "attachment; filename=label_test.epl2"
+    headers['Content-Type'] = "application/zpl"
+    headers['Content-Disposition'] = "attachment; filename=label_test.zpl"
     render :text => response.label 
     
   end

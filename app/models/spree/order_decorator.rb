@@ -17,6 +17,20 @@ Spree::Order.class_eval do
 		
 	end
 	
+	# Override the address used for calculating taxes.
+	# Reservebar.com uses the retailer's physial address, rather then the ship_address to determine taxes
+	# Returns the relevant zone (if any) to be used for taxation purposes.  Uses default tax zone
+  # unless there is a specific match
+  def tax_zone
+    if Spree::Config[:tax_using_retailer_address]
+      zone_address = retailer.physical_address
+    else
+      zone_address = Spree::Config[:tax_using_ship_address] ? ship_address : bill_address
+    end
+    Zone.match(zone_address) || Zone.default_tax
+  end
+  
+	
   def gift_notification
     Spree::OrderMailer.gift_notify_email(self).deliver
   end

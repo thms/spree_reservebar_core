@@ -17,6 +17,7 @@ module Spree
         app.config.spree.add_class('retailers')
         app.config.spree.retailers = Spree::ReservebarCore::Environment.new
       end
+      ## TODO: figure out if we need any of the below stuff
 if false
       initializer 'spree.reservebar_core.register.retailer.calculators' do |app|
       end
