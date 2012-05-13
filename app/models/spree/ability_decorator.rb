@@ -48,6 +48,9 @@ class Spree::AbilityDecorator
 	  can :print_label, Spree::ShipmentDetail do |shipment_detail, token|
 	    shipment_detail.token && token == shipment_detail.token
 	  end
+
+	  can :print_test_label, :shipping_methods
+
 	end
 end
 

@@ -1,50 +1,48 @@
-<!--- jZebra's main JavaScript functions.  Use these! --> 
- <script type="text/javascript">
-    var sleepCounter = 0;
- 
-    function findPrinters() {
-       var applet = document.jZebra;
-       if (applet != null) {
-          // Searches for locally installed printer with "zebra" in the name
-          applet.findPrinter("zebra");
-       }
-       monitorFinding2();
-    }
+<script type="text/javascript">
+	var sleepCounter = 0;
 
-    function printLabel() {
-       var applet = document.jZebra;
-       if (applet != null) {
-          // Send characters/raw commands to applet using "append"
-          // Hint:  Carriage Return = \r, New Line = \n, Escape Double Quotes= \"
-          // Note:  "Unescape" is optional and is used to fix "%20" type URL encoded fields
+	function findPrinters() {
+		var applet = document.jZebra;
+		if (applet != null) {
+			// Searches for locally installed printer with "zebra" in the name
+			applet.findPrinter("zebra");
+		}
+		monitorFinding2();
+	}
+
+	function printLabel() {
+ 		var applet = document.jZebra;
+		if (applet != null) {
+			$("#progress").slideDown();
 			applet.findPrinter($("#printerList option:selected").text());
-            while (!applet.isDoneFinding()) {
-                // Wait
-            }
-     		applet.appendFile($("#jzebra_dialog").attr("url"));
-			//wait for appending to finish before attempting to print: (monitorAppending will print when ready)
-			while (!applet.isDoneAppending()) {
-				//Wait
+			appendLabel();
+		}
+	}
+
+	function appendLabel() {
+		var applet = document.jZebra;
+		if (applet != null) {
+			if (!applet.isDoneFinding()) {
+	      		window.setTimeout('appendLabel()', 100);
+	   		} else {
+     			applet.appendFile($("#jzebra_dialog").attr("url"));
+				//wait for appending to finish before attempting to print: (monitorAppending will print when ready)
+          		monitorAppending();
 			}
-			applet.print();
-          	//applet.monitorAppending();
-	 }
-	alert("Printing ...");
-	hidePrintDialog();
-              
-    }
+		}
+	}
 
     
+	function chr(i) {
+		return String.fromCharCode(i);
+	}
     
-    function chr(i) {
-       return String.fromCharCode(i);
-    }
     
-    
-    function monitorPrinting() {
-    	      //"alert\(\"Data sent to printer successfully\"\)"
-    	      monitorApplet("isDonePrinting()", 'alert("Data sent to printer [" + document.jZebra.getPrinter() + "] successfully.")', "monitor printing job");
-    }
+ 	function monitorPrinting() {
+		$("#progress").slideUp();
+		alert("Label sent to printer ...");
+		hidePrintDialog();
+	}
     
     /**
      * Monitors the Java applet until it is complete with the specified function
