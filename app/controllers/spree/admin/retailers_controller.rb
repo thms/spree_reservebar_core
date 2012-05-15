@@ -78,19 +78,17 @@ module Spree
 
       # PUT /retailers/1
       # PUT /retailers/1.json
-    #  def update
-    #    @retailer = Retailer.find(params[:id])
+     def update_shipping
+       @retailer = Retailer.find(params[:retailer_id])
 
-    #    respond_to do |format|
-    #      if @retailer.update_attributes(params[:retailer])
-    #        format.html { redirect_to admin_retailer_url(@retailer), notice: 'Retailer was successfully updated.' }
-    #        format.json { head :ok }
-    #      else
-    #        format.html { render action: "edit" }
-    #        format.json { render json: @retailer.errors, status: :unprocessable_entity }
-    #      end
-    #    end
-    #  end
+       respond_to do |format|
+         if @retailer.update_attributes(params[:spree_retailer])
+           format.json { head :ok }
+         else
+           format.json { render json: @retailer.errors, status: :unprocessable_entity }
+         end
+       end
+     end
 
       # DELETE /retailers/1
       # DELETE /retailers/1.json

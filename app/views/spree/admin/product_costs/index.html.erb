@@ -1,0 +1,53 @@
+<%= render :partial => 'spree/admin/retailers/retailer_tabs', :locals => { :current => 'Product Costs' } %>
+
+<h1><%= t(:retailer_cost_reimbursements) %></h1>
+
+<div id="new_product_cost" data-hook></div>
+<h3>Shipping Cost</h3>
+<div>
+	Retailer gets reimbursed for shipping cost:
+	<%= best_in_place @retailer, :reimburse_shipping_cost,  :path => [:admin, @retailer, :update_shipping], :type => :select, :collection => [[true,"Yes"],[false,"No"]] %>
+</div>
+
+<h3>Product Reimbursements</h3>
+<p>Click on a price to change it. If the line is orange, the reimbursement for the retailer equals the sale price</p>
+<table class="index" id="listing_product_costs">
+  <tr>
+  	<th>SKU</th>
+  	<th>Name</th>
+	<th>Option Types</th>
+    <th>Cost</th>
+    <th data-hook="admin_product_cost_index_header_actions"></th>
+  </tr>
+
+<% @products.each do |product| %>
+
+<% product_cost = product.master.product_costs.where(:retailer_id => @retailer.id).first  || 
+				  Spree::ProductCost.create(:retailer_id => @retailer.id, :variant_id => product.master.id, :cost_price => product.price) %>
+<tr class="<%= product_cost.cost_price == product.price ? 'orange' : '' -%>">
+	<td><%= product.sku %></td>
+	<td><%= product.name %></td>
+  <td></td>
+  <td><%= best_in_place product_cost, :cost_price, :path => [:admin, @retailer, product_cost] %></td> 
+  <td><%= link_to 'Destroy', admin_retailer_product_cost_path(@retailer, product_cost), confirm: 'Are you sure?', method: :delete %></td>
+</tr>
+
+
+<% product.variants.each do |variant| %>
+	<% product_cost = variant.product_costs.where(:retailer_id => @retailer.id).first || 
+					  Spree::ProductCost.create(:retailer_id => @retailer.id, :variant_id => variant.id, :cost_price => variant.price)
+	 %>
+	<tr class="<%= product_cost.cost_price == variant.price ? 'orange' : '' -%>">
+		<td><%= product_cost.variant.sku %></td>
+	  	<td><%= product_cost.variant.name %></td>
+	    <td><%= product_cost.variant.options_text %></td>
+	    <td><%= best_in_place product_cost, :cost_price, :path => [:admin, @retailer, product_cost] %></td> 
+	    <td><%= link_to 'Destroy', admin_retailer_product_cost_path(@retailer, product_cost), confirm: 'Are you sure?', method: :delete %></td>
+	</tr>
+<% end %>
+
+<% end %>
+</table>
+
+<%= paginate @products %>
+

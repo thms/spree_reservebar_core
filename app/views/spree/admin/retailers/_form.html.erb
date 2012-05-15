@@ -42,6 +42,12 @@
     <%= f.text_field :ships_champagne_to %> <span class="required">*</span> [Comma separated list of States, e.g. NY,NH]
   </div>
 
+  <div class="field">
+    <%= f.label :reimburse_shipping_cost %>
+    <%= f.check_box :reimburse_shipping_cost %> <span class="required">*</span> [If true, the retailer gets reimbursed for the shipping cost]
+  </div>
+
+
 </fieldset>
 
 <fieldset>

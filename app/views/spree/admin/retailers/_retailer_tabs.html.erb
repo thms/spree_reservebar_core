@@ -1,0 +1,19 @@
+<% content_for :sidebar do %>
+	<h3><%= t(:retailer) %> &ldquo;<%= @retailer.name %>&rdquo;</h3>
+	<br class="clear" />
+  
+  	<ul class="sidebar retailer-menu" data-hook="admin_retailer_tabs">
+    	<li<%== ' class="active"' if current == 'Retailer Details' %>>
+      		<%= link_to t(:retailer_details), admin_retailer_url(@retailer) %>
+    	</li>
+
+    	<li<%== ' class="active"' if current == 'Edit Retailer Details' %>>
+      		<%= link_to t(:edit_retailer_details), edit_admin_retailer_url(@retailer) %>
+    	</li>
+
+    	<li<%== ' class="active"' if current == 'Product Costs' %>>
+      		<%= link_to t(:product_costs), admin_retailer_product_costs_url(@retailer) %>
+    	</li>
+  	</ul>
+  	<br class="clear" />
+<% end %>

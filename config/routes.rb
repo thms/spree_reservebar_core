@@ -7,8 +7,11 @@ Spree::Core::Engine.routes.prepend do
     resources :retailers do
       get :activate
       get :suspend
+      put :update_shipping
+      resources :product_costs
     end
 
+    
     resources :orders do
       resources :shipments do
         resources :shipment_details do
