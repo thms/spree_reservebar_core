@@ -23,11 +23,15 @@ Spree::Order.class_eval do
   # unless there is a specific match
   def tax_zone
     if Spree::Config[:tax_using_retailer_address]
-      zone_address = retailer.physical_address
+      if retailer
+        zone_address = retailer.physical_address
+      else
+        zone_address = nil
+      end
     else
       zone_address = Spree::Config[:tax_using_ship_address] ? ship_address : bill_address
     end
-    Zone.match(zone_address) || Zone.default_tax
+    Spree::Zone.match(zone_address) || Spree::Zone.default_tax
   end
   
 	

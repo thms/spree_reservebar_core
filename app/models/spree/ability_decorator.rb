@@ -38,8 +38,6 @@ class Spree::AbilityDecorator
 	    can :sales_total, :reports
 	    can :admin, :reports
 	    
-	    
-	    
 	  end
 	  
 	  # enable access to FedexLabels for non-logged until we figure out a way to 
@@ -50,6 +48,7 @@ class Spree::AbilityDecorator
 	  end
 
 	  can :print_test_label, :shipping_methods
+
 
 	end
 end

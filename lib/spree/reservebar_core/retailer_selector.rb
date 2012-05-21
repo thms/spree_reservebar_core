@@ -10,7 +10,7 @@ module Spree
       def self.select(order)
         state = order.ship_address.state
         # if we can't ship to the state, bail out:
-        return false unless can_ship_to_state(state)
+        return false unless can_ship_to_state?(state)
         # if the order only has wine, use the super retailer, if he delivers to that state
         if order.has_only_wine?
           retailer = Spree::Retailer.active.where(:is_super_retailer => true)
