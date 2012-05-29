@@ -1,7 +1,10 @@
 Spree::Admin::OrdersController.class_eval do
 
 	before_filter :load_retailer
-
+	
+	# Allow export of orders via CSV
+  respond_to :csv, :only => :index
+  
 	def index
 	  params[:search] ||= {}
 	  params[:search][:completed_at_is_not_null] ||= '1' if Spree::Config[:show_only_complete_orders_by_default]

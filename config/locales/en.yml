@@ -1,4 +1,7 @@
 en:
+  order_state:
+    # keys correspond to Checkout state names:
+    giftopts: Gift Options
   retailers: Retailers
   listing_retailers: "Listing Retailers"
   new_retailer: "New Retailer"

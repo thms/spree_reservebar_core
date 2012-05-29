@@ -75,4 +75,7 @@ Spree::Order.class_eval do
     self.shipping_categories.count == 1 && 
     self.shipping_categories.first == Spree::ShippingCategory.find_by_name('Wine')
   end
+  
+  
+  
 end

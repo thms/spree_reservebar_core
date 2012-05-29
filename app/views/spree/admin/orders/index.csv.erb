@@ -1,0 +1,23 @@
+<% require 'csv' %>
+OrderNumber,OrderDate,OrderState,PaymentState,ShipmentState,Total,ShippingCost,Tax,Retailer,ReimburseShippingCost,ShippingCostForRetailer,CostForRetailer
+<%= CSV.generate do |csv|
+  @orders.each do |order|
+    csv << [	order.number, 
+				 (@show_only_completed ? order.completed_at : order.created_at).to_date,
+				order.state,
+				order.payment_state,
+				order.shipment_state,
+				order.total, 
+				order.ship_total, 
+				order.tax_total, 
+				order.retailer.name, 
+				order.retailer.reimburse_shipping_cost, 
+				order.retailer.reimburse_shipping_cost ? order.ship_total : 0.0,
+				(order.line_items.collect {|line_item| line_item.variant.product_costs.where(:retailer_id => order.retailer_id).first.cost_price * line_item.quantity }).sum
+			]
+  end
+end %>
+
+
+
+
