@@ -20,8 +20,8 @@ module Spree
         unless retailer
           retailer =  Spree::Retailer.active.where("ships_spirits_to like :state", :state => "%#{state.abbr}%").first ||
                       Spree::Retailer.active.where("ships_wine_to like :state", :state => "%#{state.abbr}%").first || 
-                      Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").first || 
-                      Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").first ||
+                      Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").first || 
+                      #Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").first ||
                       false
         end
         retailer
@@ -36,8 +36,8 @@ module Spree
         # current version: based on Retailers ships_spirits_to, etc settings
         Spree::Retailer.active.where("ships_spirits_to like :state", :state => "%#{state.abbr}%").count > 0 ||
         Spree::Retailer.active.where("ships_wine_to like :state", :state => "%#{state.abbr}%").count > 0 ||
-        Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").count > 0 ||
-        Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").count > 0 
+        Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").count > 0 #||
+        #Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").count > 0 
       end
       
       
