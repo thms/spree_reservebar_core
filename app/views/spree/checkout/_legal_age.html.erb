@@ -1,7 +1,7 @@
 <% if @order.state == 'address' %>
 <div id="checkout-legality" data-hook="checkout_legality_box">
   <input id="order_is_legal_age" class="required" type="checkbox" value="1" name="order[is_legal_age]">&nbsp;
-  <%= form.label :is_legal_age, "I am of legal drinking age" %><span class="req">*</span>
+  <%= form.label :is_legal_age, "The purchaser of this set of alcoholic items and the recipient of any gifts are both at least 21 years of age" %><span class="req">*</span>
 </div>
 <style type="text/css" media="screen">
 /* <![CDATA[ */
