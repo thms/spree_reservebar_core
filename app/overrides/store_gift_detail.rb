@@ -1,6 +1,8 @@
-Deface::Override.new(:virtual_path => "spree/checkout/edit",
+#Deface::Override.new(:virtual_path => "spree/checkout/edit",
+Deface::Override.new(:virtual_path => "spree/checkout/_address",
 	                   :name => "gift_form",
-	                   :insert_after => "code[erb-loud]:contains('checkout_form_')",
+	                   #:insert_after => "code[erb-loud]:contains('checkout_form_')",
+	                   :insert_before => ".form-buttons",
 	                   :partial => "spree/checkout/gift",
 	                   :disabled => false)
 

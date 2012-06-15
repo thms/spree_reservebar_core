@@ -17,12 +17,13 @@ $product_link_text_color:   #BBBBBB;
 /*--------------------------------------*/
 /* Fonts import from remote
 /*--------------------------------------*/
-@import url(//fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic|&subset=latin,cyrillic,greek,greek-ext,latin-ext,cyrillic-ext);
+@import url(http://fonts.googleapis.com/css?family=Lato|Crimson+Text);
 
 /*--------------------------------------*/
 /* Font families
 /*--------------------------------------*/
-$ff_base:       'Ubuntu', sans-serif;
+$ff_base:        'Lato', sans-serif;
+$ff_serif:       'Crimson Text', serif;
 
 /*--------------------------------------
   | Font sizes

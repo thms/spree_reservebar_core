@@ -1,4 +1,5 @@
 <% if @order.state == 'address' %>
+<div style="clear:both;margin-top:24px;">&nbsp;</div>
 <div id="checkout-gift" data-hook="checkout_gift_box">
   <%= form.check_box :is_gift %>&nbsp;
   <%= form.label :is_gift, "I want to send this as a gift" %>
