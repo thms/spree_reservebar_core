@@ -1,6 +1,7 @@
 Spree::Admin::OrdersController.class_eval do
 
 	before_filter :load_retailer
+	after_filter :sync_unread, :only => [:show]
 	
 	# Allow export of orders via CSV
   respond_to :csv, :only => :index
@@ -65,6 +66,10 @@ end
     elsif current_user.has_role?("retailer")
 		  @current_retailer = current_user.retailer
     end
+  end
+
+  def sync_unread
+  	@order.update_attribute(:unread, false) if @order.unread && @order.retailer_id == session[:current_retailer_id]
   end
 
 end
