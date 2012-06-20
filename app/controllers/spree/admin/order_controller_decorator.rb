@@ -69,7 +69,7 @@ end
   end
 
   def sync_unread
-  	@order.update_attribute(:unread, false) if @order.unread && @order.retailer_id == session[:current_retailer_id]
+  	@order.update_attribute(:unread, false) if @order.unread && (@order.retailer && @order.retailer_id == session[:current_retailer_id])
   end
 
 end
