@@ -55,6 +55,14 @@ end
 
     redirect_to "/admin/orders"
   end
+  
+  def accept
+    load_order
+    if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
+    	@order.update_attribute(:accepted_at, Time.now)
+    end
+    redirect_to admin_order_url(@order)
+  end
 
 	private
 

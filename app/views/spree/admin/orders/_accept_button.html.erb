@@ -1,0 +1,3 @@
+<% if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id) %>
+	<%= button_link_to 'Accept', accept_admin_order_path(@order), :confirm => t(:are_you_sure) %>
+<% end %>
