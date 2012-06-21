@@ -18,12 +18,14 @@ $product_link_text_color:   #BBBBBB;
 /* Fonts import from remote
 /*--------------------------------------*/
 @import url(http://fonts.googleapis.com/css?family=Lato|Crimson+Text);
+@font-face { font-family: CartoGothic; src: url('/assets/fonts/CartoGothicStd-Book.otf'); } 
+@font-face { font-family: CartoGothic; font-weight: bold; src: url('/assets/fonts/CartoGothicStd-Bold.otf'); }
 
 /*--------------------------------------*/
 /* Font families
 /*--------------------------------------*/
-$ff_base:        'Lato', sans-serif;
-$ff_serif:       'Crimson Text', serif;
+$ff_base:        'CartoGothic', sans-serif;
+$ff_serif:       'MrsEaves', serif;
 
 /*--------------------------------------
   | Font sizes
