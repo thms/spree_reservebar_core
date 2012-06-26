@@ -13,6 +13,9 @@ Spree::Core::Engine.routes.prepend do
 
     
     resources :orders do
+      member do
+      	get :accept
+      end
       resources :shipments do
         resources :shipment_details do
           post :create
