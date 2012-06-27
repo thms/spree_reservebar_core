@@ -1,0 +1,29 @@
+<% if @order.state == 'payment' %>
+<br class="space" />
+<div id="checkout-terms" data-hook="checkout_terms_box">
+  <input id="order_has_accepted_terms" class="required" type="checkbox" value="1" name="order[has_accepted_terms]">&nbsp;
+  <%= form.label :has_accepted_terms, "I have read and agree to the <a href='/pages/terms'>terms and conditions.</a>".html_safe %><span class="req">*</span>
+</div>
+<style type="text/css" media="screen">
+/* <![CDATA[ */
+	#checkout-terms label.error {
+		float:right;
+	}
+	label.error {
+		color:red;
+	}
+/* ]]> */
+</style>
+<% end %>
+
+<%= javascript_tag do %>
+	$(document).ready(function(){
+	  $("#checkout_form_payment").validate();
+	  $("#order_has_accepted_terms").rules("add", {
+			required: true,
+			messages: {
+				required: "You must accept the terms and conditions to place an order."
+			}
+		});
+	});
+<% end %>
