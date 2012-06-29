@@ -1,6 +1,7 @@
 Spree::Admin::OrdersController.class_eval do
 
 	before_filter :load_retailer
+	after_filter :sync_unread, :only => [:show]
 	
 	# Allow export of orders via CSV
   respond_to :csv, :only => :index
@@ -54,6 +55,14 @@ end
 
     redirect_to "/admin/orders"
   end
+  
+  def accept
+    load_order
+    if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
+    	@order.update_attribute(:accepted_at, Time.now)
+    end
+    redirect_to admin_order_url(@order)
+  end
 
 	private
 
@@ -65,6 +74,10 @@ end
     elsif current_user.has_role?("retailer")
 		  @current_retailer = current_user.retailer
     end
+  end
+
+  def sync_unread
+  	@order.update_attribute(:unread, false) if @order.unread && (@order.retailer && @order.retailer == @current_retailer)
   end
 
 end
