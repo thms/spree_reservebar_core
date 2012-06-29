@@ -106,8 +106,8 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
   def print_label
     load_shipment_detail
     authorize! :print_label, @shipment_detail, params[:token]
-    headers['Content-Type'] = "application/epl2"
-    headers['Content-Disposition'] = "attachment; filename=label_#{@shipment.number}.epl2"
+    headers['Content-Type'] = "application/zpl"
+    headers['Content-Disposition'] = "attachment; filename=label_#{@shipment.number}.zpl"
     render :text => @shipment_detail.label 
   end
   
