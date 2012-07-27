@@ -3,6 +3,8 @@ Spree::Admin::OrdersController.class_eval do
 	before_filter :load_retailer
 	after_filter :sync_unread, :only => [:show]
 	
+#	skip_before_filter :authorize_admin, :only => :gift_message
+  
 	# Allow export of orders via CSV
   respond_to :csv, :only => :index
   
@@ -34,17 +36,7 @@ Spree::Admin::OrdersController.class_eval do
 		end
 		respond_with(@orders)
 	end
-	
-if false
-  # TODO: This is wrong logic, retailer must eplicitely accept order
-  def show
-    load_order
-    if !@order.accepted_at && (@current_retailer && @current_retailer.id == @order.retailer_id)
-    	@order.update_attribute(:accepted_at, Time.now)
-    end
-    respond_with(@order)
-  end
-end
+
 
   def get_retailer_data
   	if params[:retailer_id] && !params[:retailer_id].empty?
@@ -64,6 +56,7 @@ end
     redirect_to admin_order_url(@order)
   end
 
+
 	private
 
 	def load_retailer
@@ -79,5 +72,8 @@ end
   def sync_unread
   	@order.update_attribute(:unread, false) if @order.unread && (@order.retailer && @order.retailer == @current_retailer)
   end
+  
+
+  
 
 end

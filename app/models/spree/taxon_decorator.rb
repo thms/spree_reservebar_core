@@ -1,5 +1,13 @@
 Spree::Taxon.class_eval do
 
+
+  has_attached_file :icon,
+    :styles => { :mini => '32x32>', :normal => '128x128>', :product => '340x340>'},
+    :default_style => :mini,
+    :url => '/spree/taxons/:id/:style/:basename.:extension',
+    :path => ':rails_root/public/spree/taxons/:id/:style/:basename.:extension',
+    :default_url => '/assets/default_taxon.png'
+
   # indicate which filters should be used for a taxon
   # this method should be customized to your own site
   def applicable_filters

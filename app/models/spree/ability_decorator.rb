@@ -40,14 +40,20 @@ class Spree::AbilityDecorator
 	    
 	  end
 	  
-	  # enable access to FedexLabels for non-logged until we figure out a way to 
-	  # send the session cookie with the request from the jZebra applet. (Or use tokenized resource for this ..)
+	  # enable access to FedexLabels for non-logged user 
+	  #  (Or use tokenized resource for this ..)
 	  # Todo: probably also need to grant access to create the label for retailers.
 	  can :print_label, Spree::ShipmentDetail do |shipment_detail, token|
 	    shipment_detail.token && token == shipment_detail.token
 	  end
 
 	  can :print_test_label, :shipping_methods
+
+	  # enable access to Gift Message for non-logged 
+	  can :print_card, Spree::Gift do |gift, token|
+	    gift.token && token == gift.token
+	  end
+
 
 
 	end

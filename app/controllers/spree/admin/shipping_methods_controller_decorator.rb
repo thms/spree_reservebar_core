@@ -62,7 +62,7 @@ Spree::Admin::ShippingMethodsController.class_eval do
     Rails.logger.warn "Calling Fedex ..."
     response = fedex.ship(shipper, recipient, package, 
         :payor_account_number => retailer.shipping_config[:account], 
-        :shipper_email => "Mike@example.com", 
+        :shipper_email => "r2@example.com", 
         :recipient_email => "Minnie@example.com", 
         :alcohol => true, 
         :invoice_number => '123', 

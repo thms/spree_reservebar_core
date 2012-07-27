@@ -22,9 +22,12 @@ Spree::Core::Engine.routes.prepend do
           get  :print_label
         end
       end
+      resources :gifts do
+        get :print_card
+      end
     end
 
-    # Add a route to prnt a test label for the shipping methods
+    # Add a route to print a test label for the shipping methods
     resources :shipping_methods do
       get :print_test_label
     end
