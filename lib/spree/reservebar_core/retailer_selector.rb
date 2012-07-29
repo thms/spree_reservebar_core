@@ -5,7 +5,7 @@ module Spree
       # Selects a retailer for the supplied order
       # Initial algorithm for testing: pick where state matches or first
       # assumptions are this: all retailers will be able to fulfill any order that ships to their state, 
-      # so we only need to find the one that is on the stat with the same shipment address.
+      # so we only need to find the one that is on the state with the same shipment address.
       # Exceptions: If we do not have a retailer in the ship-to state, we have to reject the order.
       def self.select(order)
         state = order.ship_address.state
@@ -21,7 +21,8 @@ module Spree
           retailer =  Spree::Retailer.active.where("ships_spirits_to like :state", :state => "%#{state.abbr}%").first ||
                       Spree::Retailer.active.where("ships_wine_to like :state", :state => "%#{state.abbr}%").first || 
                       Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").first || 
-                      #Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").first ||
+                      Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").first ||
+                      Spree::Retailer.active.where("ships_other_products_to like :state", :state => "%#{state.abbr}%").first ||
                       false
         end
         retailer
@@ -36,8 +37,9 @@ module Spree
         # current version: based on Retailers ships_spirits_to, etc settings
         Spree::Retailer.active.where("ships_spirits_to like :state", :state => "%#{state.abbr}%").count > 0 ||
         Spree::Retailer.active.where("ships_wine_to like :state", :state => "%#{state.abbr}%").count > 0 ||
-        Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").count > 0 #||
-        #Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").count > 0 
+        Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").count > 0 ||
+        Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").count > 0 ||
+        Spree::Retailer.active.where("ships_other_products_to like :state", :state => "%#{state.abbr}%").count > 0
       end
       
       

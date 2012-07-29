@@ -37,6 +37,14 @@
 		<td><%= @retailer.ships_champagne_to %></td>
 	</tr>
 	<tr>
+		<td>Ships Beer To</td>
+		<td><%= @retailer.ships_beer_to %></td>
+	</tr>
+	<tr>
+		<td>Ships Other Products To</td>
+		<td><%= @retailer.ships_other_products_to %></td>
+	</tr>
+	<tr>
 		<td>Reimburse Shipping Cost</td>
 		<td><%= check_box_tag '', 'reimburse_shipping_cost', @retailer.reimburse_shipping_cost, :disabled => true %></td>
 	</tr>
