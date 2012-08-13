@@ -7,8 +7,9 @@
 
 <br class="space" />
 
-<%= button_link_to("Preview Gift Card", "#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf", :target => "_blank") %>
-
-<%= button_link_to("Print Gift Card", "javascript:showPrintDialog('', '#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf?token=#{@order.gift.token}', 'pdf', 'virtual');") %>
+<% if @order.gift %>
+	<%= button_link_to("Preview Gift Card", "#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf", :target => "_blank") %>
+	<%= button_link_to("Print Gift Card", "javascript:showPrintDialog('', '#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf?token=#{@order.gift.token}', 'pdf', 'virtual');") %>
+<% end %>
 
 

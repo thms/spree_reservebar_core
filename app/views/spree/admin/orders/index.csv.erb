@@ -1,5 +1,5 @@
 <% require 'csv' %>
-OrderNumber,OrderDate,OrderState,PaymentState,ShipmentState,Total,ShippingCost,Tax,Retailer,ReimburseShippingCost,ShippingCostForRetailer,CostForRetailer
+OrderNumber,OrderDate,OrderState,PaymentState,ShipmentState,Total,ShippingCost,Tax,Retailer,ReimburseShippingCost,ShippingCostForRetailer,ProductCostForRetailer,GiftPackagingCost(not paid to retailer),TotalDueRetailer
 <%= CSV.generate do |csv|
   @orders.each do |order|
     csv << [	order.number, 
@@ -13,7 +13,9 @@ OrderNumber,OrderDate,OrderState,PaymentState,ShipmentState,Total,ShippingCost,T
 				order.retailer.name, 
 				order.retailer.reimburse_shipping_cost, 
 				order.retailer.reimburse_shipping_cost ? order.ship_total : 0.0,
-				(order.line_items.collect {|line_item| line_item.variant.product_costs.where(:retailer_id => order.retailer_id).first.cost_price * line_item.quantity }).sum
+				(order.line_items.collect {|line_item| line_item.variant.product_costs.where(:retailer_id => order.retailer_id).first.cost_price * line_item.quantity }).sum,
+				order.gift_packaging_total,
+				order.total_amount_due_to_retailer
 			]
   end
 end %>

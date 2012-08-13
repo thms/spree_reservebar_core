@@ -8,7 +8,7 @@ module Spree
       # GET /retailer/1/product_costs.json
       # Get a list of all products, so we show all variants and cost for the retailer, even if the retailer's cost is not yet set
       def index
-        @products = Spree::Product.includes(:variants).page(params[:page]).per(Spree::Config[:orders_per_page])
+        @products = Spree::Product.not_deleted.includes(:variants).page(params[:page]).per(Spree::Config[:orders_per_page])
         respond_with @products
        end
        
