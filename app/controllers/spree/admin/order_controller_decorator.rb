@@ -56,6 +56,21 @@ Spree::Admin::OrdersController.class_eval do
     redirect_to admin_order_url(@order)
   end
 
+	def confirm_email
+		load_order
+		
+		respond_with(@order) do |format|
+			format.html { render :template => "spree/order_mailer/confirm_email.html.erb", :layout => false }
+		end
+	end
+
+	def gift_notify_email
+		load_order
+		
+		respond_with(@order) do |format|
+			format.html { render :template => "spree/order_mailer/gift_notify_email.html.erb", :layout => false }
+		end
+	end
 
 	private
 
