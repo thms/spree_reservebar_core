@@ -24,6 +24,8 @@ Spree::CheckoutController.class_eval do
     Rails.logger.warn "Selected retailer #{retailer.id}"
     # And save the association between order and retailer
     current_order.retailer = retailer
+    # Somehow this got lost along the way, force it here, where the retailer (and therefore the tax rate) is known
+    current_order.create_tax_charge!
   end
 
 
