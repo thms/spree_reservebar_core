@@ -14,7 +14,7 @@ en:
     last_name: Last Name
     email: Email
     phone: Phone
-    Message: Message
+    message: Message
   order_mailer:
     gift_notify_email:
       subject:  "Gift Order Notification"
