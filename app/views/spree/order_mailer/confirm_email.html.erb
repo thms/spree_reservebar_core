@@ -164,13 +164,23 @@ you have any questions, please visit our FAQ page on our site.<br>
 	            </tbody></table></td>
 	          </tr>
 		      <% @order.line_items.each do |item| %>
+		      <% bgcolor = cycle('#d8d8d8', '') %>
 		      <tr>
-		        <td width="60%" height="21" style="text-align:right;background:<%= cycle('#d8d8d8', '', :name => 'background1') -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= item.variant.product.name %>
+		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= item.variant.product.name %>
             </td>
-		        <td width="9px" style="background:<%= cycle('#d8d8d8', '', :name => 'background2') -%>"><br>
+		        <td width="9px" style="background:<%= bgcolor -%>"><br>
             </td>
-		        <td style="background:<%= cycle('#d8d8d8', '#FFF', :name => 'background3') -%>;font-size:12px;width:74pt;font-family:Georgia;text-decoration:none;font-weight:400">
+		        <td style="background:<%= bgcolor -%>;font-size:12px;width:74pt;font-family:Georgia;text-decoration:none;font-weight:400">
             	<%= number_to_currency(item.price * item.quantity) %>
+            </td>
+	        </tr>
+		      <tr>
+		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= item.gift_package ? "Gift Packaging" : "None" %>
+            </td>
+		        <td width="9px" style="background:<%= bgcolor -%>"><br>
+            </td>
+		        <td style="background:<%= bgcolor -%>;font-size:12px;width:74pt;font-family:Georgia;text-decoration:none;font-weight:400">
+            	<%= item.gift_package ? number_to_currency(item.gift_package.price * item.quantity) : number_to_currency(0) %>
             </td>
 	        </tr>
 	        <% end %>                
@@ -180,7 +190,7 @@ you have any questions, please visit our FAQ page on our site.<br>
 		      <tr>
 		        <td valign="bottom" height="18" style="text-align: right; color: rgb(193, 56, 40); font-family: georgia,serif;"><strong>SubTotal</strong></td>
 		        <td>&nbsp;</td>
-		        <td valign="bottom" height="18" style="color: rgb(193, 56, 40); font-family: georgia,serif;"><strong><%= number_to_currency @order.item_total %></strong></td>
+		        <td valign="bottom" height="18" style="color: rgb(193, 56, 40); font-family: georgia,serif;"><strong><%= number_to_currency(@order.item_total + @order.gift_packaging_total) %></strong></td>
 	          </tr>
 		      <tr>
 		        <td colspan="3"><br _moz_dirty="" type="_moz"></td>
