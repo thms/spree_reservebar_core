@@ -1,0 +1,12 @@
+Dear Admin,
+
+Orders that have not been accepted more than 6 hours.
+
+Total: <%= @orders.size %>
+Sent at: <%= Time.now %>
+
+<% @orders.each do |order| %>
+Number: <%= order.number %> Retailer: <%= order.retailer ? order.retailer.name : "N/A" %>
+<% end %>
+
+Reservebar.com

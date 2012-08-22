@@ -89,5 +89,7 @@ Spree::Order.class_eval do
     self.total_taxes + shipping + product_cost
   end
   
-  
+  def self.non_accepted_more_than_six_hours
+  	self.where(["spree_orders.accepted_at is ? and spree_orders.updated_at < ? and spree_orders.state = ?", nil, Time.now - 6.hours, "complete"])
+  end
 end
