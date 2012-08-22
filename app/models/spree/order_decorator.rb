@@ -13,8 +13,10 @@ Spree::Order.class_eval do
 	state_machine :initial => :cart, :use_transactions => false do
 		before_transition :to => 'delivery', :do => :validate_legal_drinking_age?
 				
+		# add the gift notification after order.finalize!
+		# note that this adds a new callback to the chain, it does not overreid the existing callbacks
+		# we had called order.finalize! here, which was then executed twice....
 		after_transition :to => 'complete' do |order, transition|
-			order.finalize!
 			order.gift_notification if order.is_gift?
 		end
 		

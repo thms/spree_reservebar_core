@@ -39,6 +39,10 @@ module Spree
         {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter, :test => true }
       end
     end
-
+    
+    # dummy for shipping non-shipping products
+    def ships_non_shipping_to
+      Spree::State.all.map(&:abbr).join(',')
+    end
   end
 end

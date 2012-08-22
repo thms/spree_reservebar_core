@@ -19,13 +19,14 @@ Spree::CheckoutController.class_eval do
     retailer = Spree::ReservebarCore::RetailerSelector.select(current_order)
     unless retailer
       raise Exceptions::NoRetailerInStateError
-      Rails.logger.warn "No retailer in state found retailer"
     end
-    Rails.logger.warn "Selected retailer #{retailer.id}"
     # And save the association between order and retailer
-    current_order.retailer = retailer
-    # Somehow this got lost along the way, force it here, where the retailer (and therefore the tax rate) is known
-    current_order.create_tax_charge!
+    if retailer.id != current_order.retailer_id
+      current_order.retailer = retailer
+      # Somehow this got lost along the way, force it here, where the retailer (and therefore the tax rate) is known
+      # If the retailer is changed, we need to recreate the tax charge
+      current_order.create_tax_charge!
+    end
   end
 
 
@@ -40,10 +41,6 @@ Spree::CheckoutController.class_eval do
     @order.gift_id = nil if request.put?
   end
   
-  # try here
-#  def after_payment
-#    @order.validate_legal_drinking_age?
-#  end
   
 	protected
   
