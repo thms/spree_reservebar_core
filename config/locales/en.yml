@@ -18,4 +18,6 @@ en:
   order_mailer:
     gift_notify_email:
       subject:  "Gift Order Notification"
+    accept_notify_email:
+      subject:  "Accept Order Notification"
   is_business: "This is a Business Address"
