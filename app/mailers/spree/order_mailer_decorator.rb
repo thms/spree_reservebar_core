@@ -7,7 +7,7 @@ Spree::OrderMailer.class_eval do
          :subject => subject)
   end
 
-  def accept_notify_email(order, resend=false)
+  def accept_notify_email(order, resend = false)
     @order = order
     @retailer = @order.retailer
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
@@ -16,10 +16,11 @@ Spree::OrderMailer.class_eval do
          :subject => subject)
   end
   
-  def non_accepted_orders(resend=false)
-    @orders = Spree::Order.non_accepted_more_than_six_hours.order("spree_orders.updated_at desc")
+  def non_accepted_orders(hours = 6, resend = false)
+    @hours = hours
+    @orders = Spree::Order.non_accepted_hours(hours).order("spree_orders.updated_at desc")
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "Reservebar - Orders that have not been accepted more than 6 hours"
+    subject += "Reservebar - Orders that have not been accepted more than #{hours} hours"
     mail(:to => "admin@reservebar.com",
          :subject => subject)
   end

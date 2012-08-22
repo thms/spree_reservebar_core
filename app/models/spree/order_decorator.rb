@@ -9,6 +9,13 @@ Spree::Order.class_eval do
 	belongs_to :gift
 	
 	accepts_nested_attributes_for :gift
+
+  scope :non_accepted_hours,
+    lambda {|n|
+      where(["spree_orders.accepted_at is ? and spree_orders.updated_at < ? and spree_orders.state = ?", nil, Time.now - n.hours, "complete"])
+    }
+  
+  search_methods :non_accepted_hours
 	
 	state_machine :initial => :cart, :use_transactions => false do
 		before_transition :to => 'delivery', :do => :validate_legal_drinking_age?
@@ -88,8 +95,5 @@ Spree::Order.class_eval do
     product_cost = (self.line_items.collect {|line_item| line_item.variant.product_costs.where(:retailer_id => self.retailer_id).first.cost_price * line_item.quantity }).sum
     self.total_taxes + shipping + product_cost
   end
-  
-  def self.non_accepted_more_than_six_hours
-  	self.where(["spree_orders.accepted_at is ? and spree_orders.updated_at < ? and spree_orders.state = ?", nil, Time.now - 6.hours, "complete"])
-  end
+
 end
