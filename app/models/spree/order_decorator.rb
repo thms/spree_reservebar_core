@@ -22,7 +22,8 @@ Spree::Order.class_eval do
 				
 		after_transition :to => 'complete' do |order, transition|
 			order.finalize!
-			order.gift_notification if order.is_gift?
+			# move to admin/orders/accept action
+			#order.gift_notification if order.is_gift?
 		end
 		
 	end

@@ -53,13 +53,13 @@ Spree::Admin::OrdersController.class_eval do
     if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
     	@order.update_attribute(:accepted_at, Time.now)
     	Spree::OrderMailer.accept_notify_email(@order).deliver
+    	Spree::OrderMailer.gift_shipped_email(@order).deliver if @order.is_gift?
     end
     redirect_to admin_order_url(@order)
   end
 
 	def confirm_email
 		load_order
-		
 		respond_with(@order) do |format|
 			format.html { render :template => "spree/order_mailer/confirm_email.html.erb", :layout => false }
 		end
@@ -67,9 +67,15 @@ Spree::Admin::OrdersController.class_eval do
 
 	def gift_notify_email
 		load_order
-		
 		respond_with(@order) do |format|
 			format.html { render :template => "spree/order_mailer/gift_notify_email.html.erb", :layout => false }
+		end
+	end
+
+	def gift_shipped_email
+		load_order
+		respond_with(@order) do |format|
+			format.html { render :template => "spree/order_mailer/gift_shipped_email.html.erb", :layout => false }
 		end
 	end
 
