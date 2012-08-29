@@ -52,6 +52,7 @@ Spree::Admin::OrdersController.class_eval do
     load_order
     if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
     	@order.update_attribute(:accepted_at, Time.now)
+    	Spree::OrderMailer.accepted_notification(@order).deliver
     end
     redirect_to admin_order_url(@order)
   end

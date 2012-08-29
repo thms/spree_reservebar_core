@@ -13,4 +13,9 @@ Spree::Product.class_eval do
   scope :taxons_id_in_tree, lambda {|taxon| 
     Product.taxons_id_in_tree_any(taxon).scope :find 
   }
+  
+  def self.rlike_any(fields, values)
+    where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} RLIKE ?").join(' OR ') }.join(' OR ')
+    self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
+  end
 end
