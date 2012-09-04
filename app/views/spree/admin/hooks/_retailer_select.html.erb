@@ -1,4 +1,17 @@
 <% if current_user.has_role?("admin") %>
 <%= collection_select :retailer, :id, Spree::Retailer.all, :id, :name, :prompt => "All Retailers", :selected => session[:current_retailer_id] %>
+<% if controller_name == "orders" %>
+<% if params["search"] %>
+	<% nonaccepted = params["search"].delete("accepted_at_is_null") %>
+	<% params["search"].delete("updated_at_less_than") %>
+	<% params["search"].delete("retailers_id_equals") %>
+	<% accepted = params["search"].delete("accepted_at_is_not_null") %>
+<% end %>
+<%= link_to "All", url_for(params), :class => "#{'current' unless nonaccepted || accepted}" %>
+<%= link_to "Accepted", url_for(params.merge({"search[accepted_at_is_not_null]" => "1", "search[retailers_id_equals]" => session[:current_retailer_id]})), :class => "#{'current' if accepted}" %>
+<%= link_to "NonAccepted", url_for(params.merge({"search[accepted_at_is_null]" => "1", "search[updated_at_less_than]" => (Time.now - 6.hours).to_s, "search[retailers_id_equals]" => session[:current_retailer_id]})), :class => "#{'current' if nonaccepted}" %>
+Total: <%= @orders.total_count %>
+<style type="text/css">a.current {font-weight:bold;}</style>
+<% end %>
 <br class="clear" />
 <% end %>
