@@ -22,4 +22,6 @@ en:
       subject:  "Gift Shipped Notification"
     accept_notify_email:
       subject:  "Accept Order Notification"
+    accepted_notification:
+        subject: "Order Accepted Notification"
   is_business: "This is a Business Address"

@@ -1,3 +1,4 @@
+# Purpose: after the user logs in, he shold be redirected to the home page instead of the product page, unless there is a redirect location stored.
 Spree::UserSessionsController.class_eval do
   def create
     authenticate_user!

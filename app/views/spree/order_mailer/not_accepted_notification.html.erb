@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+Dear Admin,<br /><br />
+
+Orders that have not been accepted for more than <%= @hours %> hours.<br /><br />
+
+Total: <%= @orders.size %><br />
+Sent at: <%= Time.now %><br /><br />
+
+<% @orders.each do |order| %>
+<%= admin_order_url(order) %>, <%= order.updated_at %>, <%= order.retailer ? order.retailer.name : "N/A" %><br />
+<% end %>
+
+Reservebar.com
+</body>
+</html>

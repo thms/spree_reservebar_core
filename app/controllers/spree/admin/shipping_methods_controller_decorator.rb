@@ -12,10 +12,7 @@ Spree::Admin::ShippingMethodsController.class_eval do
   def print_test_label
     require 'base64'
     # Create dummy shipment 
-    Rails.logger.warn "Enter print_test-label ..."
-    Rails.logger.warn "Looking for shipping method #{params[:shipping_method_id]}"
     shipping_method = Spree::ShippingMethod.find(params[:shipping_method_id])
-    Rails.logger.warn "Found #{shipping_method.to_s} ...#{shipping_method.calculator.class.service_type}"
     
     package = ActiveMerchant::Shipping::Package.new(10, [10,10,10], :units => Spree::ActiveShipping::Config[:units].to_sym)
     retailer = Spree::Retailer.first
@@ -59,7 +56,6 @@ Spree::Admin::ShippingMethodsController.class_eval do
     Rails.logger.warn "Instantiating Fedex ..."
     
     fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
-    Rails.logger.warn "Calling Fedex ..."
     response = fedex.ship(shipper, recipient, package, 
         :payor_account_number => retailer.shipping_config[:account], 
         :shipper_email => "r2@example.com", 
@@ -71,7 +67,6 @@ Spree::Admin::ShippingMethodsController.class_eval do
         :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE,
         :service_type => shipping_method.calculator.class.service_type
     )
-    Rails.logger.warn "Got response from Fedex"
     headers['Content-Type'] = "application/zpl"
     headers['Content-Disposition'] = "attachment; filename=label_test.zpl"
     render :text => response.label 

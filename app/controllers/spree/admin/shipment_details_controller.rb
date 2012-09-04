@@ -42,7 +42,8 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :zip            => shipping_address.zipcode, 
           :phone          => shipping_address.phone, 
           :address1       => shipping_address.address1,
-          :address2       => shipping_address.address2
+          :address2       => shipping_address.address2,
+          :address_type   => shipping_address.is_business ? 'commercial' : 'residential'
       )
       if shipment.order.is_gift?
         # Find the email address of the giftee for this order
@@ -50,13 +51,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       else
         recipient_email = shipment.order.email
       end
-      Rails.logger.warn "Instantiating FedEx ..."
       fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
-      Rails.logger.warn "Calling FedEx ..."
-      Rails.logger.warn package.inspect
-      Rails.logger.warn shipper.inspect
-      Rails.logger.warn recipient.inspect
-      Rails.logger.warn recipient_email
       response = fedex.ship(shipper, recipient, package, 
           :payor_account_number => retailer.shipping_config[:account], 
           :shipper_email => retailer.email, 
@@ -68,7 +63,6 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE,
           :service_type => shipment.shipping_method.calculator.class.service_type
       )
-      Rails.logger.warn "Fedex Call: #{response.success?.to_s}"
     
       # store response
       if response.success?

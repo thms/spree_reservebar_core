@@ -17,16 +17,27 @@ Spree::Order.class_eval do
   
   search_methods :non_accepted_hours
 	
+	# Scope to find all orders that have not been accepted by retailers in a given time frame
+	scope :not_accepted_hours,
+    lambda {|number_of_hours|
+      where(["spree_orders.accepted_at is ? and spree_orders.updated_at < ? and spree_orders.state = ?", nil, Time.now - number_of_hours.hours, "complete"])
+    }
+	
+	search_methods :not_accepted_hours
+  
 	state_machine :initial => :cart, :use_transactions => false do
 		before_transition :to => 'delivery', :do => :validate_legal_drinking_age?
 				
+		# add the gift notification after order.finalize!
+		# note that this adds a new callback to the chain, it does not overreid the existing callbacks
+		# we had called order.finalize! here, which was then executed twice....
 		after_transition :to => 'complete' do |order, transition|
-			order.finalize!
-			# move to admin/orders/accept action
-			#order.gift_notification if order.is_gift?
+			order.gift_notification if order.is_gift?
 		end
 		
 	end
+	
+  
 	
 	# Override the address used for calculating taxes.
 	# Reservebar.com uses the retailer's physial address, rather then the ship_address to determine taxes
@@ -92,9 +103,9 @@ Spree::Order.class_eval do
   # Calculates the total amount due to the retailer based on current settings
   # Note that the gift packaging cost does not go to the retailer, but all sales tax does
   def total_amount_due_to_retailer
-    shipping = order.retailer.reimburse_shipping_cost ? order.ship_total : 0.0
+    shipping = self.retailer.reimburse_shipping_cost ? self.ship_total : 0.0
     product_cost = (self.line_items.collect {|line_item| line_item.variant.product_costs.where(:retailer_id => self.retailer_id).first.cost_price * line_item.quantity }).sum
-    self.total_taxes + shipping + product_cost
+    self.tax_total + shipping + product_cost
   end
 
 end

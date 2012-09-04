@@ -9,6 +9,7 @@ module Spree
           Rails.configuration.cache_classes ? require(c) : load(c)
         end
         
+        # Register new searcher class
         Spree::Config.searcher_class = Spree::Search::ReservebarSearch
       end
 
