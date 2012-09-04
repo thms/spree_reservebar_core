@@ -20,6 +20,7 @@ Spree::OrderMailer.class_eval do
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{Spree::Config[:site_name]} #{t('order_mailer.gift_shipped_email.subject')}"
     mail(:to => order.gift.email,
+    		 :reply_to => "support@reservebar.com",
          :subject => subject)
   end
   
