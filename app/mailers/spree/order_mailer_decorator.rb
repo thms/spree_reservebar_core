@@ -8,11 +8,11 @@ Spree::OrderMailer.class_eval do
          :subject => subject)
   end
   
-  def gift_notify_email(order, resend=false)
+  def giftee_notify_email(order, resend=false)
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "Reservebar - #{t('order_mailer.gift_notify_email.subject')}"
-    mail(:to => order.gift.email, :subject => subject)
+    subject += "Reservebar - #{t('order_mailer.giftee_notify_email.subject')}"
+    mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :subject => subject)
   end
 
   def giftee_shipped_email(order, resend=false)

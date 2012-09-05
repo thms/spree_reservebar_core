@@ -58,7 +58,7 @@ Spree::Order.class_eval do
   
 	
   def gift_notification
-    Spree::OrderMailer.gift_notify_email(self).deliver
+    Spree::OrderMailer.giftee_notify_email(self).deliver
   end
 	
 	def retailer
