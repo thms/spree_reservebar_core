@@ -92,6 +92,13 @@ Spree::Admin::OrdersController.class_eval do
 		end
 	end
 
+	def giftor_shipped_email
+		load_order
+		respond_with(@order) do |format|
+			format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
+		end
+	end
+
 	private
 
 	def load_retailer

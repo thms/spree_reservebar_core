@@ -18,6 +18,7 @@ Spree::Core::Engine.routes.prepend do
       	get :confirm_email
       	get :gift_notify_email
       	get :giftee_shipped_email
+      	get :giftor_shipped_email
       end
       resources :shipments do
         resources :shipment_details do
