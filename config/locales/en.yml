@@ -20,7 +20,7 @@ en:
       subject: "Your order with ReserveBar.com"
     gift_notify_email:
       subject:  "Gift Order Notification"
-    gift_shipped_email:
+    giftee_shipped_email:
       subject:  "Gift Shipped Notification"
     accept_notify_email:
       subject:  "Accept Order Notification"

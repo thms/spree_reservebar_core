@@ -85,10 +85,10 @@ Spree::Admin::OrdersController.class_eval do
 		end
 	end
 
-	def gift_shipped_email
+	def giftee_shipped_email
 		load_order
 		respond_with(@order) do |format|
-			format.html { render :template => "spree/order_mailer/gift_shipped_email.html.erb", :layout => false }
+			format.html { render :template => "spree/order_mailer/giftee_shipped_email.html.erb", :layout => false }
 		end
 	end
 
