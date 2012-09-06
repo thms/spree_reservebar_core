@@ -8,13 +8,13 @@ en:
   content: Content
   order_cancel: Cancel Order
   gift:
-    title: Recipient information
+    title: Gift Recipient Information
     recipient: Recipient
     first_name: First Name
     last_name: Last Name
     email: Email
     phone: Phone
-    message: Message
+    message: "Gift Card Message (360 characters max.)"
   order_mailer:
     confirm_email:
       subject: "Your order with ReserveBar.com"
