@@ -29,3 +29,5 @@ en:
     accepted_notification:
         subject: "Order Accepted Notification"
   is_business: "This is a Business Address"
+  returning_member: Returning Member
+  new_member: New Member
