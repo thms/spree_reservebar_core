@@ -1,6 +1,6 @@
 <div class="add-to-cart">
 	<% if @product.shipping_category.name == "Non Shipping" %>
-		<p>Please call a ReserveBar Experiences Consultant at 877-Reserve to get more information</p>
+		<p>Please call <strong>877-Reserve</strong> to speak with a ReserveBar Experiences Consultant</p>
 	<% else %>
 	  <% if @product.has_stock? || Spree::Config[:allow_backorders] %>      
 	    <%= number_field_tag (@product.has_variants? ? :quantity : "variants[#{@product.master.id}]"),
