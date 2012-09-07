@@ -14,7 +14,7 @@ en:
     last_name: Last Name
     email: Email
     phone: Phone
-    message: "Gift Card Message (360 characters max.)"
+    message: "Gift Card Message (335 characters max.)"
   order_mailer:
     confirm_email:
       subject: "Your order with ReserveBar.com"
