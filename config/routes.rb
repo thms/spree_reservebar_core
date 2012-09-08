@@ -15,6 +15,10 @@ Spree::Core::Engine.routes.prepend do
     resources :orders do
       member do
       	get :accept
+      	get :confirm_email
+      	get :gift_notify_email
+      	get :giftee_shipped_email
+      	get :giftor_shipped_email
       end
       resources :shipments do
         resources :shipment_details do

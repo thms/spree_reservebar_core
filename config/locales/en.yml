@@ -14,10 +14,20 @@ en:
     last_name: Last Name
     email: Email
     phone: Phone
-    Message: Message
+    message: "Gift Card Message (335 characters max.)"
   order_mailer:
+    confirm_email:
+        subject: "Your order with ReserveBar.com"
     gift_notify_email:
-      subject:  "Gift Order Notification"
+        subject:  "Gift Order Notification"
+    giftee_shipped_email:
+        subject:  "Gift Shipped Notification"
+    giftor_shipped_email:
+        subject:  "Your order with ReserveBar.com has shipped"
     accepted_notification:
         subject: "Order Accepted Notification"
   is_business: "This is a Business Address"
+  returning_member: Returning Member
+  new_member: New Member
+  order_processed_successfully: "Your order has been been successfully submitted. You will also receive an email notification. Thank you for your purchase with ReserveBar."
+  

@@ -48,6 +48,7 @@ Spree::Admin::OrdersController.class_eval do
     redirect_to "/admin/orders"
   end
   
+    
   def accept
     load_order
     if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
@@ -56,6 +57,15 @@ Spree::Admin::OrdersController.class_eval do
     end
     redirect_to admin_order_url(@order)
   end
+
+  # Purpose?
+  def giftor_shipped_email
+    load_order
+    respond_with(@order) do |format|
+      format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
+    end
+  end
+  
 
 
 	private

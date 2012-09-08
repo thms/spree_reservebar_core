@@ -29,7 +29,7 @@
       </p>
     	<p class="field" id="gmessage">
         <%= gift_form.label :message, t('gift.message') %><br />
-        <%= gift_form.text_area :message, :rows => 4 %>
+        <%= gift_form.text_area :message, :rows => 4, :placeholder => 'Please type your gift card message here. Remember there is a limit of 335 characters including all greetings and salutations.' %>
       </p>
       <%= gift_form.hidden_field :sender_id %>
     </div>
@@ -82,6 +82,11 @@
 	  $("#order_gift_attributes_phone").rules("add", {
 			required: "#order_is_gift:checked"
 		});
+		
+		
+	  	$("#order_gift_attributes_message").rules("add", {
+ 			maxlength: 335
+ 		});
 	  
 	});
 <% end %>

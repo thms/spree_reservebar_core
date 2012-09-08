@@ -30,7 +30,11 @@
 	   		} else {
 				if ($("#jzebra_dialog").attr("format") == 'raw') {
      				applet.appendFile($("#jzebra_dialog").attr("url"));
-				} else {
+				} 
+				else if ($("#jzebra_dialog").attr("format") == 'html') {
+	     			applet.appendHTMLFile($("#jzebra_dialog").attr("url"));
+				}
+				else {
 					applet.appendPDF($("#jzebra_dialog").attr("url"));
 				}
 				//wait for appending to finish before attempting to print: (monitorAppending will print when ready)
@@ -133,7 +137,11 @@ function jzebraDonePrinting() { }
 	   } else {
 			if ($("#jzebra_dialog").attr("format") == 'raw') {
 	      		applet.print(); // Don't print until all of the data has been appended
-			} else {
+			} 
+			else if ($("#jzebra_dialog").attr("format") == 'html') {
+				applet.printHTML();
+			}
+			else {
 				applet.printPS(); // PDF documents use printPS function
 			}
           	monitorPrinting();

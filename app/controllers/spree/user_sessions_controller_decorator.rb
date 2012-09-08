@@ -7,7 +7,11 @@ Spree::UserSessionsController.class_eval do
       respond_to do |format|
         format.html {
           flash.notice = t(:logged_in_succesfully)
-          redirect_back_or_default(root_path)
+          if current_user.has_role?("retailer")
+            redirect_to admin_orders_url
+          else
+            redirect_back_or_default(root_path)
+          end
         }
         format.js {
           user = resource.record
