@@ -21,11 +21,13 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         weight + (line_item.variant.weight ? (line_item.quantity * line_item.variant.weight * multiplier) : Spree::ActiveShipping::Config[:default_weight])
       end
       # add the gift packaging weight - if any
-      gift_packaging_weight = shipment.line_items.inject(0) do |weight, line_item|
+      gift_packaging_weight = shipment.line_items.inject(0) do |gift_packaging_weight, line_item|
         gift_packaging_weight + (line_item.gift_package ? (line_item.quantity * line_item.gift_package.weight * multiplier) : 0.0)
       end
+      # Caclulate weight of packaging
+      package_weight = Spree::Calculator::ActiveShipping::PackageWeight.for(order)
       
-      package = ActiveMerchant::Shipping::Package.new(weight + gift_packaging_weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
+      package = ActiveMerchant::Shipping::Package.new(weight + gift_packaging_weight + package_weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
       
       # make request to fedex
       shipper = ActiveMerchant::Shipping::Location.new(

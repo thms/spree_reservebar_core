@@ -18,4 +18,19 @@ Spree::Product.class_eval do
     where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} RLIKE ?").join(' OR ') }.join(' OR ')
     self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
   end
+  
+  
+  # Methods to find all states that this product can ship to, based on existing retailers and their settings
+  # Used on product page to sow where this product can be shipped to
+  # This could probably do with some pretty heavy caching
+  def ships_to_states
+    method = "ships_#{self.shipping_category.name.downcase.gsub(' ','_')}_to".to_sym
+    states = Spree::Retailer.active.map(&method).join(',').split(',').uniq.sort.to_sentence
+  end
+  
+  # Returns true if this product is availble for shipping to all states.
+  def ships_to_all_states?
+    method = "ships_#{self.shipping_category.name.downcase.gsub(' ','_')}_to".to_sym
+    Spree::Retailer.active.map(&method).join(',').split(',').uniq.count == Spree::State.count
+  end
 end

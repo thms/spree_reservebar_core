@@ -80,8 +80,7 @@ Spree::Order.class_eval do
 		gift.present?
 	end
 	
-	# get all shipping categories for an order
-	# this is based on what
+	# get all shipping categories for an order, used to find a retailer that can fulfil this order.
 	def shipping_categories
 	  self.line_items.collect {|l| l.product.shipping_category_id}.uniq
   end

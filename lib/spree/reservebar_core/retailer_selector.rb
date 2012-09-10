@@ -1,6 +1,12 @@
+
 module Spree
   module ReservebarCore
+
     class RetailerSelector
+      
+      # TODO: new rules
+      # Retailer in state gets picked if he can ship over retailer out of state that can also ship
+      # Support convoluted messaging logic by searching combinations.
   
       # Selects a retailer for the supplied order
       # Initial algorithm for testing: pick where state matches or first
@@ -9,26 +15,40 @@ module Spree
       # Exceptions: If we do not have a retailer in the ship-to state, we have to reject the order.
       def self.select(order)
         state = order.ship_address.state
-        # if we can't ship to the state, bail out:
-        return false unless can_ship_to_state?(state)
-        # if the order only has wine, use the super retailer, if he delivers to that state
-        if order.has_only_wine?
-          retailer = Spree::Retailer.active.where(:is_super_retailer => true)
-          retailer = false unless retailer.ships_wine_to.include?(state.abbr)
+        
+        # if we can't ship anything to the state, so bail out early:
+        raise Exceptions::NoRetailerShipsToStateError unless can_ship_to_state?(state)
+        
+        
+        # Try and find a retailer that can ship all items to the state
+        query = []
+        order.shipping_categories.each do |shipping_category_id|
+          query << "ships_#{Spree::ShippingCategory.find(shipping_category_id).name.downcase.gsub(' ','_')}_to like :state"
         end
-        # if the order has other items besides wine, or the super retailer does not ship to that state, try another retailer that ships to the state:
-        unless retailer
-          retailer =  Spree::Retailer.active.where("ships_spirits_to like :state", :state => "%#{state.abbr}%").first ||
-                      Spree::Retailer.active.where("ships_wine_to like :state", :state => "%#{state.abbr}%").first || 
-                      Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").first || 
-                      Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").first ||
-                      Spree::Retailer.active.where("ships_other_products_to like :state", :state => "%#{state.abbr}%").first ||
-                      false
+        retailers = Spree::Retailer.where(query.join(' and '),  :state => "%#{state.abbr}%")
+        # if we have more than one retailer that can ship to th state, pick the one that is located in the state, otherwise, just pick random
+        if retailers.count > 1
+          begin
+            retailer = retailers.select {|r| r.physical_address.state == state}.first
+          rescue
+            retailer = retailers.sample
+          end
+        elsif retailers.count == 1
+          retailer = retailers.first
+        else
+          retailer = nil
+          # Should raise no retailer found error 
+          raise Exceptions::NoRetailerCanShipFullOrderError
         end
+        
+        # Now, if we do not have a retailer that can ship to the state, check if we can ship the partial order.
+        # But hit is only used for messaging to the user, retailer selection has completed.
+        
+        # Return the retailer if we have found one.
         retailer
       end
   
-      # check whether we can ship to the selected state
+      # check whether we can ship anything at all to the selected state
       # can be used early in the process to check if we can accept an order that ships to a state
       # Not yet used at all
       def self.can_ship_to_state?(state)
