@@ -58,7 +58,7 @@ Spree::Admin::OrdersController.class_eval do
     redirect_to admin_order_url(@order)
   end
 
-  # Purpose?
+  # used for testing only
   def giftor_shipped_email
     load_order
     respond_with(@order) do |format|

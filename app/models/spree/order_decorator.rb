@@ -101,4 +101,11 @@ Spree::Order.class_eval do
   end
   
   
+  # Returns the number of bottles in the order, so we can limit 
+  # Cache counts?
+  def number_of_bottles
+    bottles = self.line_items.inject(0) {|bottles, line_item| bottles + line_item.quantity}
+  end
+  
+  
 end
