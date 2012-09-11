@@ -1,4 +1,5 @@
 Spree::OrdersController.class_eval do
+  require 'exceptions'
 
   before_filter :check_bottle_number_limit, :only => [:populate, :update]
   
