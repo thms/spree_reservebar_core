@@ -1,12 +1,23 @@
 Spree::Admin::OrdersController.class_eval do
 
 	before_filter :load_retailer
-	after_filter :sync_unread, :only => [:show]
+	after_filter :sync_unread, :only => [:show, :summary]
 	
 #	skip_before_filter :authorize_admin, :only => :gift_message
   
 	# Allow export of orders via CSV
   respond_to :csv, :only => :index
+  
+  def show
+    respond_with(@order) do |format|
+      if current_user.has_role?("admin")
+        format.html {render}
+      else
+        format.html {render :action => :summary}
+      end
+    end
+  end
+  
   
 	def index
 	  params[:search] ||= {}
@@ -66,6 +77,10 @@ Spree::Admin::OrdersController.class_eval do
     end
   end
   
+  # Retailer view of order, build up separately here and potentially fold into the show with a different render statement
+  def summary
+    
+  end
 
 
 	private

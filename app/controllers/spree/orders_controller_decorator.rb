@@ -12,7 +12,7 @@ Spree::OrdersController.class_eval do
   def bottle_limit_exceeded
     respond_to do |format|
       format.html {
-        flash[:error] = "<p>Thank you for trying to add products to your shopping cart. We appreciate your business; however,  we currently cannot accept an order that contains more than 12 bottles. </p>
+        flash[:notice] = "<p>Thank you for trying to add products to your shopping cart. We appreciate your business; however,  we currently cannot accept an order that contains more than 12 bottles. </p>
     		<p>If you wish to purchase more than 12 bottles (e.g., more than one case of wine), please create separate orders, each of which must contain 12 or fewer bottles. We apologize for the inconvenience.</p>".html_safe
         redirect_to cart_path
       }

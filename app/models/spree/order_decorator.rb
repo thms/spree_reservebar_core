@@ -30,6 +30,20 @@ Spree::Order.class_eval do
 		
 	end
 	
+	# Pseudo states that embedd special logic for reservebar.com
+	def extended_state
+	  if self.state == 'complete'
+  	  if !self.accepted_at
+  	    'submitted'
+      elsif self.accepted_at && self.shipment_state != 'shipped'
+        'accepted'
+      elsif self.shipped?
+        'shipped'
+      end
+    else
+      self.state
+    end
+  end
   
 	
 	# Override the address used for calculating taxes.
@@ -106,6 +120,7 @@ Spree::Order.class_eval do
   def number_of_bottles
     bottles = self.line_items.inject(0) {|bottles, line_item| bottles + line_item.quantity}
   end
+  
   
   
 end
