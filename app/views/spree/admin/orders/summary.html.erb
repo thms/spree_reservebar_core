@@ -1,0 +1,113 @@
+<h1><%= t(:order) + " #{@order.number}" %></h1>
+
+<div class="toolbar order-links" data-hook="admin_order_show_buttons">
+	<% if @current_retailer && @current_retailer.id == @order.retailer_id %>
+		<% if @order.accepted_at.blank? %>
+			<%= button_link_to 'Accept', accept_admin_order_path(@order), :confirm => t(:are_you_sure) %>
+		<% else %>
+			<b>Accepted</b>
+		<% end %>
+	<% end %>
+</div>
+
+<% content_for :sidebar do %>
+  <div id="order_tab_summary" data-hook>
+    <h3 id="order_number" data-hook><%= "#{t(:order)} ##{@order.number} " %></h3>
+    <h5 id="order_status" data-hook><%= "#{t(:status)}: #{t("order_state.#{@order.extended_state}")}" %></h5>
+    <% if @order.completed? %>
+		<br />
+      <h5 id="shipment_status"><%= "#{t(:shipment)}: #{t("shipment_states.#{@order.shipment_state}")}" %></h5>
+    <% end %>
+	<br class="clear" />
+	<div style="margin-left:10px;">Order Date: <%= @order.completed_at.strftime("%d/%M/%y %I:%M%p") %></div>
+    <br class="clear" /><p></p>
+	<%= button_link_to(I18n.t("packaging_slip.print"), "/admin/invoice/#{@order.number}/packaging_slip" , :target => "_blank", :style => "margin-left:10px;") %>
+	<br class="clear" /><p></p>
+	
+	<p style="margin-left:10px;">Please print the packaging slip, check that the content of the package is correct, and put the packaging slip inside the package.</p>
+
+
+	<% if @order.gift %>
+		<%= button_link_to("Preview Gift Card", "#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf?token=#{@order.gift.token}", :target => "_blank", :style => "margin-left:10px;") %>
+		<%= button_link_to("Print Gift Card", "javascript:showPrintDialog('', '#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf?token=#{@order.gift.token}', 'pdf', 'virtual');") %>
+	<!--	<%= button_link_to("Print Gift Card (HTML)", "javascript:showPrintDialog('', '#{admin_order_gift_print_card_url(@order, @order.gift)}.html?token=#{@order.gift.token}', 'html', 'virtual');") %> -->
+
+
+	<br class="clear" /><p></p>
+	
+	<p  style="margin-left:10px;">Please print gift message on ReserveBar gift card stock. Ensure paper is loaded correctly with the appropriate side facing up. Please insert into outer shipper as the last step prior to sealing the package, taking additional care not to fold, crease or rip the card as we want to ensure the gift recipient sees it first prior to retrieving  the bottle from outer shipper.</p>
+	<% end %>
+
+  </div>
+  <br class="clear" />
+
+<% end %>
+
+<div data-hook="admin_order_show_addresses">
+  <% if @order.ship_address %>
+    <div class='adr'>
+      <h4><%= t(:ship_address) %></h4>
+      <%= render :partial => 'spree/admin/shared/address', :locals => { :address => @order.ship_address } %>
+    </div>
+    <% end %>
+  <hr />
+</div>
+
+<div data-hook="admin_order_show_details">
+  <table class="index" data-hook="order_details">
+  <tbody id="line-items" data-hook>
+    <tr data-hook="order_details_line_items_headers">
+      <th><%= t(:item_description) %></th>
+      <th class="qty"><%= t(:qty) %></th>
+      <th class="size"><%= t(:size) %></th>
+      <th class="gift_packaging"><span><%= t(:gift_packaging) %></span></th>
+    </tr>
+
+    <% @order.line_items.each do |item| %>
+      <tr data-hook="order_details_line_item_row">
+        <td width="400"><%= item.variant.product.name %> <%= "(" + variant_options(item.variant) + ")" unless item.variant .option_values.empty? %></td>
+        <td class="qty"><%= item.quantity %></td>
+        <td class="size"><%= item.variant.bottle_size %></td>
+		<td class="gift_packaging"><%= item.gift_package ? item.gift_package.title : "None" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+
+<div>
+<table class="index">
+  <tr data-hook="admin_shipments_index_headers">
+    <th><%= t(:shipment_number) %></th>
+    <th><%= t(:shipping_method) %></th>
+    <th><%= t(:tracking) %></th>
+    <th><%= t(:status) %></th>
+    <th><%= "#{t('spree.date')}/#{t('spree.time')}" %></th>
+    <th data-hook="admin_shipments_index_header_actions">
+      <%= t(:action) %>
+    </th>
+  </tr>
+  <% @order.shipments.each do |shipment| %>
+    <tr id="<%= dom_id shipment %>" data-hook="admin_shipments_index_rows">
+      <td><%= shipment.number %></td>
+      <td><%= shipment.shipping_method.name if shipment.shipping_method %></td>
+      <td><%= shipment.tracking %></td>
+      <td><%= t(shipment.state.to_sym, :scope => :state_names, :default => shipment.state.to_s.humanize) %></td>
+      <td><%= shipment.shipped_at.to_s(:date_time24) if shipment.shipped_at %></td>
+      <td class="actions" data-hook="admin_shipments_index_row_actions">
+		<% if shipment.shipment_detail.nil? %>
+			<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post %>
+		<% else %>
+			<%= link_to_with_icon 'fedex-icon', "Print FedEx Label", "javascript:showPrintDialog('#{shipment.number}', '#{admin_order_shipment_shipment_detail_print_label_url(@order, shipment, shipment.shipment_detail)}?token=#{shipment.shipment_detail.token}', 'raw', 'zebra');" %>
+		<% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+</div>
+<div>
+Special Shipping Instructions: <%=h @order.special_instructions %>
+</div>
+<%= render :partial => 'spree/admin/hooks/jzebra_dialog' %>

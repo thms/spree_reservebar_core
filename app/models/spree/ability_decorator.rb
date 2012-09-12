@@ -51,7 +51,7 @@ class Spree::AbilityDecorator
 
 	  # enable access to Gift Message for non-logged 
 	  can :print_card, Spree::Gift do |gift, token|
-	    gift.token && token == gift.token
+	    (gift.token && token == gift.token)
 	  end
 
 

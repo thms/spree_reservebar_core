@@ -20,11 +20,19 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       weight = shipment.line_items.inject(0) do |weight, line_item|
         weight + (line_item.variant.weight ? (line_item.quantity * line_item.variant.weight * multiplier) : Spree::ActiveShipping::Config[:default_weight])
       end
-      package = ActiveMerchant::Shipping::Package.new(weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
+      # add the gift packaging weight - if any
+      gift_packaging_weight = shipment.line_items.inject(0) do |gift_packaging_weight, line_item|
+        gift_packaging_weight + (line_item.gift_package ? (line_item.quantity * line_item.gift_package.weight * multiplier) : 0.0)
+      end
+      # Caclulate weight of packaging
+      package_weight = Spree::Calculator::ActiveShipping::PackageWeight.for(order)
+      
+      package = ActiveMerchant::Shipping::Package.new(weight + gift_packaging_weight + package_weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
+      
       # make request to fedex
       shipper = ActiveMerchant::Shipping::Location.new(
           :name           => retailer.physical_address.name, 
-          :company_name   => retailer.name,
+          :company_name   => "ReserveBar", ##retailer.name,
           :country        => retailer.physical_address.country.iso, 
           :state          => retailer.physical_address.state.abbr, 
           :city           => retailer.physical_address.city, 
@@ -53,7 +61,8 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       end
       fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
       response = fedex.ship(shipper, recipient, package, 
-          :payor_account_number => retailer.shipping_config[:account], 
+          :payor_account_number => Spree::ActiveShipping::Config[:payor_account_number], # this uses resservebar.com's account number for third party billing
+          :payment_type => Spree::ActiveShipping::Config[:payment_type],
           :shipper_email => retailer.email, 
           :recipient_email => recipient_email, 
           :alcohol => true, 

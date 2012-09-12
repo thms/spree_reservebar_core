@@ -7,4 +7,10 @@ Spree::Variant.class_eval do
     self.option_values.sort { |ov1, ov2| ov1.option_type.position <=> ov2.option_type.position }.map { |ov| "#{ov.option_type.presentation}: #{ov.presentation}" }.to_sentence({ :words_connector => ", ", :two_words_connector => ", " })
   end
   
+  
+  # TODO: This is a stub, make it show the actual bottle size or 'n.a.'
+  def bottle_size
+    "750ml"
+  end
+  
 end

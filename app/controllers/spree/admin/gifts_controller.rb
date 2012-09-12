@@ -11,7 +11,7 @@ class Spree::Admin::GiftsController  < Spree::Admin::ResourceController
     load_gift
     authorize! :print_card, @gift, params[:token]
     respond_to do |format|
-      format.html {respond_with @gift,  :template => "spree/admin/gifts/gift_card.pdf.erb", :layout => false}
+      format.html {respond_with @gift,  :template => "spree/admin/gifts/gift_card.html.erb", :layout => false}
       format.pdf {render :pdf => "gift_card", :template => "spree/admin/gifts/gift_card.pdf.erb", :layout => false, :orientation => 'landscape', :page_height => '152', :page_width => '102'  }
     end
   end
@@ -23,3 +23,5 @@ class Spree::Admin::GiftsController  < Spree::Admin::ResourceController
   end
   
 end
+
+

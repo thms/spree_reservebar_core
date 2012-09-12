@@ -37,6 +37,20 @@ Spree::Order.class_eval do
 		
 	end
 	
+	# Pseudo states that embedd special logic for reservebar.com
+	def extended_state
+	  if self.state == 'complete'
+  	  if !self.accepted_at
+  	    'submitted'
+      elsif self.accepted_at && self.shipment_state != 'shipped'
+        'accepted'
+      elsif self.shipped?
+        'shipped'
+      end
+    else
+      self.state
+    end
+  end
   
 	
 	# Override the address used for calculating taxes.
@@ -87,8 +101,7 @@ Spree::Order.class_eval do
 		gift.present?
 	end
 	
-	# get all shipping categories for an order
-	# this is based on what
+	# get all shipping categories for an order, used to find a retailer that can fulfil this order.
 	def shipping_categories
 	  self.line_items.collect {|l| l.product.shipping_category_id}.uniq
   end
@@ -107,5 +120,14 @@ Spree::Order.class_eval do
     product_cost = (self.line_items.collect {|line_item| line_item.variant.product_costs.where(:retailer_id => self.retailer_id).first.cost_price * line_item.quantity }).sum
     self.tax_total + shipping + product_cost
   end
-
+  
+  
+  # Returns the number of bottles in the order, so we can limit 
+  # Cache counts?
+  def number_of_bottles
+    bottles = self.line_items.inject(0) {|bottles, line_item| bottles + line_item.quantity}
+  end
+  
+  
+  
 end

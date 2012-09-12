@@ -1,12 +1,23 @@
 Spree::Admin::OrdersController.class_eval do
 
 	before_filter :load_retailer
-	after_filter :sync_unread, :only => [:show]
+	after_filter :sync_unread, :only => [:show, :summary]
 	
 #	skip_before_filter :authorize_admin, :only => :gift_message
   
 	# Allow export of orders via CSV
   respond_to :csv, :only => :index
+  
+  def show
+    respond_with(@order) do |format|
+      if current_user.has_role?("admin")
+        format.html {render}
+      else
+        format.html {render :action => :summary}
+      end
+    end
+  end
+  
   
 	def index
 	  params[:search] ||= {}
@@ -62,6 +73,7 @@ Spree::Admin::OrdersController.class_eval do
     redirect_to "/admin/orders"
   end
   
+    
   def accept
     load_order
     if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
@@ -92,12 +104,19 @@ Spree::Admin::OrdersController.class_eval do
 		end
 	end
 
-	def giftor_shipped_email
-		load_order
-		respond_with(@order) do |format|
-			format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
-		end
-	end
+  # used for testing only
+  def giftor_shipped_email
+    load_order
+    respond_with(@order) do |format|
+      format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
+    end
+  end
+  
+  # Retailer view of order, build up separately here and potentially fold into the show with a different render statement
+  def summary
+    
+  end
+
 
 	private
 
