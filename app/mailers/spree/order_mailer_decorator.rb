@@ -1,4 +1,6 @@
 Spree::OrderMailer.class_eval do
+  default :from => "ReserveBar Orders <no-reply@reservebar.com>"
+  
   # sent to giftor
   def confirm_email(order, resend = false)
     @order = order
@@ -42,7 +44,7 @@ Spree::OrderMailer.class_eval do
     @retailer = @order.retailer
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "ReserveBar - #{t('order_mailer.accepted_notification.subject')} ##{order.number}"
-    mail(:to => "admin@reservebar.com", :subject => subject)
+    mail(:to => "management@reservebar.com", :subject => subject)
   end
   
   # send email to reservebar.com with all orders that have not been accepted yet
