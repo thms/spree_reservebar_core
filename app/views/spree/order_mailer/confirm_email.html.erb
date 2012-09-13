@@ -31,8 +31,7 @@
 		<td valign="top" align="left">
 			<img width="277" height="57" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/logo.jpg"></td>
 		<td valign="top" align="left">&nbsp;</td>
-		<td width="254" valign="top" height="57" align="right" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; color:#593D2B"><a style=" color:#593D2B; list-style:none; text-decoration:none" target="_blank" href="http://<%= Spree::Config[:site_url] %>" wrc-processed="true">
-			My Account</a><span style="padding-right: 16px; width: 16px; height: 16px;" class="wrc0" onmouseover=" var self = this; showTimer = window.setTimeout(function(){WRCShowContent({'rating':{'value':-1,'weight':-1},'flags':{},'single':true,'ttl':7200,'expireTime':'20120812141008'}, self.className)},600);" onmouseout="cancel = false; window.setTimeout(WRCHideContent, 1000); clearTimeout(showTimer);"></span></td>
+		<td width="254" valign="top" height="57" align="right" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; color:#593D2B"><a style=" color:#593D2B; list-style:none; text-decoration:none" target="_blank" href="http://<%= Spree::Config[:site_url] %>/account">My Account</a></td>
 		<td width="54" valign="top" height="57" align="left"><br _moz_dirty="" type="_moz"></td>
 	</tr>
 	<tr>
@@ -96,7 +95,7 @@ you have any questions, please visit our FAQ page on our site.<br>
 		    <td width="482" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"><table width="100%" height="9">
 		      <tbody><tr>
 		        <td width="149" style="font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:bold; text-align:left">Your E-mail Address:</td>
-		        <td width="345" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"> <%= @order.user.email %> </td>
+		        <td width="345" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"> <%= @order.email %> </td>
 	          </tr>
 	        </tbody></table></td>
 		    <td width="18px"><br _moz_dirty="" type="_moz"></td>

@@ -1,11 +1,27 @@
 Spree::OrderMailer.class_eval do
+  # sent to giftor
   def confirm_email(order, resend = false)
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : '')
     subject += "Reservebar - #{t('order_mailer.confirm_email.subject')}"
     mail(:to => order.email, :reply_to => "support@reservebar.com", :subject => subject)
   end
-  
+
+  def giftor_shipped_email(order, resend=false)
+    @order = order
+    subject = (resend ? "[#{t(:resend).upcase}] " : "")
+    subject += "Reservebar - #{t('order_mailer.giftor_shipped_email.subject')}"
+    mail(:to => order.email, :reply_to => "support@reservebar.com", :subject => subject)
+  end
+
+  def giftor_delivered_email(order, resend=false)
+    @order = order
+    subject = (resend ? "[#{t(:resend).upcase}] " : "")
+    subject += "Reservebar - #{t('order_mailer.giftor_delivered_email.subject')}"
+    mail(:to => order.email, :reply_to => "support@reservebar.com", :cc => "management@reservebar.com", :subject => subject)
+  end
+
+  # sent to giftee
   def giftee_notify_email(order, resend=false)
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
@@ -17,27 +33,6 @@ Spree::OrderMailer.class_eval do
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "Reservebar - #{t('order_mailer.giftee_shipped_email.subject')}"
-    mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :subject => subject)
-  end
-
-  def giftor_shipped_email(order, resend=false)
-    @order = order
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "Reservebar - #{t('order_mailer.giftor_shipped_email.subject')}"
-    mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :subject => subject)
-  end
-  
-  def gift_shipped_email(order, resend=false)
-    @order = order
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "#{Spree::Config[:site_name]} #{t('order_mailer.gift_shipped_email.subject')}"
-    mail(:to => order.gift.email, :subject => subject)
-  end
-  
-  def giftor_shipped_email(order, resend=false)
-    @order = order
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "ReserveBar - #{t('order_mailer.giftor_shipped_email.subject')}"
     mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :subject => subject)
   end
   
