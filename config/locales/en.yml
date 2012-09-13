@@ -24,7 +24,7 @@ en:
     giftee_notify_email:
         subject:  "Gift Order Notification"
     giftee_shipped_email:
-        subject:  "Gift Shipped Notification"
+        subject:  "Your Gift Has Shipped From ReserveBar"
     giftor_shipped_email:
         subject:  "Your order with ReserveBar.com has shipped"
     accepted_notification:
