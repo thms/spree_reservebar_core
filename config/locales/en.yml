@@ -29,6 +29,8 @@ en:
         subject:  "You Have A Gift!"
     giftee_shipped_email:
         subject:  "Your Gift Has Shipped From ReserveBar"
+    retailer_submitted_email:
+        subject: "New Order Submitted"
     accepted_notification:
         subject: "Order Accepted Notification"
   is_business: "This is a Business Address"

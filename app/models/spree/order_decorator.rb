@@ -33,6 +33,7 @@ Spree::Order.class_eval do
 		# we had called order.finalize! here, which was then executed twice....
 		after_transition :to => 'complete' do |order, transition|
 			order.gift_notification if order.is_gift?
+			Spree::OrderMailer.retailer_submitted_email(order).deliver if order.retailer
 		end
 		
 	end

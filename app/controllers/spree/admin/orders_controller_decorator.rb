@@ -118,6 +118,13 @@ Spree::Admin::OrdersController.class_eval do
       format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
     end
   end
+
+  def retailer_submitted_email
+    load_order
+    respond_with(@order) do |format|
+      format.html { render :template => "spree/order_mailer/retailer_submitted_email.html.erb", :layout => false }
+    end
+  end
   
   # Retailer view of order, build up separately here and potentially fold into the show with a different render statement
   def summary
