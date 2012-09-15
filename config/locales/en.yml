@@ -10,6 +10,7 @@ en:
   new_retailer: "New Retailer"
   content: Content
   order_cancel: Cancel Order
+  ship_address: Shipping Address
   gift:
     title: Recipient information
     recipient: Recipient

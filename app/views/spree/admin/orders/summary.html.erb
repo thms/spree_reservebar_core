@@ -28,11 +28,7 @@
 
 
 	<% if @order.gift %>
-		<%= button_link_to("Preview Gift Card", "#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf?token=#{@order.gift.token}", :target => "_blank", :style => "margin-left:10px;") %>
-		<%= button_link_to("Print Gift Card", "javascript:showPrintDialog('', '#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf?token=#{@order.gift.token}', 'pdf', 'virtual');") %>
-	<!--	<%= button_link_to("Print Gift Card (HTML)", "javascript:showPrintDialog('', '#{admin_order_gift_print_card_url(@order, @order.gift)}.html?token=#{@order.gift.token}', 'html', 'virtual');") %> -->
-
-
+		<%= button_link_to("Print Gift Card", "#{admin_order_gift_print_card_url(@order, @order.gift)}.pdf?token=#{@order.gift.token}", :target => "_blank", :style => "margin-left:10px;") %>
 	<br class="clear" /><p></p>
 	
 	<p  style="margin-left:10px;">Please print gift message on ReserveBar gift card stock. Ensure paper is loaded correctly with the appropriate side facing up. Please insert into outer shipper as the last step prior to sealing the package, taking additional care not to fold, crease or rip the card as we want to ensure the gift recipient sees it first prior to retrieving  the bottle from outer shipper.</p>
@@ -48,6 +44,7 @@
     <div class='adr'>
       <h4><%= t(:ship_address) %></h4>
       <%= render :partial => 'spree/admin/shared/address', :locals => { :address => @order.ship_address } %>
+	  <%= @order.ship_address.is_business ? "This is a business address." : "This is a residential address." %>
     </div>
     <% end %>
   <hr />
@@ -96,10 +93,12 @@
       <td><%= t(shipment.state.to_sym, :scope => :state_names, :default => shipment.state.to_s.humanize) %></td>
       <td><%= shipment.shipped_at.to_s(:date_time24) if shipment.shipped_at %></td>
       <td class="actions" data-hook="admin_shipments_index_row_actions">
-		<% if shipment.shipment_detail.nil? %>
-			<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post %>
-		<% else %>
-			<%= link_to_with_icon 'fedex-icon', "Print FedEx Label", "javascript:showPrintDialog('#{shipment.number}', '#{admin_order_shipment_shipment_detail_print_label_url(@order, shipment, shipment.shipment_detail)}?token=#{shipment.shipment_detail.token}', 'raw', 'zebra');" %>
+		<% unless @order.accepted_at.blank? %>
+			<% if shipment.shipment_detail.nil? %>
+				<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post %>
+			<% else %>
+				<%= link_to_with_icon 'fedex-icon', "Print FedEx Label", "javascript:showPrintDialog('#{shipment.number}', '#{admin_order_shipment_shipment_detail_print_label_url(@order, shipment, shipment.shipment_detail)}?token=#{shipment.shipment_detail.token}', 'raw', 'zebra');" %>
+			<% end %>
 		<% end %>
       </td>
     </tr>
