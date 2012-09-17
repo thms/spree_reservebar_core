@@ -1,4 +1,4 @@
 <% if shipping_method.name.downcase.include? "fedex" %>
-	<%= link_to_with_icon 'fedex-icon', "Print FedEx Test Label", "javascript:showPrintDialog('Test', '#{admin_shipping_method_print_test_label_url(shipping_method)}');" %>
+	<%= link_to_with_icon 'fedex-icon', "Print FedEx Test Label", "javascript:showPrintDialog('Test', '#{admin_shipping_method_print_test_label_url(shipping_method)}', 'raw', 'zebra');" %>
 <% end %>
 

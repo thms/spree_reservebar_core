@@ -25,7 +25,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         gift_packaging_weight + (line_item.gift_package ? (line_item.quantity * line_item.gift_package.weight * multiplier) : 0.0)
       end
       # Caclulate weight of packaging
-      package_weight = Spree::Calculator::ActiveShipping::PackageWeight.for(order)
+      package_weight = Spree::Calculator::ActiveShipping::PackageWeight.for(shipment.order)
       
       package = ActiveMerchant::Shipping::Package.new(weight + gift_packaging_weight + package_weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
       

@@ -23,21 +23,7 @@ Spree::Admin::OrdersController.class_eval do
 	  params[:search] ||= {}
 	  params[:search][:completed_at_is_not_null] ||= '1' if Spree::Config[:show_only_complete_orders_by_default]
 	  @show_only_completed = params[:search][:completed_at_is_not_null].present?
-	  params[:search][:meta_sort] ||= @show_only_completed ? 'completed_at.desc' : 'created_at.desc'  
-	  
-#	  @show_non_accepted = params[:search][:accepted_at_is_null].present?
-#	  if @show_non_accepted
-#	  	params[:search][:updated_at_less_than] = (Time.now - 6.hours).to_s
-#	  end
-	  
-	  @retailer_filter = params[:search][:retailers_id_equals].present?
-	  if @retailer_filter
-	  	session[:current_retailer_id] = params[:search][:retailers_id_equals]
-	  	@current_retailer = Spree::Retailer.find(session[:current_retailer_id])
-	  else
-	  	session[:current_retailer_id] = nil
-	  	@current_retailer = nil
-	  end
+	  params[:search][:meta_sort] ||= @show_only_completed ? 'completed_at.desc' : 'created_at.desc'
 
 	  @search = Spree::Order.metasearch(params[:search])
 
@@ -55,7 +41,7 @@ Spree::Admin::OrdersController.class_eval do
 	  end
 		
 		if @current_retailer
-			@orders = @current_retailer.orders.metasearch(params[:search].delete_if {|key, value| key == "retailers_id_equals" }).includes([:user, :shipments, :payments]).page(params[:page]).per(Spree::Config[:orders_per_page])
+			@orders = @current_retailer.orders.metasearch(params[:search]).includes([:user, :shipments, :payments]).page(params[:page]).per(Spree::Config[:orders_per_page])
 		else
 		  @orders = Spree::Order.metasearch(params[:search]).includes([:user, :shipments, :payments]).page(params[:page]).per(Spree::Config[:orders_per_page])
 		end
@@ -83,46 +69,11 @@ Spree::Admin::OrdersController.class_eval do
     redirect_to admin_order_url(@order)
   end
 
-	def confirm_email
-		load_order
-		respond_with(@order) do |format|
-			format.html { render :template => "spree/order_mailer/confirm_email.html.erb", :layout => false }
-		end
-	end
-
-  def giftor_delivered_email
-    load_order
-    respond_with(@order) do |format|
-      format.html { render :template => "spree/order_mailer/giftor_delivered_email.html.erb", :layout => false }
-    end
-  end
-
-	def giftee_notify_email
-		load_order
-		respond_with(@order) do |format|
-			format.html { render :template => "spree/order_mailer/giftee_notify_email.html.erb", :layout => false }
-		end
-	end
-
-	def giftee_shipped_email
-		load_order
-		respond_with(@order) do |format|
-			format.html { render :template => "spree/order_mailer/giftee_shipped_email.html.erb", :layout => false }
-		end
-	end
-
   # used for testing only
   def giftor_shipped_email
     load_order
     respond_with(@order) do |format|
       format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
-    end
-  end
-
-  def retailer_submitted_email
-    load_order
-    respond_with(@order) do |format|
-      format.html { render :template => "spree/order_mailer/retailer_submitted_email.html.erb", :layout => false }
     end
   end
   
@@ -136,11 +87,9 @@ Spree::Admin::OrdersController.class_eval do
 
 	def load_retailer
     if current_user.has_role?("admin")
-#    	if session[:current_retailer_id]
-#    		@current_retailer = Spree::Retailer.find(session[:current_retailer_id])
-#    	else
-#    		@current_retailer = nil
-#    	end
+    	if session[:current_retailer_id]
+    		@current_retailer = Spree::Retailer.find(session[:current_retailer_id])
+    	end
     elsif current_user.has_role?("retailer")
 		  @current_retailer = current_user.retailer
     end
