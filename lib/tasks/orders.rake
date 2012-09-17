@@ -5,6 +5,13 @@ namespace :admin do
     task :not_accepted_notification => :environment do
       Spree::OrderMailer.not_accepted_notification(6).deliver
     end
+    
+    desc "Regular status email to management - indicates if any orders are not progressing as needed"
+    task :regular_reminder_email => :environment do
+      Spree::Retailer.active.each do |retailer|
+      	Spree::OrderMailer.regular_reminder_email(retailer).deliver
+      end
+    end
 
   end
 end

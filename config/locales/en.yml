@@ -34,6 +34,8 @@ en:
         subject: "New Order Submitted"
     accepted_notification:
         subject: "Order Accepted Notification"
+    regular_reminder_email:
+        subject: "ReserveBar orders status"
   retailer_mailer:
     regular_reminder_email:
         subject: "ReserveBar orders status"

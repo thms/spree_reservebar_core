@@ -76,6 +76,14 @@ Spree::Admin::OrdersController.class_eval do
       format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
     end
   end
+
+  def regular_reminder_email
+    @retailers = Spree::Retailer.active
+    
+    respond_to do |format|
+      format.html { render :template => "spree/order_mailer/regular_reminder_email.html.erb", :layout => false }
+    end
+  end
   
   # Retailer view of order, build up separately here and potentially fold into the show with a different render statement
   def summary

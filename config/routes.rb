@@ -33,6 +33,9 @@ Spree::Core::Engine.routes.prepend do
       resources :gifts do
         get :print_card
       end
+      collection do
+      	get :regular_reminder_email
+      end
     end
 
     # Add a route to print a test label for the shipping methods
