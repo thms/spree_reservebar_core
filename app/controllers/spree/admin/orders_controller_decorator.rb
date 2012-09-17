@@ -96,7 +96,7 @@ Spree::Admin::OrdersController.class_eval do
   end
 
   def sync_unread
-  	@order.update_attribute(:unread, false) if @order.unread && (@order.retailer && @order.retailer == @current_retailer)
+  	@order.update_attributes(:unread => false, :viewed_at => Time.now) if @order.unread && (@order.retailer && @order.retailer == @current_retailer)
   end
   
 

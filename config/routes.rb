@@ -9,6 +9,7 @@ Spree::Core::Engine.routes.prepend do
       get :suspend
       put :update_shipping
       resources :product_costs
+      get :regular_reminder_email
     end
 
     

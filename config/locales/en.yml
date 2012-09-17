@@ -34,6 +34,9 @@ en:
         subject: "New Order Submitted"
     accepted_notification:
         subject: "Order Accepted Notification"
+  retailer_mailer:
+    regular_reminder_email:
+        subject: "ReserveBar orders status"
   is_business: "This is a Business Address"
   returning_member: Returning Member
   login_as_returning: "Login as returning member"

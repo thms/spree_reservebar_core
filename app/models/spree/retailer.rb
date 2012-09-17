@@ -30,6 +30,18 @@ module Spree
         transition :from => ['new', 'active'], :to => 'suspended'
       end
     end
+    
+    def not_viewed_over_3_hours_since_submitted
+    	orders.where(["spree_orders.unread = ? and spree_orders.completed_at <= ? and spree_orders.state = ?", 1, Time.now - 3.hours, "complete"]).order("spree_orders.completed_at asc")
+    end
+    
+    def not_accepted_over_12_hours_since_viewed
+    	orders.where(["spree_orders.viewed_at is not null and spree_orders.viewed_at <= ? and spree_orders.accepted_at is ?", Time.now - 12.hours, nil]).order("spree_orders.viewed_at asc")
+    end
+    
+    def not_ready_shipping_over_6_hours_since_accepted
+    	orders.where(["spree_orders.accepted_at is not null and spree_orders.accepted_at <= ? and spree_orders.shipment_state = ?", Time.now - 6.hours, "pending"]).order("spree_orders.accepted_at asc")
+    end
   
     # get the fedex credentials
     def shipping_config
