@@ -46,20 +46,6 @@ Spree::OrderMailer.class_eval do
     mail(:to => order.retailer.email, :reply_to => "orders@reservebar.com", :cc => "management@reservebar.com", :subject => subject)
   end
   
-  def gift_shipped_email(order, resend=false)
-    @order = order
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "#{Spree::Config[:site_name]} #{t('order_mailer.gift_shipped_email.subject')}"
-    mail(:to => order.gift.email, :subject => subject)
-  end
-  
-  def giftor_shipped_email(order, resend=false)
-    @order = order
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "ReserveBar - #{t('order_mailer.giftor_shipped_email.subject')}"
-    mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :subject => subject)
-  end
-  
   # send email to reservebar.com that retailer has accepted an order
   def accepted_notification(order, resend = false)
     @order = order
