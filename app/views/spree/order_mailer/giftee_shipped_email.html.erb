@@ -45,7 +45,7 @@
 		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute"><p>Dear <%= @order.gift.try(:first_name) %>:</p>
 		      <p>Congratulations, someone has sent you a gift through ReserveBar.com. Your giftor gave us your email as a way for us to inform you of your incoming gift and to allow you to track and manage your gift. Please be assured that we will not keep or sell your email address. We will purge our systems of your email address as soon as we have confirmation your gift has been received.</p>
 		      <p>We previously informed you of the gift. This notification is to provide you with the FedEx Tracking Number:</p>
-		      <p>FedEx Tracking Number: [insert tracking number {links to the FedEx tracking detail page}]. </p>
+		      <p>FedEx Tracking Number: <%= @order.shipment.try(:tracking) %> </p>
 		      <p>Please review your address below for accuracy and be aware that your gift will require an adult signature upon delivery by FedEx. If the below address will not have an adult available to sign for the package, please contact FedEx.</p>
 		      <p>Or you may contact us immediately at <a href="mailto:support@reservebar.com">support@reservebar.com</a>. Please reference the Order# given below when providing us with the new address.  We will make the appropriate changes with FedEx. We strongly recommend providing an office or business address to ensure your gift is delivered.</p>
 		      <p>Please visit <a href="http://www.reservebar.com" target="_blank">www.ReserveBar.com</a> to learn about us and to see how we can provide exceptional service and quality for all your gifting needs.</p>
