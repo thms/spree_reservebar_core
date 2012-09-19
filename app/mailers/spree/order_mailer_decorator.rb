@@ -46,6 +46,14 @@ Spree::OrderMailer.class_eval do
     mail(:to => order.retailer.email, :reply_to => "orders@reservebar.com", :cc => "management@reservebar.com", :subject => subject)
   end
   
+  # sent to retailer
+  def retailer_submitted_email(order, resend=false)
+    @order = order
+    subject = (resend ? "[#{t(:resend).upcase}] " : "")
+    subject += "Reservebar - #{t('order_mailer.retailer_submitted_email.subject')}"
+    mail(:to => order.retailer.email, :reply_to => "orders@reservebar.com", :cc => "management@reservebar.com", :subject => subject)
+  end
+  
   # send email to reservebar.com that retailer has accepted an order
   def accepted_notification(order, resend = false)
     @order = order
@@ -61,7 +69,15 @@ Spree::OrderMailer.class_eval do
     @orders = Spree::Order.not_accepted_hours(hours).order("spree_orders.updated_at desc")
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "ReserveBar - Orders that have not been accepted more than #{hours} hours"
-    mail(:to => "admin@reservebar.com", :subject => subject)
+    mail(:to => "management@reservebar.com", :subject => subject)
+  end
+
+  # Regular status email to management - indicates if any orders are not progressing as needed
+  def regular_reminder_email(resend = false)
+    @retailers = Spree::Retailer.active
+    subject = (resend ? "[#{t(:resend).upcase}] " : "")
+    subject += "ReserveBar - #{t('order_mailer.regular_reminder_email.subject')}"
+    mail(:to => "management@reservebar.com", :reply_to => "orders@reservebar.com", :subject => subject)
   end
 
   # Regular status email to management - indicates if any orders are not progressing as needed
