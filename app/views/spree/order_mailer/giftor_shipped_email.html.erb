@@ -9,23 +9,22 @@
 	</tr>
 	<tr>
 		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="/assets/mailer/blank.jpg"></td>
+		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">
-		  <img width="254" height="1" alt="" src="/assets/mailer/blank.jpg"></td>
+		  <img width="254" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
 		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="/assets/mailer/blank.jpg"></td>
+		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
 	</tr>
 	<tr>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">
-			<img width="277" height="57" alt="" src="/assets/mailer/logo.jpg"></td>
+			<img width="277" height="57" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/logo.jpg"></td>
 		<td valign="top" align="left">&nbsp;</td>
-		<td width="254" valign="top" height="57" align="right" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; color:#593D2B"><a style=" color:#593D2B; list-style:none; text-decoration:none" target="_blank" href="" wrc-processed="true">
-			My Account</a><span style="padding-right: 16px; width: 16px; height: 16px;" class="wrc0" onmouseover=" var self = this; showTimer = window.setTimeout(function(){WRCShowContent({'rating':{'value':-1,'weight':-1},'flags':{},'single':true,'ttl':7200,'expireTime':'20120812141008'}, self.className)},600);" onmouseout="cancel = false; window.setTimeout(WRCHideContent, 1000); clearTimeout(showTimer);"></span></td>
+		<td width="254" valign="top" height="57" align="right" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; color:#593D2B"><a style=" color:#593D2B; list-style:none; text-decoration:none" target="_blank" href="http://<%= Spree::Config[:site_url] %>/account">My Account</a></td>
 		<td width="54" valign="top" height="57" align="left"><br _moz_dirty="" type="_moz"></td>
 	</tr>
 	<tr>
@@ -44,9 +43,9 @@
 		<td valign="top" colspan="4"><table width="100%">
 		  <tbody><tr>
 		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute"><p>Dear <%= @order.bill_address.firstname %>:</p>
-		  <p>RE: Order Number: <a href="/orders/<%= @order.number %>"><%= @order.number %></a></p>
+		  <p>RE: Order Number: <a href="http://<%= Spree::Config[:site_url] %>/orders/<%= @order.number %>"><%= @order.number %></a></p>
 		  <p>Thank you for submitting your order with ReserveBar.com. Your order has shipped.</p>
-		  <p>Here is your FedEx Tracking Number: [insert tracking number {links to the fedex tracking detail page}]</p>
+		  <p>Here is your FedEx Tracking Number: <%= @order.shipment.try(:tracking) %></p>
 		  <p>Please see below for Order Details.</p>
 		  <p>Thank you again for your order. We look forward to serving you and exceeding your expectations every time here at ReserveBar.com. If you have any questions, please visit our FAQ page on our site.<br /></p>
 		  <p>Gratefully yours,<br>
@@ -54,7 +53,7 @@
 	    Good Spirits. Delivered.</p></td>
 		    <td valign="middle" align="center">
             <!--start image-- The images can't be larger than 272 px width by 280 px height, in case there's not an image to place please leave the cell completly empty, so the text can fill that empty space -->
-	    <img width="272" height="280" alt="" src="/assets/mailer/sample.jpg"></td>
+	    <img width="272" height="280" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/sample.jpg"></td>
         	<!--end image-->
 	      </tr>
 	    </tbody></table></td>
@@ -83,7 +82,7 @@
 		    <td width="482" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"><table width="100%" height="9">
 		      <tbody><tr>
 		        <td width="149" style="font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:bold; text-align:left">Your E-mail Address:</td>
-		        <td width="345" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"> <%= @order.user.email %> </td>
+		        <td width="345" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"> <%= @order.email %> </td>
 	          </tr>
 	        </tbody></table></td>
 		    <td width="18px"><br _moz_dirty="" type="_moz"></td>

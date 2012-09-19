@@ -9,6 +9,13 @@ Spree::Order.class_eval do
 	belongs_to :gift
 	
 	accepts_nested_attributes_for :gift
+
+  scope :non_accepted_hours,
+    lambda {|n|
+      where(["spree_orders.accepted_at is ? and spree_orders.updated_at < ? and spree_orders.state = ?", nil, Time.now - n.hours, "complete"])
+    }
+  
+  search_methods :non_accepted_hours
 	
 	# Scope to find all orders that have not been accepted by retailers in a given time frame
 	scope :not_accepted_hours,
@@ -26,6 +33,7 @@ Spree::Order.class_eval do
 		# we had called order.finalize! here, which was then executed twice....
 		after_transition :to => 'complete' do |order, transition|
 			order.gift_notification if order.is_gift?
+			Spree::OrderMailer.retailer_submitted_email(order).deliver if order.retailer
 		end
 		
 	end
@@ -65,7 +73,7 @@ Spree::Order.class_eval do
   
 	
   def gift_notification
-    Spree::OrderMailer.gift_notify_email(self).deliver
+    Spree::OrderMailer.giftee_notify_email(self).deliver
   end
 	
 	def retailer

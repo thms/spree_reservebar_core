@@ -9,6 +9,7 @@ Spree::Core::Engine.routes.prepend do
       get :suspend
       put :update_shipping
       resources :product_costs
+      get :regular_reminder_email
     end
 
     
@@ -16,9 +17,11 @@ Spree::Core::Engine.routes.prepend do
       member do
       	get :accept
       	get :confirm_email
-      	get :gift_notify_email
+      	get :giftor_delivered_email
+      	get :giftee_notify_email
       	get :giftee_shipped_email
       	get :giftor_shipped_email
+      	get :retailer_submitted_email
       	get :summary
       end
       resources :shipments do
@@ -29,6 +32,9 @@ Spree::Core::Engine.routes.prepend do
       end
       resources :gifts do
         get :print_card
+      end
+      collection do
+      	get :regular_reminder_email
       end
     end
 

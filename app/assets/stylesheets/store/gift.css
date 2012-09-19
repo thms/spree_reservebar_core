@@ -11,3 +11,16 @@
   padding: 5px;
   margin-left: 15px;
 }
+#gift_form .group_fields #gfirst_name {
+	float:left;
+	margin-right:10px;
+}
+#gift_form .group_fields #glast_name {
+	float:left;
+}
+#gift_form .group_fields input {
+	width:110px;
+}
+#checkout-gift label {
+	font-weight:bold;
+}

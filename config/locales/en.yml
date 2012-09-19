@@ -12,7 +12,7 @@ en:
   order_cancel: Cancel Order
   ship_address: Shipping Address
   gift:
-    title: Recipient information
+    title: Gift Recipient Information
     recipient: Recipient
     first_name: First Name
     last_name: Last Name
@@ -22,16 +22,27 @@ en:
   order_mailer:
     confirm_email:
         subject: "Your order with ReserveBar.com"
-    gift_notify_email:
-        subject:  "Gift Order Notification"
-    giftee_shipped_email:
-        subject:  "Gift Shipped Notification"
     giftor_shipped_email:
         subject:  "Your order with ReserveBar.com has shipped"
+    giftor_delivered_email:
+        subject:  "Your Order Has Been Delivered"
+    giftee_notify_email:
+        subject:  "You Have A Gift!"
+    giftee_shipped_email:
+        subject:  "Your Gift Has Shipped From ReserveBar"
+    retailer_submitted_email:
+        subject: "New Order Submitted"
     accepted_notification:
         subject: "Order Accepted Notification"
+    regular_reminder_email:
+        subject: "ReserveBar orders status"
+  retailer_mailer:
+    regular_reminder_email:
+        subject: "ReserveBar orders status"
   is_business: "This is a Business Address"
   returning_member: Returning Member
+  login_as_returning: "Login as returning member"
+  login_prompt: "ReserveBar welcomes you back"
   new_member: New Member
   order_processed_successfully: "Your order has been been successfully submitted. You will also receive an email notification. Thank you for your purchase with ReserveBar."
   

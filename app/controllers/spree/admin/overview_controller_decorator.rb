@@ -138,8 +138,9 @@ Spree::Admin::OverviewController.class_eval do
     end
     orders.map do |o|
       qty = o.line_items.inject(0) {|sum,li| sum + li.quantity}
+      name = @current_retailer ? o.bill_address.try(:full_name) : o.email
 
-      [o.email, qty, o.total]
+      [name, qty, o.total]
     end
   end
 
@@ -152,8 +153,9 @@ Spree::Admin::OverviewController.class_eval do
     spenders = spenders.map do |o|
       orders = Spree::User.find(o[0]).orders
       qty = orders.size
+      name = @current_retailer ? orders.first.bill_address.try(:full_name) : orders.first.email
 
-      [orders.first.email, qty, o[1]]
+      [name, qty, o[1]]
 
     end
 

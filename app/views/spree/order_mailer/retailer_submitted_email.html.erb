@@ -1,0 +1,153 @@
+<table width="657" cellspacing="0" cellpadding="0" border="0" align="center" id="Table_01" _moz_dirty="">
+	<tbody><tr>
+		<td width="657" valign="top" height="15" align="left"><br /></td>
+		<td width="100%" valign="top" align="left">&nbsp;</td>
+		<td width="100%" valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left" width="18px">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td width="54" valign="top" height="15" align="left"><br /></td>
+	</tr>
+	<tr>
+		<td valign="top" align="left">
+		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">
+		  <img width="254" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
+		<td valign="top" align="left">
+		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">
+			<img width="277" height="57" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/logo.jpg"></td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td width="254" valign="top" height="57" align="right" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; color:#593D2B"><a style=" color:#593D2B; list-style:none; text-decoration:none" target="_blank" href="http://<%= Spree::Config[:site_url] %>/admin">Retailer</a> Portal</td>
+		<td width="54" valign="top" height="57" align="left"><br /></td>
+	</tr>
+	<tr>
+		<td width="657" valign="top" height="15" align="left" colspan="6" style="border-bottom:4px double #593D2B">&nbsp;</td>
+    </tr>
+	<tr>
+	  <td width="657" valign="top" height="25" align="left" colspan="6">&nbsp;</td>
+  </tr>
+	<tr>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4">New Order Submitted!</td>
+		<td valign="top" align="left">&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top" align="left"><br /></td>
+		<td valign="top" colspan="4"><table width="100%">
+		  <tbody><tr>
+		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute"><p>Dear <%= @order.retailer.name %>:</p>
+		      <p>RE: Order Number: <a href="http://<%= Spree::Config[:site_url] %>/admin/orders/<%= @order.number %>"><%= @order.number %></a></p>
+		      <p>You have a new order. Please view the order on the Order Details Page as soon as possible.</p>
+		      <p>Please immediately contact <a href="mailto:orders@reservebar.com">orders@reservebar.com</a> or call 203-968-0365 if you have any questions, problems or concerns about fulfilling this order.</p>
+		  		<p>Gratefully yours,<br>
+		    		ReserveBar.com<br>
+	    			Good Spirits. Delivered.</p>
+	    	</td>
+	      </tr>
+	    </tbody></table></td>
+		<td valign="top" align="left"><br /></td>
+	</tr>
+	<tr>
+		<td width="657" valign="top" height="26" align="left" colspan="6"><br /></td>
+	</tr>
+	<tr>
+		<td valign="top" align="left"><br /></td>
+		<td valign="top" align="center" colspan="4" style="font: 15px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#FFF; vertical-align:middle">
+        <table width="549px" cellpadding="0" border="0" align="center" style=" margin:0; padding:0px; inline-box-align:initial;">
+		  	<tbody><tr style="border:none">
+		    	<td valign="middle" height="36" style="border:4px double #593D2B;padding:2px;">
+				  	<table width="100%" cellpadding="0" border="0" style="background-color:#C13828;">
+				    <tbody><tr>
+				      <td style="color:#FFF;text-align:center;">
+				      	<%= @order.is_gift? ? "THIS ORDER IS A GIFT" : "THIS ORDER IS NOT A GIFT" %>
+				      </td>
+			        </tr>
+			      </tbody></table>
+	        </td>
+	        <td width="30"></td>
+		    	<td valign="middle" height="36" style="border:4px double #593D2B;padding:2px;">
+				  	<table width="100%" cellpadding="0" border="0" style="background-color:#C13828;">
+				    <tbody><tr>
+				      <td style="color:#FFF;text-align:center;">
+				      	<a href="http://<%= Spree::Config[:site_url] %>/admin/orders/<%= @order.number %>" style="color:#FFF;text-decoration:none;">VIEW ORDER HERE</a>
+				      </td>
+			        </tr>
+			      </tbody></table>
+	        </td>	        
+	      </tr>
+	    </tbody></table></td>
+		<td valign="top" align="left"><br /></td>
+	</tr>
+	<tr>
+	  <td valign="top" height="26" align="left"><br /></td>
+	  <td valign="top" height="26" align="left" colspan="4"><br /></td>
+	  <td valign="top" height="26" align="left"><br /></td>
+  </tr>
+	<tr>
+	  <td width="54" valign="top" height="53" align="left" rowspan="2"><br /></td>
+		<td width="549px" valign="top" height="26" align="center" colspan="4"><table width="549px" cellpadding="0" border="0" align="center" style=" margin:0; padding:0px; border:4px double #593D2B">
+		  <tbody><tr style="border:none">
+		    <td valign="middle" height="36" style="background-color:#C13828" colspan="7"><table width="100%" cellpadding="0" border="0">
+		      <tbody><tr>
+		        <td width="18"><br /></td>
+		        <td style="font: 20px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#FFF; vertical-align:middle">ORDER DETAILS</td>
+	          </tr>
+	        </tbody></table></td>
+	      </tr>
+		  <tr>
+		    <td height="12" style="border-top:4px double #593D2B" colspan="7">&nbsp;</td>
+	    </tr>
+
+		  <tr>
+		    <td width="18">&nbsp;</td>
+		    <td><table cellspacing="0" cellpadding="0" border="0" width="100%" style="font: 12px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-align:left">
+		      <tbody><tr>
+		        <td valign="top" style="font-size:14px" colspan="4"><table width="100%" align="right">
+		            <tbody><tr>
+		              <td align="left" valign="top" style="font-size: 15px; text-align:left; font-family: georgia,serif;"><strong>Order #: </strong><%= @order.number %></td>
+		              </tr>
+		            <tr style="font-family: georgia,serif;">
+		              <td width="100%" valign="top" style="font:Georgia, 'Times New Roman', Times, serif; font-size:15px; text-align:left"><strong><span _moz_dirty="" style="font-family: georgia,serif;">Order Submitted</span>: </strong><span _moz_dirty="" style="font-family: georgia,serif;"><%= @order.completed_at.in_time_zone("Eastern Time (US & Canada)").to_s(:time_with_zone) %></span></td>
+	              </tr>
+	              <tr style="font-family: georgia,serif;">
+		              <td width="100%" valign="top" height="36px" style="font:Georgia, 'Times New Roman', Times, serif; font-size:15px; text-align:left"><strong><span _moz_dirty="" style="font-family: georgia,serif;">Shipping Method</span>: </strong><span _moz_dirty="" style="font-family: georgia,serif;"><%= @order.shipping_method.name %></span></td>
+	              </tr>
+	            </tbody></table></td>
+	          </tr>
+		      <% @order.line_items.each do |item| %>
+		      <% bgcolor = cycle('#d8d8d8', '') %>
+		      <tr>
+		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= item.variant.product.name %>
+            </td>
+		        <td rowspan="2" style="background:<%= bgcolor -%>;font-size:12px;width:74pt;font-family:Georgia;text-decoration:none;font-weight:400;text-align:center;"><%= item.variant.bottle_size %>
+            </td>
+		        <td rowspan="2" style="background:<%= bgcolor -%>;font-size:12px;width:74pt;font-family:Georgia;text-decoration:none;font-weight:400;text-align:center;">Qty: <%= item.quantity %>
+            </td>
+	        </tr>
+		      <tr>
+		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= item.gift_package ? item.gift_package.title : "No Gift Packaging" %>
+            </td>
+	        </tr>
+	        <% end %>                
+		      <tr>
+		        <td height="5" colspan="3">&nbsp;</td>
+	          </tr>
+	        </tbody></table></td>
+		    <td width="18">&nbsp;</td>
+	      </tr>
+
+	        </tbody></table></td>
+		    <td rowspan="2">&nbsp;</td>
+  </tr>
+	<tr>
+	  <td valign="top" height="26" align="center" colspan="4">&nbsp;</td>
+  </tr>
+</tbody>
+</table>

@@ -101,6 +101,14 @@ module Spree
           format.json { head :ok }
         end
       end
+      
+      def regular_reminder_email
+				@retailer = Retailer.find(params[:retailer_id])
+				
+				respond_with(@retailer) do |format|
+				  format.html { render :template => "spree/retailer_mailer/regular_reminder_email.html.erb", :layout => false }
+				end
+      end
 
     	protected
 	

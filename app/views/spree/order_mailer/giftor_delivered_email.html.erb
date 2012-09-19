@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-  </head>
-  <body>
-
 <table width="657" cellspacing="0" cellpadding="0" border="0" align="center" id="Table_01" _moz_dirty="">
 	<tbody><tr>
 		<td width="657" valign="top" height="15" align="left"><br _moz_dirty="" type="_moz"></td>
@@ -42,7 +35,7 @@
   </tr>
 	<tr>
 		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4">Thanks for your order!</td>
+		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4">Your Order Has Been Delivered</td>
 		<td valign="top" align="left">&nbsp;</td>
 	</tr>
 	<tr>
@@ -50,24 +43,13 @@
 		<td valign="top" colspan="4"><table width="100%">
 		  <tbody><tr>
 		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute"><p>Dear <%= @order.bill_address.firstname %>:</p>
-		      <p>Thank you for submitting your order with ReserveBar.com. Your
- order is currently being processed. Once it is ready for shipment, you 
-will receive emails confirming your order and informing you it has 
-shipped. You will also be provided with a FedEx tracking number allowing
- you to monitor your gift on its way to your gift recipient.</p>
-		  <p>Please see below for Order Details.</p>
-		  <p>Thank you again for your order. We look forward to serving you 
-and exceeding your expectations every time here at ReserveBar.com. If 
-you have any questions, please visit our FAQ page on our site.<br>
-	      </p>
-		  <p>Gratefully yours,<br>
-		    ReserveBar.com<br>
-	    Good Spirits. Delivered.</p></td>
-		    <td valign="middle" align="center">
-            <!--start image-- The images can't be larger than 272 px width by 280 px height, in case there's not an image to place please leave the cell completly empty, so the text can fill that empty space -->
-	    <img width="272" height="280" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/sample.jpg"></td>
-        
-        	<!--end image-->
+		      <p>RE: Order Number: <a href="http://<%= Spree::Config[:site_url] %>/orders/<%= @order.number %>"><%= @order.number %></a></p>
+		      <p>This email is to notify you that your order below has been successfully delivered. You may view the delivery details with your gift’s FedEx Tracking Number: <%= @order.shipment.try(:tracking) %></p>
+		      <p>Thank you again for your order. We look forward to serving you and exceeding your expectations every time here at ReserveBar.com. If you have any questions, please visit our FAQ page on our site or contact us at support@reservebar.com.</p>
+		  		<p>Gratefully yours,<br>
+		    		ReserveBar.com<br>
+	    			Good Spirits. Delivered.</p>
+	    	</td>
 	      </tr>
 	    </tbody></table></td>
 		<td valign="top" align="left"><br _moz_dirty="" type="_moz"></td>
@@ -95,11 +77,7 @@ you have any questions, please visit our FAQ page on our site.<br>
 		    <td width="482" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"><table width="100%" height="9">
 		      <tbody><tr>
 		        <td width="149" style="font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:bold; text-align:left">Your E-mail Address:</td>
-<<<<<<< HEAD
 		        <td width="345" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"> <%= @order.email %> </td>
-=======
-		        <td width="345" style="font: 10px Georgia, 'Times New Roman', Times, serif; text-align:left"> <%= @order.user.email %> </td>
->>>>>>> upstream/master
 	          </tr>
 	        </tbody></table></td>
 		    <td width="18px"><br _moz_dirty="" type="_moz"></td>
@@ -233,10 +211,3 @@ you have any questions, please visit our FAQ page on our site.<br>
   </tr>
 </tbody>
 </table>
-
-</body>
-<<<<<<< HEAD
-</html>
-=======
-</html>
->>>>>>> upstream/master
