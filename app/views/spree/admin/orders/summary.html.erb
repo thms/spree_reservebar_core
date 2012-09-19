@@ -44,10 +44,7 @@
     <div class='adr'>
       <h4><%= t(:ship_address) %></h4>
       <%= render :partial => 'spree/admin/shared/address', :locals => { :address => @order.ship_address } %>
-<<<<<<< HEAD
-=======
 	  <%= @order.ship_address.is_business ? "This is a business address." : "This is a residential address." %>
->>>>>>> upstream/master
     </div>
     <% end %>
   <hr />
@@ -96,19 +93,12 @@
       <td><%= t(shipment.state.to_sym, :scope => :state_names, :default => shipment.state.to_s.humanize) %></td>
       <td><%= shipment.shipped_at.to_s(:date_time24) if shipment.shipped_at %></td>
       <td class="actions" data-hook="admin_shipments_index_row_actions">
-<<<<<<< HEAD
-		<% if shipment.shipment_detail.nil? %>
-			<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post %>
-		<% else %>
-			<%= link_to_with_icon 'fedex-icon', "Print FedEx Label", "javascript:showPrintDialog('#{shipment.number}', '#{admin_order_shipment_shipment_detail_print_label_url(@order, shipment, shipment.shipment_detail)}?token=#{shipment.shipment_detail.token}', 'raw', 'zebra');" %>
-=======
 		<% unless @order.accepted_at.blank? %>
 			<% if shipment.shipment_detail.nil? %>
 				<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post %>
 			<% else %>
 				<%= link_to_with_icon 'fedex-icon', "Print FedEx Label", "javascript:showPrintDialog('#{shipment.number}', '#{admin_order_shipment_shipment_detail_print_label_url(@order, shipment, shipment.shipment_detail)}?token=#{shipment.shipment_detail.token}', 'raw', 'zebra');" %>
 			<% end %>
->>>>>>> upstream/master
 		<% end %>
       </td>
     </tr>
