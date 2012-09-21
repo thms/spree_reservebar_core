@@ -4,7 +4,6 @@ module Spree
 
     class RetailerSelector
       
-      # TODO: new rules
       # Retailer in state gets picked if he can ship over retailer out of state that can also ship
       # Support convoluted messaging logic by searching combinations.
   
@@ -26,7 +25,7 @@ module Spree
           query << "ships_#{Spree::ShippingCategory.find(shipping_category_id).name.downcase.gsub(' ','_')}_to like :state"
         end
         retailers = Spree::Retailer.where(query.join(' and '),  :state => "%#{state.abbr}%")
-        # if we have more than one retailer that can ship to th state, pick the one that is located in the state, otherwise, just pick random
+        # if we have more than one retailer that can ship to the state, pick the one that is located in the state, otherwise, just pick random
         if retailers.count > 1
           begin
             retailer = retailers.select {|r| r.physical_address.state == state}.first
@@ -42,7 +41,7 @@ module Spree
         end
         
         # Now, if we do not have a retailer that can ship to the state, check if we can ship the partial order.
-        # But hit is only used for messaging to the user, retailer selection has completed.
+        # But this is only used for messaging to the user, retailer selection has completed, so we make that another class, function
         
         # Return the retailer if we have found one.
         retailer
@@ -60,6 +59,16 @@ module Spree
         Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").count > 0 ||
         Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").count > 0 ||
         Spree::Retailer.active.where("ships_other_products_to like :state", :state => "%#{state.abbr}%").count > 0
+      end
+      
+      # if we cannot ship the selected categories to the state, check what other categories (if any) we can ship there
+      def self.find_shippable_category_names(state)
+        names = []
+        names << 'Wines' if Spree::Retailer.active.where("ships_wine_to like :state", :state => "%#{state.abbr}%").count > 0
+        names << 'Spirits' if Spree::Retailer.active.where("ships_spirits_to like :state", :state => "%#{state.abbr}%").count > 0
+        names << 'Champagne' if Spree::Retailer.active.where("ships_champagne_to like :state", :state => "%#{state.abbr}%").count > 0
+        names << 'Beer' if Spree::Retailer.active.where("ships_beer_to like :state", :state => "%#{state.abbr}%").count > 0
+        names.join(', ')
       end
       
       
