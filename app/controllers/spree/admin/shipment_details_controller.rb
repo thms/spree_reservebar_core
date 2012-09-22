@@ -62,7 +62,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
       response = fedex.ship(shipper, recipient, package, 
           :payor_account_number => Spree::ActiveShipping::Config[:payor_account_number], # this uses resservebar.com's account number for third party billing
-          :payment_type => Spree::ActiveShipping::Config[:payment_type],
+          :payment_type => 'THIRD_PARTY',  
           :shipper_email => retailer.email, 
           :recipient_email => recipient_email, 
           :alcohol => true, 
