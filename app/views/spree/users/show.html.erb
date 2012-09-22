@@ -27,7 +27,7 @@
           <td><%= link_to order.number, order_url(order) %></td>
           <td><%= l order.created_at.to_date %></td>
           <td><%= t("order_state.#{order.extended_state}") %></td>
-          <td><%=  link_to order.shipments.first.tracking, "http://www.fedex.com/cgi-bin/tracking?action=track&language=english&last_action=alttrack&ascend_header=1&cntry_code=us&initial=x&mps=y&tracknumbers=#{order.shipments.first.tracking}" if order.shipments.first.tracking %></td>
+          <td><%=  link_to order.shipments.first.tracking, "http://www.fedex.com/cgi-bin/tracking?action=track&language=english&last_action=alttrack&ascend_header=1&cntry_code=us&initial=x&mps=y&tracknumbers=#{order.shipments.first.tracking}" if (order.shipments && order.shipments.first.tracking) %></td>
           <td><%= number_to_currency order.total %></td>
         </tr>
       <% end %>
