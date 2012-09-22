@@ -92,11 +92,20 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         shipment.update_attributes(:tracking => response.tracking_number, :cost => response.total_price)
       end
       flash[:notice] = "Shipment is registered with FedEx"
-      redirect_to admin_order_shipments_url(shipment.order)
+      if current_user.has_role?("admin")
+        redirect_to admin_order_shipments_url(shipment.order)
+      else
+        redirect_to admin_order_url(shipment.order)
+      end
     rescue Exception => e
       flash[:error] = e.message
       raise
-      redirect_to admin_order_shipments_url(shipment.order)
+      if current_user.has_role?("admin")
+        redirect_to admin_order_shipments_url(shipment.order)
+      else
+        redirect_to admin_order_url(shipment.order)
+      end
+      
     end
   end
   

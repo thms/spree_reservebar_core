@@ -5,6 +5,8 @@ en:
     submitted: Submitted
     accepted: Accepted
     shipped: Shipped
+    ready_for_pick_up: Ready for Pick Up
+    canceled: Cancelled
   retailers: Retailers
   listing_retailers: "Listing Retailers"
   new_retailer: "New Retailer"

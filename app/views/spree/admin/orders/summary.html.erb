@@ -2,10 +2,11 @@
 
 <div class="toolbar order-links" data-hook="admin_order_show_buttons">
 	<% if @current_retailer && @current_retailer.id == @order.retailer_id %>
+		<div style="float:left;font-size:16px;margin-right:40px;"><b>Order Status:</b> <%= t("order_state.#{@order.extended_state}") %> </div>
 		<% if @order.accepted_at.blank? %>
-			<%= button_link_to 'Accept', accept_admin_order_path(@order), :confirm => t(:are_you_sure) %>
-		<% else %>
-			<b>Accepted</b>
+			<%= button_link_to 'Accept Order', accept_admin_order_path(@order), :confirm => t(:are_you_sure) %>
+		<% elsif @order.packed_at.blank? %>
+			<%= button_link_to 'Order Complete', order_complete_admin_order_path(@order), :confirm => t(:are_you_sure) %>
 		<% end %>
 	<% end %>
 </div>
@@ -14,10 +15,6 @@
   <div id="order_tab_summary" data-hook>
     <h3 id="order_number" data-hook><%= "#{t(:order)} ##{@order.number} " %></h3>
     <h5 id="order_status" data-hook><%= "#{t(:status)}: #{t("order_state.#{@order.extended_state}")}" %></h5>
-    <% if @order.completed? %>
-		<br />
-      <h5 id="shipment_status"><%= "#{t(:shipment)}: #{t("shipment_states.#{@order.shipment_state}")}" %></h5>
-    <% end %>
 	<br class="clear" />
 	<div style="margin-left:10px;">Order Date: <%= @order.completed_at.strftime("%d/%M/%y %I:%M%p") %></div>
     <br class="clear" /><p></p>
@@ -89,7 +86,7 @@
     <tr id="<%= dom_id shipment %>" data-hook="admin_shipments_index_rows">
       <td><%= shipment.number %></td>
       <td><%= shipment.shipping_method.name if shipment.shipping_method %></td>
-      <td><%= shipment.tracking %></td>
+      <td><%= link_to shipment.tracking, "http://www.fedex.com/cgi-bin/tracking?action=track&language=english&last_action=alttrack&ascend_header=1&cntry_code=us&initial=x&mps=y&tracknumbers=#{shipment.tracking}" if shipment.tracking %></td>
       <td><%= t(shipment.state.to_sym, :scope => :state_names, :default => shipment.state.to_s.humanize) %></td>
       <td><%= shipment.shipped_at.to_s(:date_time24) if shipment.shipped_at %></td>
       <td class="actions" data-hook="admin_shipments_index_row_actions">

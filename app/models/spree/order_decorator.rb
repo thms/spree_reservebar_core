@@ -39,12 +39,16 @@ Spree::Order.class_eval do
 	end
 	
 	# Pseudo states that embedd special logic for reservebar.com
+	# uses packed_at column to allow the retailer to indicate that he pas packed the item and it is ready for pick up 
+	# we'll do state transition such that retailer hits 'ready for pick up' , which changes packed_at, and then fede scanning changes to shipped
 	def extended_state
 	  if self.state == 'complete'
   	  if !self.accepted_at
   	    'submitted'
-      elsif self.accepted_at && self.shipment_state != 'shipped'
+      elsif self.accepted_at && (self.packed_at == nil) && self.shipment_state != 'shipped'
         'accepted'
+      elsif self.packed_at && self.shipment_state != 'shipped'
+        'ready_for_pick_up'
       elsif self.shipped?
         'shipped'
       end
