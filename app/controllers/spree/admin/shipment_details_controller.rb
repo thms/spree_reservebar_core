@@ -60,7 +60,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         recipient_email = shipment.order.email
       end
       fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
-      response = fedex.ship(shipper, recipient, package, 
+      response, request_xml = fedex.ship(shipper, recipient, package, 
           :payor_account_number => Spree::ActiveShipping::Config[:payor_account_number], # this uses resservebar.com's account number for third party billing
           :payment_type => 'THIRD_PARTY',  
           :shipper_email => retailer.email, 
@@ -86,6 +86,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         shipment_detail.total_price = response.total_price
         shipment_detail.image_type = ActiveShipping::DEFAULT_IMAGE_TYPE
         shipment_detail.label_stock_type = ActiveShipping::DEFAULT_STOCK_TYPE
+        shipment_detail.request_xml = request_xml
         shipment_detail.save
       
         # update shipment cost and tracking

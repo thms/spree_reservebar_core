@@ -56,7 +56,7 @@ Spree::Admin::ShippingMethodsController.class_eval do
     Rails.logger.warn "Instantiating Fedex ..."
     
     fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
-    response = fedex.ship(shipper, recipient, package, 
+    response, request_xml = fedex.ship(shipper, recipient, package, 
         :payor_account_number => retailer.shipping_config[:account], 
         :shipper_email => "r2@example.com", 
         :recipient_email => "Minnie@example.com", 
