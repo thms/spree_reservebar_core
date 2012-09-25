@@ -24,7 +24,7 @@ module Spree
         order.shipping_categories.each do |shipping_category_id|
           query << "ships_#{Spree::ShippingCategory.find(shipping_category_id).name.downcase.gsub(' ','_')}_to like :state"
         end
-        retailers = Spree::Retailer.where(query.join(' and '),  :state => "%#{state.abbr}%")
+        retailers = Spree::Retailer.active.where(query.join(' and '),  :state => "%#{state.abbr}%")
         # if we have more than one retailer that can ship to the state, pick the one that is located in the state, otherwise, just pick random
         if retailers.count > 1
           begin
@@ -36,7 +36,7 @@ module Spree
           retailer = retailers.first
         else
           retailer = nil
-          # Should raise no retailer found error 
+          #  raise no retailer found error 
           raise Exceptions::NoRetailerCanShipFullOrderError
         end
         
