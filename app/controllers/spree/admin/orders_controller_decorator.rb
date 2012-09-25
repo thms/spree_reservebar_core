@@ -65,7 +65,18 @@ Spree::Admin::OrdersController.class_eval do
     load_order
     if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
     	@order.update_attribute(:accepted_at, Time.now)
-    	Spree::OrderMailer.accepted_notification(@order).deliver
+    	begin
+    	  @order.payments.each do |payment|
+    	    payment.payment_source.send("capture", payment)
+  	    end
+      	Spree::OrderMailer.accepted_notification(@order).deliver
+  	  rescue Spree::Core::GatewayError => error
+  	    # Handle messaging to retailer - error flash that something
+  	    flash[:error] = "Something went wrong with the payment on this order. Please hold off on shipping and contact ReserveBar."
+  	    # Handle email to reservbar that something went wrong
+  	    Spree::OrderMailer.capture_payment_error_notification(@order, error)
+  	    @order.update_attribute(:accepted_at, nil)
+	    end
     end
     redirect_to admin_order_url(@order)
   end

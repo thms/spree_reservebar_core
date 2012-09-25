@@ -72,4 +72,12 @@ Spree::OrderMailer.class_eval do
     mail(:to => "management@reservebar.com", :reply_to => "orders@reservebar.com", :subject => subject)
   end
   
+  
+  # Send email to reservebar if a payment capture fails for some reason
+  def capture_payment_error_notification(order, error)
+    @order = order
+    @error = error
+    subject = "ReserveBar: Payment Capture Failed - #{order.number}"
+    mail(:to => "management@reservebar.com", :subject => subject)
+  end
 end
