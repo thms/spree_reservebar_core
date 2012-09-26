@@ -171,7 +171,7 @@ you have any questions, please visit our FAQ page on our site.<br>
 	            </tbody></table></td>
 	          </tr>
 		      <% @order.line_items.each do |item| %>
-		      <% bgcolor = cycle('#d8d8d8', '') %>
+		      <% bgcolor = cycle('#d8d8d8', '#ffffff') %>
 		      <tr>
 		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= item.variant.product.name %>
             </td>

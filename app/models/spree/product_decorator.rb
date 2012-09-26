@@ -19,6 +19,17 @@ Spree::Product.class_eval do
     self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
   end
   
+  # searches in name and taxon name, finds all products in a taxon if the taxon name matches the search
+  def self.rlike_any_or_in_taxons(fields, values)
+    where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} RLIKE ?").join(' OR ') }.join(' OR ')
+    taxons = Spree::Product.get_taxons(values)
+    if taxons.blank?
+    	self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
+    else
+		  where_str << " OR spree_taxons.id in (?)"
+		  self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size, taxons.map(&:id)].flatten)
+    end
+  end
   
   # Methods to find all states that this product can ship to, based on existing retailers and their settings
   # Used on product page to sow where this product can be shipped to

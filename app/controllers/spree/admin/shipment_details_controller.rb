@@ -65,7 +65,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :payment_type => 'THIRD_PARTY',  
           :shipper_email => retailer.email, 
           :recipient_email => recipient_email, 
-          :alcohol => false, #true, 
+          :alcohol => true, 
           :invoice_number => shipment.number, 
           :po_number => shipment.order.number,
           :image_type => ActiveShipping::DEFAULT_IMAGE_TYPE,
