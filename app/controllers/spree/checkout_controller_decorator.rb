@@ -57,7 +57,7 @@ Spree::CheckoutController.class_eval do
   # called if user attempts to place order in state where we don't ship alcohol to
   def rescue_from_no_retailer_ships_to_state_error
     flash[:notice] = "Thank you for attempting to make a purchase with ReserveBar. We appreciate your business; unfortunately we cannot accept your order. The reason for this is ReserveBar cannot currently deliver to your intended state due to that state's regulations.  
-    Please sign up for an <a href='/account'>email notification</a> for when states are added to our offering, and you will receive a discount coupon for future purchase.<br />In the meantime, if you have other gifting needs for delivery in other states, we invite you to continue shopping. Delivery information is provided on every product detail page (just under the 'Add to Cart' button). You can also review our delivery map at <a href='/delivery'>www.reservebar.com/delivery'</a>. We apologize for the inconvenience and thank you again for gifting with ReserveBar.".html_safe
+    Please sign up for an <a href='/account'>email notification</a> for when states are added to our offering, and you will receive a discount coupon for future purchase.<br />In the meantime, if you have other gifting needs for delivery in other states, we invite you to continue shopping. Delivery information is provided on every product detail page (just under the 'Add to Cart' button). You can also review our delivery map at <a href='/delivery'>www.reservebar.com/delivery</a>. We apologize for the inconvenience and thank you again for gifting with ReserveBar.".html_safe
     redirect_to cart_path
   end
   
@@ -101,6 +101,6 @@ Spree::CheckoutController.class_eval do
     flash[:notice] = "You need to be of legal drinking age to place an order."
     render :edit
   end
-  
+    
   
 end

@@ -4,4 +4,7 @@ class Spree::ShipmentDetail < ActiveRecord::Base
   token_resource
   belongs_to :shipment
   
+  # We get the shipevents as arrays and want to jsut get them in and out as arrays
+  serialize :ship_events
+  
 end

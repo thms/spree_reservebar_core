@@ -1,0 +1,23 @@
+
+<div class="row steps-data">
+	<div class="column alpha fifteen" style="margin-left:12px;">
+		<% if @order.shipment.shipment_detail && @order.shipment.shipment_detail.ship_events %>
+			<h6>Track your package</h6>
+			<table>
+				<tr>
+					<th>Event</th>
+					<th>Location</th>
+					<th>Timestamp</th>
+				</tr>
+			<% @order.shipment.shipment_detail.ship_events.each do |event| %>
+					<tr>
+						<td><%= event.name %></td>
+						<td><%= event.location %></td>
+						<td><%= event.time %></td>
+					</tr>
+			<% end %>
+			</table>
+		<% end %>
+	</div>
+</div>
+<hr>

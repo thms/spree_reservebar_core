@@ -13,7 +13,7 @@ module Spree
       end
       
       # get all shipment events for outstanding shipments per retailer (they have have their own shipping config)
-      # TODO: Save th events to database, so the customer an see them without leaving the site.
+      # TODO: Save the events to database, so the customer can see them without leaving the site.
       # TODO: Update order state, when fully shipped. -- no need, it is part of the order update_shipment status
       def self.get_fedex_events_for_retailer(retailer)
         fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
@@ -21,22 +21,24 @@ module Spree
           order.shipments.each do |shipment|
             begin
               tracking_info = fedex.find_tracking_info(shipment.tracking)
+              # update shipment detail
+              shipment.shipment_detail.update_attribute(:ship_events, Marshal.dump(tracking_info.ship_events))
               shipment_state = tracking_info.events.last.name
-              case tracking_info.events.last.name
-                when "Picked up"
-                  new_state = "shipped"
-                when "Scanned"   
-                  new_state = "shipped"
-                when "Departed"   
-                  new_state = "shipped"
-                when "Arrived"   
-                  new_state = "shipped"
-                when "Scanned"   
-                  new_state = "shipped"
-                when "Delivered"  
-                  new_state = "delivered"
-              end
-              if shipment.state == 'shipped' && new_state == 'delivered' 
+              case 
+                 when shipment_state.include?("Picked up")
+                   new_state = "shipped"
+                 when shipment_state.include?("Scanned")   
+                   new_state = "shipped"
+                 when shipment_state.include?("Departed")   
+                   new_state = "shipped"
+                 when shipment_state.include?("Arrived" )  
+                   new_state = "shipped"
+                 when shipment_state.include?("Scanned")   
+                   new_state = "shipped"
+                 when shipment_state.include?("Delivered")  
+                   new_state = "delivered"
+               end
+               if shipment.state == 'shipped' && new_state == 'delivered' 
                 shipment.deliver!
               elsif shipment.state == 'ready' && new_state == 'delivered'
                 shipment.ship!
@@ -44,6 +46,7 @@ module Spree
               elsif shipment.state == 'ready'
                 shipment.ship!
               end
+              
             rescue # something went wrong, no update to shipment will happen
             end
           end
