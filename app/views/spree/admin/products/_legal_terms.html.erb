@@ -1,0 +1,5 @@
+<%= f.field_container :legal_terms do %>
+  <%= f.label :legal_terms, t(:legal_terms) %><br />
+  <%= f.text_area :legal_terms, :class => 'fullwidth title' %>
+  <%= f.error_message_on :legal_terms %>
+<% end %>
