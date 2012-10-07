@@ -43,7 +43,7 @@ Spree::OrdersController.class_eval do
     bottles_total = 0
 	  params[:order][:line_items_attributes].each do |index, attributes|
 		  bottles_total += attributes['quantity'].to_i
-	  end if params[:order]
+	  end if params[:order][:line_items_attributes]
 	
 	  if (@order.number_of_bottles + bottles_to_add > 12) || (bottles_total > 12)
       raise Exceptions::BottleLimitPerOrderExceededError

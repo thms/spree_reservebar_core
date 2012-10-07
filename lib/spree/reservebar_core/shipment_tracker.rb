@@ -22,8 +22,8 @@ module Spree
             begin
               tracking_info = fedex.find_tracking_info(shipment.tracking)
               # update shipment detail
-              shipment.shipment_detail.update_attribute(:ship_events, Marshal.dump(tracking_info.ship_events))
-              shipment_state = tracking_info.events.last.name
+              shipment.shipment_detail.update_attribute(:ship_events, Marshal.dump(tracking_info.shipment_events))
+              shipment_state = tracking_info.shipment_events.last.name
               case 
                  when shipment_state.include?("Picked up")
                    new_state = "shipped"
