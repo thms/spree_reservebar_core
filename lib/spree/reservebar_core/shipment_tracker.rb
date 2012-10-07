@@ -24,6 +24,7 @@ module Spree
               # update shipment detail
               shipment.shipment_detail.update_attribute_without_callbacks(:ship_events, Marshal.dump(tracking_info.shipment_events))
               shipment_state = tracking_info.shipment_events.last.name
+              new_state = ''
               case 
                  when shipment_state.include?("Picked up")
                    new_state = "shipped"
@@ -48,6 +49,7 @@ module Spree
               end
               
             rescue # something went wrong, no update to shipment will happen
+              puts "Hmm, something went wrong"
             end
           end
         end
