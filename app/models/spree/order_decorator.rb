@@ -49,7 +49,7 @@ Spree::Order.class_eval do
         'accepted'
       elsif self.packed_at && self.shipment_state != 'shipped'
         'ready_for_pick_up'
-      elsif self.shipped?
+      elsif self.shipment_state == 'shipped'
         'shipped'
       end
     else
