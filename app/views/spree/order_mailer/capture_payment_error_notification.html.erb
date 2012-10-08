@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+Dear Admin,<br /><br />
+
+Payment capture has failed on the following order:<br /><br />
+
+Order Number: <%= link_to @order.number, admin_order_url(@order), :only_path => false %><br />
+Error Message: <%= @error.message %>
+
+Retailer Information<br />
+============================================================<br />
+Name: <%= @order.retailer.name %><br />
+Email: <%= @order.retailer.email %><br />
+Phone: <%= @order.retailer.phone %><br />
+<br /><br />
+Reservebar.com
+</body>
+</html>

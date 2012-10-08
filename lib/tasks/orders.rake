@@ -12,6 +12,11 @@ namespace :admin do
       	Spree::OrderMailer.regular_reminder_email(retailer).deliver
       end
     end
+    
+    desc "Get updates to shipments for all outstanding orders."
+    task :get_tracking_updates => :environment do
+      Spree::ReservebarCore::ShipmentTracker.get_all_fedex_events
+    end
 
   end
 end

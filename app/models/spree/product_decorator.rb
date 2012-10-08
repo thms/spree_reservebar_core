@@ -19,6 +19,7 @@ Spree::Product.class_eval do
     self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
   end
   
+  # searches in name and taxon name, finds all products in a taxon if the taxon name matches the search
   def self.rlike_any_or_in_taxons(fields, values)
     where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} RLIKE ?").join(' OR ') }.join(' OR ')
     taxons = Spree::Product.get_taxons(values)

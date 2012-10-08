@@ -1,0 +1,5 @@
+<%= f.field_container :tile_title do %>
+  <%= f.label :tile_title, t(:tile_title) %> <span class="required">*</span><br />
+  <%= f.text_field :tile_title, :class => 'fullwidth title' %>
+  <%= f.error_message_on :tile_title %>
+<% end %>

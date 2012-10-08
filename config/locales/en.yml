@@ -5,6 +5,8 @@ en:
     submitted: Submitted
     accepted: Accepted
     shipped: Shipped
+    ready_for_pick_up: Ready for Pick Up
+    canceled: Cancelled
   retailers: Retailers
   listing_retailers: "Listing Retailers"
   new_retailer: "New Retailer"
@@ -45,4 +47,7 @@ en:
   login_prompt: "ReserveBar welcomes you back"
   new_member: New Member
   order_processed_successfully: "Your order has been been successfully submitted. You will also receive an email notification. Thank you for your purchase with ReserveBar."
-  
+  meta_title: "Meta Tags Title"
+  meta_description: "Meta Tags Description"
+  meta_keywords: "Meta Tags Keywords"
+  tile_title: "Tile Title"
