@@ -52,9 +52,11 @@
 		    ReserveBar.com<br>
 	    Good Spirits. Delivered.</p></td>
 		    <td valign="middle" align="center">
-            <!--start image-- The images can't be larger than 272 px width by 280 px height, in case there's not an image to place please leave the cell completly empty, so the text can fill that empty space -->
-	    <img width="272" height="280" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/sample.jpg"></td>
-        	<!--end image-->
+			  <% product = @order.line_items.first.product %>
+			  <% unless product.images.empty? %>
+				  <img width="240" src="http://<%= Spree::Config[:site_url] %><%= product.images.first.attachment.url(:product) %>">
+				<% end %>
+	    	</td>
 	      </tr>
 	    </tbody></table></td>
 		<td valign="top" align="left"><br _moz_dirty="" type="_moz"></td>
