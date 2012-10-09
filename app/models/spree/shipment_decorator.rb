@@ -5,6 +5,8 @@ Spree::Shipment.class_eval do
   
   # indicates that a shipment has a tracking number and is trackable
   scope :trackable, where("tracking is not null")
+  
+  # indicates that a shipment has been delivered
   scope :delivered, where(:state => 'delivered')
   
   # add the delivered state to the shipment
