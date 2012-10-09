@@ -23,7 +23,7 @@ module Spree
               tracking_info = fedex.find_tracking_info(shipment.tracking)
               # update shipment detail
               # Issues with UTF8 characters in the shipment events!
-              shipment.shipment_detail.update_attribute_without_callbacks(:ship_events, Marshal.dump(tracking_info.shipment_events))
+              #shipment.shipment_detail.update_attribute_without_callbacks(:ship_events, Marshal.dump(tracking_info.shipment_events))
               shipment_state = tracking_info.shipment_events.last.name
               new_state = ''
               case 
