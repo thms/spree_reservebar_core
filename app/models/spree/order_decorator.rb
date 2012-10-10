@@ -171,7 +171,7 @@ Spree::Order.class_eval do
         :previous_state => old_shipment_state,
         :next_state     => self.shipment_state,
         :name           => 'shipment',
-        :user_id        => (User.respond_to?(:current) && User.current && User.current.id) || self.user_id
+        :user_id        => (Spree::User.respond_to?(:current) && Spree::User.current && Spree::User.current.id) || self.user_id
       })
     end
   end
