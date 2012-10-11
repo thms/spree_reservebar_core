@@ -20,10 +20,18 @@ Spree::Shipment.class_eval do
     after_transition :to => 'delivered', :do => :after_deliver
   end
   
+  # Override here to avoid sending the stock email and instead send the (wrongly placed) new emails
+  def after_ship
+    inventory_units.each &:ship!
+    Spree::OrderMailer.giftor_shipped_email(self.order).deliver()
+    Spree::OrderMailer.giftee_shipped_email(self.order).deliver() if self.order.is_gift?
+  end
+  
+  
   
   # Send out delivery notifications to giftor and copy mangement bar
   def after_deliver
-    # Send email to giftor, if this order was a gift
+    # Send email to giftor, if this order was a gift, so that he knows it has been delivered to the giftee
     Spree::OrderMailer.giftor_delivered_email(self.order).deliver() if self.order.is_gift?
   end
      
