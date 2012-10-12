@@ -20,6 +20,20 @@ Spree::Shipment.class_eval do
     after_transition :to => 'delivered', :do => :after_deliver
   end
   
+  # OVerride here to add the delivered state to the system
+  # Determines the appropriate +state+ according to the following logic:
+  #
+  # pending    unless +order.payment_state+ is +paid+
+  # shipped    if already shipped (ie. does not change the state)
+  # ready      all other cases
+  def determine_state(order)
+    return 'pending' if self.inventory_units.any? { |unit| unit.backordered? }
+    return 'shipped' if state == 'shipped'
+    return 'delivered' if state == 'delivered'
+    order.payment_state == 'balance_due' ? 'pending' : 'ready'
+  end
+  
+  
   # Override here to avoid sending the stock email and instead send the (wrongly placed) new emails
   def after_ship
     inventory_units.each &:ship!
