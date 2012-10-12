@@ -48,6 +48,12 @@ Spree::Shipment.class_eval do
     # Send email to giftor, if this order was a gift, so that he knows it has been delivered to the giftee
     Spree::OrderMailer.giftor_delivered_email(self.order).deliver() if self.order.is_gift?
   end
+  
+  def deliver!
+    self.update_attribute_without_callbacks(:state, 'delivered')
+    self.order.send(:update_shipment_state)
+    self.order.update_attributes_without_callbacks({:shipment_state => self.order.shipment_state})
+  end
      
   
 end
