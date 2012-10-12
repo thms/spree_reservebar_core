@@ -41,9 +41,11 @@ Spree::OrdersController.class_eval do
 
 	  # update method has "order"=>{"line_items_attributes"=>{"0"=>{"quantity"=>"1", "id"=>"111"}, "1"=>{"quantity"=>"10", "id"=>"113"}}}
     bottles_total = 0
-	  params[:order][:line_items_attributes].each do |index, attributes|
-		  bottles_total += attributes['quantity'].to_i
-	  end if params[:order][:line_items_attributes]
+    if params[:order] && params[:order][:line_item_attributes]
+  	  params[:order][:line_items_attributes].each do |index, attributes|
+  		  bottles_total += attributes['quantity'].to_i
+  	  end if params[:order]
+	  end
 	
 	  if (@order.number_of_bottles + bottles_to_add > 12) || (bottles_total > 12)
       raise Exceptions::BottleLimitPerOrderExceededError

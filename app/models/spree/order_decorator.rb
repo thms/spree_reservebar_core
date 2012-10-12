@@ -47,10 +47,12 @@ Spree::Order.class_eval do
   	    'submitted'
       elsif self.accepted_at && (self.packed_at == nil) && self.shipment_state != 'shipped'
         'accepted'
-      elsif self.packed_at && self.shipment_state != 'shipped'
+      elsif self.packed_at && (self.shipment_state != 'shipped' && self.shipment_state != 'delivered')
         'ready_for_pick_up'
       elsif self.shipment_state == 'shipped'
         'shipped'
+      elsif self.shipment.state == 'delivered'
+        'delivered'
       end
     else
       self.state
@@ -132,6 +134,48 @@ Spree::Order.class_eval do
   def number_of_bottles
     bottles = self.line_items.inject(0) {|bottles, line_item| bottles + line_item.quantity}
   end
+  
+  private
+  
+  # Override original method so that the new shipment.state == delivered is accounted for
+  # Updates the +shipment_state+ attribute according to the following logic:
+  #
+  # shipped   when all Shipments are in the "shipped" state
+  # partial   when at least one Shipment has a state of "shipped" and there is another Shipment with a state other than "shipped"
+  #           or there are InventoryUnits associated with the order that have a state of "sold" but are not associated with a Shipment.
+  # ready     when all Shipments are in the "ready" state
+  # backorder when there is backordered inventory associated with an order
+  # pending   when all Shipments are in the "pending" state
+  #
+  # The +shipment_state+ value helps with reporting, etc. since it provides a quick and easy way to locate Orders needing attention.
+  def update_shipment_state
+    self.shipment_state =
+    case shipments.count
+    when 0
+      nil
+    when shipments.delivered.count
+      'delivered'
+    when shipments.shipped.count
+      'shipped'
+    when shipments.ready.count
+      'ready'
+    when shipments.pending.count
+      'pending'
+    else
+      'partial'
+    end
+    self.shipment_state = 'backorder' if backordered?
+
+    if old_shipment_state = self.changed_attributes['shipment_state']
+      self.state_events.create({
+        :previous_state => old_shipment_state,
+        :next_state     => self.shipment_state,
+        :name           => 'shipment',
+        :user_id        => (Spree::User.respond_to?(:current) && Spree::User.current && Spree::User.current.id) || self.user_id
+      })
+    end
+  end
+  
   
   
   
