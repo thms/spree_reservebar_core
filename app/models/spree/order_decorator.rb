@@ -1,5 +1,5 @@
 Spree::Order.class_eval do
-	attr_accessible :is_legal_age, :is_gift, :gift_attributes
+	attr_accessible :is_legal_age, :is_gift, :gift_attributes, :unread, :viewed_at
 	attr_accessor :is_gift
 	
 	attr_accessible :has_accepted_terms
