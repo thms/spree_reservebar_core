@@ -25,13 +25,13 @@ en:
     confirm_email:
         subject: "Your Order Has Been Submitted"
     giftor_shipped_email:
-        subject:  "Your order with ReserveBar.com has shipped"
+        subject:  "Your Gift Has Been Shipped"
     giftor_delivered_email:
         subject:  "Your Order Has Been Delivered"
     giftee_notify_email:
         subject:  "You Have A Gift!"
     giftee_shipped_email:
-        subject:  "Your Gift Has Shipped From ReserveBar"
+        subject:  "Your Gift Has Been Shipped"
     retailer_submitted_email:
         subject: "New Order Submitted"
     accepted_notification:
