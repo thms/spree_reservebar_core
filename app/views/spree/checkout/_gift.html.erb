@@ -31,7 +31,7 @@
       </p>
     	<p class="field" id="gmessage">
         <%= gift_form.label :message, t('gift.message') %><br />
-        <%= gift_form.text_area :message, :rows => 4, :placeholder => 'Please type your gift card message here. Remember there is a limit of 335 characters including all greetings and salutations.' %>
+        <%= gift_form.text_area :message, :rows => 4, :placeholder => 'Please type your gift card message here. There is a limit of 335 characters including all greetings and salutations. Please remember to include your name so your gift recipient knows you sent the gift!' %>
       </p>
       <%= gift_form.hidden_field :sender_id %>
     </div>
