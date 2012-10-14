@@ -49,7 +49,7 @@
 		    <td valign="middle" align="center">
 				<% product = @order.line_items.first.product %>
 				<% unless product.images.empty? %>
-				<img width="240" src="http://<%= Spree::Config[:site_url] %><%= product.images.first.attachment.url(:large) %>">
+				<img src="http://<%= Spree::Config[:site_url] %><%= product.images.first.attachment.url(:product) %>">
 				<% end %>
 			</td>
 	      </tr>

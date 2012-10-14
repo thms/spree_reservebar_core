@@ -8,17 +8,6 @@
 		<td width="54" valign="top" height="15" align="left"><br _moz_dirty="" type="_moz"></td>
 	</tr>
 	<tr>
-		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">
-		  <img width="254" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-	</tr>
-	<tr>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">
@@ -54,7 +43,7 @@
 		    <td valign="middle" align="center">
 				<% product = @order.line_items.first.product %>
 				<% unless product.images.empty? %>
-				<img width="240" src="http://<%= Spree::Config[:site_url] %><%= product.images.first.attachment.url(:large) %>">
+				<img src="http://<%= Spree::Config[:site_url] %><%= product.images.first.attachment.url(:product) %>">
 				<% end %>
 			</td>
 	      </tr>
