@@ -8,9 +8,7 @@ namespace :admin do
     
     desc "Regular status email to management - indicates if any orders are not progressing as needed"
     task :regular_reminder_email => :environment do
-      Spree::Retailer.active.each do |retailer|
-      	Spree::OrderMailer.regular_reminder_email(retailer).deliver
-      end
+      Spree::OrderMailer.regular_reminder_email(retailer).deliver
     end
     
     desc "Get updates to shipments for all outstanding orders."
