@@ -8,6 +8,13 @@ Spree::OrderMailer.class_eval do
     subject += "#{t('order_mailer.confirm_email.subject')}"
     mail(:to => order.email, :reply_to => "support@reservebar.com", :subject => subject)
   end
+  
+	def cancel_email(order, resend = false)
+    @order = order
+    subject = (resend ? "[#{t(:resend).upcase}] " : '')
+    subject += "#{t('order_mailer.cancel_email.subject')}"
+    mail(:to => order.email, :reply_to => "order@reservebar.com", :cc => "management@reservebar.com", :subject => subject)
+  end
 
   def giftor_shipped_email(order, resend=false)
     @order = order
