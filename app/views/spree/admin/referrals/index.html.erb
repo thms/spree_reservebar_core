@@ -1,0 +1,23 @@
+<h1>Listing referrals</h1>
+
+<table class="index">
+  <tr>
+    <th>ID</th>
+    <th>Referrible</th>
+    <th>Http referrer</th>
+    <th>Domain</th>
+    <th>Action</th>
+  </tr>
+
+<% @referrals.each do |referral| %>
+  <tr>
+    <td><%= referral.id %></td>
+    <td><%= link_to referral.referrible_str, referral.admin_referrible_path %></td>
+    <td><%= referral.http_referrer %></td>
+    <td><%= referral.domain %></td>
+    <td><%= link_to 'Destroy', admin_referral_path(referral), confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= paginate @referrals %>

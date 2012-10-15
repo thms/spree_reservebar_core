@@ -44,6 +44,6 @@ Spree::Core::Engine.routes.prepend do
       get :print_test_label
     end
 
-
+		resources :referrals
   end
 end

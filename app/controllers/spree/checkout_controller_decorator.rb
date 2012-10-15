@@ -43,6 +43,18 @@ Spree::CheckoutController.class_eval do
     @order.gift_id = nil if request.put?
   end
   
+  def update_registration
+    fire_event("spree.user.signup", :order => current_order)
+    # hack - temporarily change the state to something other than cart so we can validate the order email address
+    current_order.state = 'address'
+    if current_order.update_attributes(params[:order])
+      referral_create_from_session(current_order)
+      redirect_to checkout_path
+    else
+      @user = Spree::User.new
+      render 'registration'
+    end
+  end
   
 	protected
   
