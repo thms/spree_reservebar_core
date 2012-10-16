@@ -44,7 +44,7 @@ en:
   retailer_mailer:
     regular_reminder_email:
         subject: "ReserveBar orders status"
-  is_business: "This is a Business Address"
+  is_business: "Is this a business address?"
   returning_member: Returning Member
   login_as_returning: "Login as returning member"
   login_prompt: "ReserveBar welcomes you back"
