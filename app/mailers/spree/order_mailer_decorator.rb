@@ -77,16 +77,7 @@ Spree::OrderMailer.class_eval do
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{t('order_mailer.regular_reminder_email.subject')}"
     mail(:to => "management@reservebar.com", :reply_to => "orders@reservebar.com", :subject => subject)
-  end
-
-  # Regular status email to management - indicates if any orders are not progressing as needed
-  def regular_reminder_email(resend = false)
-    @retailers = Spree::Retailer.active
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "ReserveBar - #{t('order_mailer.regular_reminder_email.subject')}"
-    mail(:to => "management@reservebar.com", :reply_to => "orders@reservebar.com", :subject => subject)
-  end
-  
+  end  
   
   # Send email to reservebar if a payment capture fails for some reason
   def capture_payment_error_notification(order, error)
