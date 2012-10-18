@@ -36,11 +36,11 @@ module Spree
     end
     
     def not_accepted_since_viewed(number_of_hours = 12)
-    	orders.where(["spree_orders.viewed_at is not null and spree_orders.viewed_at <= ? and spree_orders.accepted_at is ?", Time.now - number_of_hours.hours, nil]).order("spree_orders.viewed_at asc")
+    	orders.where(["spree_orders.viewed_at is not null and spree_orders.viewed_at <= ? and spree_orders.accepted_at is ? and spree_orders.state <> ?", Time.now - number_of_hours.hours, nil, "canceled"]).order("spree_orders.viewed_at asc")
     end
     
     def not_ready_shipping_since_accepted(number_of_hours = 6)
-    	orders.where(["spree_orders.accepted_at is not null and spree_orders.accepted_at <= ? and spree_orders.shipment_state = ?", Time.now - number_of_hours.hours, "pending"]).order("spree_orders.accepted_at asc")
+    	orders.where(["spree_orders.accepted_at is not null and spree_orders.accepted_at <= ? and spree_orders.state <> ? and spree_orders.shipment_state = ?", Time.now - number_of_hours.hours, "canceled", "pending"]).order("spree_orders.accepted_at asc")
     end
   
     # get the fedex credentials

@@ -5,8 +5,8 @@ module Spree
 
     def regular_reminder_email(retailer, resend=false)
       @retailer = retailer
-      subject = "#{Spree::Config[:site_name]} #{t('retailer_mailer.regular_reminder_email.subject')}"
-      mail(:to => retailer.email, :reply_to => "orders@reservebar.com", :subject => subject)
+      subject = "#{t('retailer_mailer.regular_reminder_email.subject')}"
+      mail(:to => retailer.email, :reply_to => "orders@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
     end
   end
 end
