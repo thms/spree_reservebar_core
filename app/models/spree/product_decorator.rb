@@ -22,7 +22,7 @@ Spree::Product.class_eval do
   # searches in name and taxon name, finds all products in a taxon if the taxon name matches the search
   def self.rlike_any_or_in_taxons(fields, values)
     where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} RLIKE ?").join(' OR ') }.join(' OR ')
-    taxons = Spree::Product.get_taxons(values)
+    taxons = Spree::Product.get_related_taxons(values)
     if taxons.blank?
     	self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
     else
@@ -44,4 +44,21 @@ Spree::Product.class_eval do
     method = "ships_#{self.shipping_category.name.downcase.gsub(' ','_')}_to".to_sym
     Spree::Retailer.active.map(&method).join(',').split(',').uniq.count == Spree::State.count
   end
+  
+  private
+  
+		def self.get_related_taxons(*ids_or_records_or_names)
+		  taxons = Spree::Taxon.table_name
+		  ids_or_records_or_names.flatten.map { |t|
+		    case t
+		    when Integer then Taxon.find_by_id(t)
+		    when ActiveRecord::Base then t
+		    when String
+		      Spree::Taxon.find_by_name(t) ||
+		      Spree::Taxon.find(:first, :conditions => [
+		        "#{taxons}.permalink LIKE ? OR #{taxons}.permalink = ?", "%#{t}%", "#{t}/"
+		      ])
+		    end
+		  }.compact.flatten.uniq
+		end
 end
