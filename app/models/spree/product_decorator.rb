@@ -27,7 +27,8 @@ Spree::Product.class_eval do
     	self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
     else
 		  where_str << " OR spree_taxons.id in (?)"
-		  self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size, taxons.map(&:id)].flatten)
+		  #self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size, taxons.map(&:id)].flatten)
+		  self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten << taxons.map{|s|s.self_and_descendants}.flatten.map(&:id).uniq)
     end
   end
   

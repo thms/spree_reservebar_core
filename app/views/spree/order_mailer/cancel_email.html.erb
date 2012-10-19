@@ -1,3 +1,223 @@
+
+ file 219 lines (216 sloc) 13.108 kb EditRawBlameHistory
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
 <table width="657" cellspacing="0" cellpadding="0" border="0" align="center" id="Table_01" _moz_dirty="">
 	<tbody><tr>
 		<td width="657" valign="top" height="15" align="left"><br _moz_dirty="" type="_moz"></td>
@@ -6,6 +226,17 @@
 		<td valign="top" align="left" width="18px">&nbsp;</td>
 		<td valign="top" align="left">&nbsp;</td>
 		<td width="54" valign="top" height="15" align="left"><br _moz_dirty="" type="_moz"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="left">
+		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">
+		  <img width="254" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
+		<td valign="top" align="left">
+		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
 	</tr>
 	<tr>
 		<td valign="top" align="left">&nbsp;</td>
@@ -24,28 +255,22 @@
   </tr>
 	<tr>
 		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4"><%= I18n.t('order_mailer.giftor_shipped_email.subject') %></td>
+		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4"><%= I18n.t('order_mailer.canceled_notification.subject') %></td>
 		<td valign="top" align="left">&nbsp;</td>
 	</tr>
 	<tr>
 		<td valign="top" align="left"><br _moz_dirty="" type="_moz"></td>
 		<td valign="top" colspan="4"><table width="100%">
 		  <tbody><tr>
-		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute"><p>Dear <%= @order.bill_address.firstname %>:</p>
-		  <p>RE: Order Number: <a href="http://<%= Spree::Config[:site_url] %>/orders/<%= @order.number %>"><%= @order.number %></a></p>
-		  <p>Thank you for submitting your order with ReserveBar.com. Your order has shipped.</p>
-		  <p>Here is your FedEx Tracking Number: <a href="http://www.fedex.com/Tracking?language=english&cntry_code=us&tracknumbers=<%= @order.shipment.try(:tracking) %>" target="_blank"><%= @order.shipment.try(:tracking) %></a></p>
-		  <p>Please see below for Order Details.</p>
-		  <p>Thank you again for your order. We look forward to serving you and exceeding your expectations every time here at ReserveBar.com. If you have any questions, please visit our FAQ page on our site.<br /></p>
-		  <p>Gratefully yours,<br>
-		    ReserveBar.com<br>
-	    Good Spirits. Delivered.</p></td>
-		    <td valign="middle" align="center">
-				<% product = @order.line_items.first.product %>
-				<% unless product.images.empty? %>
-				<img src="http://<%= Spree::Config[:site_url] %><%= product.images.first.attachment.url(:product) %>">
-				<% end %>
-			</td>
+		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute">
+				  <p>Dear <%= @order.bill_address.firstname %>:</p>
+					<p>RE: Order Number: <a href="http://<%= Spree::Config[:site_url] %>/orders/<%= @order.number %>"><%= @order.number %></a></p>
+					<p>Unfortunately, your order below has been cancelled. We invite you to contact us at <a href="mailto:support@reservebar.com">support@reservebar.com</a> to find out why. Please reference your Order Number so we can service you more efficiently and accurately.  We are working on our systems so, in the future, we can provide you with details of the cancellation directly within this email.</p>
+					<p>We apologize for this inconvenience and hope we have an opportunity to serve you again in the near future.  Please visit <a href="http://www.reservebar.com" target="_blank">www.ReserveBar.com</a> for all your personal and professional gifting needs.</p>
+					<p>Gratefully yours,<br>
+				  ReserveBar.com<br>
+			  	Good Spirits. Delivered.</p>
+	    	</td>
 	      </tr>
 	    </tbody></table></td>
 		<td valign="top" align="left"><br _moz_dirty="" type="_moz"></td>
@@ -139,12 +364,16 @@
 		    <td><table cellspacing="0" cellpadding="0" border="0" width="100%" style="font: 12px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-align:left">
 		      <tbody><tr>
 		        <td valign="top" style="font-size:14px" colspan="4"><table width="100%" align="right">
-		            <tbody><tr>
-		              <td align="left" valign="top" style="font-size: 15px; text-align:left; font-family: georgia,serif;"><strong>Order #: </strong><%= @order.number %></td>
+		            <tbody>
+		            	<tr>
+		              	<td align="left" valign="top" style="font-size: 15px; text-align:left; font-family: georgia,serif;"><strong>Order #: </strong><%= @order.number %></td>
 		              </tr>
-		            <tr style="font-family: georgia,serif;">
-		              <td width="100%" valign="top" height="36px" style="font:Georgia, 'Times New Roman', Times, serif; font-size:15px; text-align:left"><strong><span _moz_dirty="" style="font-family: georgia,serif;">Shipping Method</span>: </strong><span _moz_dirty="" style="font-family: georgia,serif;"><%= @order.shipping_method.name %></span></td>
+		            	<tr style="font-family: georgia,serif;">
+		              	<td width="100%" valign="top" style="font:Georgia, 'Times New Roman', Times, serif; font-size:15px; text-align:left"><strong><span _moz_dirty="" style="font-family: georgia,serif;">Shipping Method</span>: </strong><span _moz_dirty="" style="font-family: georgia,serif;"><%= @order.shipping_method.name %></span></td>
 	                </tr>
+	                <tr>
+		              	<td align="left" valign="top" height="36px" style="font-size: 15px; text-align:left; font-family: georgia,serif;"><strong>Order Status:</strong><%= @order.state %></td>
+		              </tr>
 	            </tbody></table></td>
 	          </tr>
 		      <% @order.line_items.each do |item| %>
@@ -207,3 +436,4 @@
   </tr>
 </tbody>
 </table>
+
