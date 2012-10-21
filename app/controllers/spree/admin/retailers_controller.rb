@@ -146,7 +146,6 @@ module Spree
     	def load_data
         @payment_methods = PaymentMethod.order(:name)
         @tax_rates = TaxRate.all
-        # TODO: does not find a name in production, because the fields are missink.
         @object.physical_address ||= Address.new(:country_id => 214, :phone => "phone")
         @object.mailing_address ||= Address.new(:country_id => 214, :phone => "phone")
         @object
