@@ -24,7 +24,7 @@ en:
     message: "Gift Card Message (335 characters max.)"
   order_mailer:
     confirm_email:
-        subject: "Your Order Has Been Sumbitted"
+        subject: "Your Order Has Been Submitted"
     cancel_email:
         subject: "Your Order Has Been Cancelled"
     giftor_shipped_email:

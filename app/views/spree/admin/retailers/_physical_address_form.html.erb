@@ -1,5 +1,11 @@
 <%= f.fields_for :physical_address do |address_form| %>
 <table>
+   <tr>
+		<td><%= address_form.label :firstname, t(:firstname) + ':' %></td>
+		<td><%= address_form.text_field :firstname %></td>
+		<td><%= address_form.label :lastname, t(:lastname) + ':' %></td>
+		<td><%= address_form.text_field :lastname %></td>
+	</tr>
 	<tr>
     <td><%= address_form.label :firstname, t(:firstname) + ':' %></td>
     <td><%= address_form.text_field :firstname %></td>
