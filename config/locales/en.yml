@@ -30,7 +30,7 @@ en:
     giftor_shipped_email:
         subject:  "Your Gift Has Been Shipped"
     giftor_delivered_email:
-        subject:  "Your Order Has Been Delivered"
+        subject:  "Your Gift Has Been Delivered"
     giftee_notify_email:
         subject:  "You Have A Gift!"
     giftee_shipped_email:
