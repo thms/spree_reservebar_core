@@ -3,6 +3,10 @@ require 'spree/reservebar_core/order_splitter'
 require 'exceptions'
 
 Spree::CheckoutController.class_eval do
+  
+  # Ajax update for coupon codes
+  respond_to :js, :only => [:apply_coupon]
+  
   before_filter :set_gift_params, :only => :update
   
   # if we don't have a retailer that can ship alcohol to the state, we need to set a warning flag and throw the user back to the address state
@@ -13,6 +17,31 @@ Spree::CheckoutController.class_eval do
 
   # if the user has not accetped the legal drinking age flag, we bail
   rescue_from Exceptions::NotLegalDrinkingAgeError, :with => :rescue_from_not_legal_drinking_age_error
+
+
+  # Ajax call to apply coupon to order
+  def apply_coupon
+    if @order.update_attributes(object_params)
+
+      fire_event('spree.checkout.update')
+
+      if @order.coupon_code.present?
+
+        if Spree::Promotion.exists?(:code => @order.coupon_code)
+          fire_event('spree.checkout.coupon_code_added', :coupon_code => @order.coupon_code)
+          # If it doesn't exist, raise an error!
+          # Giving them another chance to enter a valid coupon code
+          @message = "Coupon applied"
+        else
+          @message = t(:promotion_not_found)
+        end
+      end
+      # Need to reload the order, otehrwise total is not updated
+      @order.reload
+      respond_with(@order, @message)
+    end
+  end
+
 
   # Before we proceed to the delivery step we need to make a selection for the retailer based on the 
   # Shipping address selected earlier and the order contents

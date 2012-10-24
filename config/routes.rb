@@ -1,5 +1,9 @@
 Spree::Core::Engine.routes.prepend do
   
+  
+  # route to allow applying a coupon during checkout via Ajax
+  match '/checkout/apply_coupon/:state' => 'checkout#apply_coupon', :as => :apply_coupon_checkout
+  
   namespace :admin do
     
     match '/get_retailer_data' => 'overview#get_retailer_data'
