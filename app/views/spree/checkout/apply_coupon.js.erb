@@ -1,0 +1,12 @@
+// Update order summary
+$("#checkout-summary").html('<%= escape_javascript render(:partial => "spree/checkout/summary", :locals => {:order => @order}) %>')
+
+// Update coupon result code
+$("#coupon-result-field").html('<%= escape_javascript @message -%>')
+
+// Empty the input field
+$("#order_coupon_code").val('')
+
+// Reenable main form submit button and the coupon apply button
+$('form.apply_coupon_checkout_form').find(':submit, :image').attr('disabled', null).addClass('primary').removeClass('disabled');
+$('form.edit_spree_order').find(':submit, :image').attr('disabled', null).addClass('primary').removeClass('disabled');

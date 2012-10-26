@@ -1,0 +1,32 @@
+<% if @order.state == 'payment' && Spree::Promotion.count > 0 %>
+	<%= form_for @order, :url => apply_coupon_checkout_path(@order.state), :html => { :id => "apply_coupon_checkout_form", :class => "apply_coupon_checkout_form" }, :remote => true do |form| %>
+		<p>
+		  <%= form.label :coupon_code %><br />
+		  <%= form.text_field :coupon_code %>
+		  <%= form.submit "Apply" %>
+		</p>
+	<% end %>
+	<div id="coupon-result-field"></div>
+
+<script type="text/javascript">
+// Disable apply button on click and also main form submission
+$('form.apply_coupon_checkout_form').submit(function() {
+	$(this).find(':submit, :image').attr('disabled', true).removeClass('primary').addClass('disabled');
+	$('form.edit_spree_order').find(':submit, :image').attr('disabled', true).removeClass('primary').addClass('disabled');
+});
+
+// Override form submission function to check if the user has filled the 
+function disableSaveOnClick() {
+  $('form.edit_spree_order').submit(function() {
+	if ($('#order_coupon_code').val() == undefined || $('#order_coupon_code').val() == "") {
+    	$(this).find(':submit, :image').attr('disabled', true).removeClass('primary').addClass('disabled');
+	} else {
+		alert("You have entered a coupon code. Please apply it first or remove it from the input field.");
+		return(false);
+	}
+  });
+}
+
+</script>
+
+<% end %>
