@@ -8,17 +8,6 @@
 		<td width="54" valign="top" height="15" align="left"><br _moz_dirty="" type="_moz"></td>
 	</tr>
 	<tr>
-		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">
-		  <img width="254" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-	</tr>
-	<tr>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">
@@ -154,7 +143,7 @@
 		      <% @order.line_items.each do |item| %>
 		      <% bgcolor = cycle('#d8d8d8', '#ffffff') %>
 		      <tr>
-		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= item.variant.product.name %>
+		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= sanitize(item.variant.product.name, :tags => %w(sup)) %>
             </td>
 		        <td width="9px" style="background:<%= bgcolor -%>"><br>
             </td>
