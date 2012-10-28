@@ -30,8 +30,10 @@
 		<span class="gnote" style="display:block;line-height:15px;">This phone number will be used to facilitate delivery in case of difficulties by Fedex. This phone number will not be sold or used for telemarketing purposes.</span>
       </p>
     	<p class="field" id="gmessage">
-        <%= gift_form.label :message, t('gift.message') %><br />
+        <%= gift_form.label :message, t('gift.message') %>
+        <label id="message_limit_error" class="error" style="display:none">Character Limit Reached</label><br />
         <%= gift_form.text_area :message, :rows => 4, :placeholder => 'Please type your gift card message here. There is a limit of 335 characters including all greetings and salutations. Please remember to include your name so your gift recipient knows you sent the gift!' %>
+        <label id="message_length_counter" class="error" style="text-align:right;"><span></span> characters left</label>
       </p>
       <%= gift_form.hidden_field :sender_id %>
     </div>
@@ -39,7 +41,7 @@
 </fieldset>
 <% end %>
 
-<%= javascript_tag do %>
+<script type="text/javascript">
 	$(document).ready(function(){
 	  if ($("#order_is_gift").is(":checked"))
 	  	{
@@ -85,10 +87,31 @@
 			required: "#order_is_gift:checked"
 		});
 		
-		
-	  	$("#order_gift_attributes_message").rules("add", {
+	  $("#order_gift_attributes_message").rules("add", {
  			maxlength: 335
  		});
+ 		
+ 		$('#message_length_counter > span').replaceWith("<span>" + (335 - $('#order_gift_attributes_message').val().length) + "</span>");
+
+		function limits(obj, limit){
+			var text = $(obj).val(); 
+			var length = text.length;
+			if(length > limit){
+				$(obj).val(text.substr(0,limit));
+				$('#message_limit_error').show();
+				$("#message_limit_error").css("display","inline");
+				return false;
+			} else {
+				$('#message_length_counter').show();
+				$('#message_length_counter > span').replaceWith("<span>" + (limit - length) + "</span>");
+				$('#message_limit_error').hide();
+				return true;
+			}
+		}
+
+		$('#order_gift_attributes_message').keyup(function(){
+		  limits($(this), 335);
+		});
 	  
 	});
-<% end %>
+</script>
