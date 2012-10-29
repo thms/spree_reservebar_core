@@ -1,23 +1,5 @@
 <table width="657" cellspacing="0" cellpadding="0" border="0" align="center" id="Table_01" _moz_dirty="">
-	<tbody><tr>
-		<td width="657" valign="top" height="15" align="left"><br _moz_dirty="" type="_moz"></td>
-		<td width="100%" valign="top" align="left">&nbsp;</td>
-		<td width="100%" valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left" width="18px">&nbsp;</td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td width="54" valign="top" height="15" align="left"><br _moz_dirty="" type="_moz"></td>
-	</tr>
-	<tr>
-		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" align="left">
-		  <img width="254" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-		<td valign="top" align="left">
-		  <img width="54" height="1" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/blank.jpg"></td>
-	</tr>
+	<tbody>
 	<tr>
 		<td valign="top" align="left">&nbsp;</td>
 		<td valign="top" align="left">&nbsp;</td>
@@ -35,7 +17,7 @@
   </tr>
 	<tr>
 		<td valign="top" align="left">&nbsp;</td>
-		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4"><%= I18n.t('order_mailer.giftor_shipped_email.subject') %></td>
+		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4"><%= I18n.t('order_mailer.giftee_shipped_email.subject') %></td>
 		<td valign="top" align="left">&nbsp;</td>
 	</tr>
 	<tr>
@@ -53,6 +35,12 @@
 		    	ReserveBar.com<br>
 	    		Good Spirits. Delivered.</p>
 	    	</td>
+	    	<td valign="middle" align="center">
+					<% product = @order.line_items.first.product %>
+					<% unless product.images.empty? %>
+					<img src="http://<%= Spree::Config[:site_url] %><%= product.images.first.attachment.url(:product) %>">
+					<% end %>
+				</td>
 	      </tr>
 	    </tbody></table></td>
 		<td valign="top" align="left"><br _moz_dirty="" type="_moz"></td>

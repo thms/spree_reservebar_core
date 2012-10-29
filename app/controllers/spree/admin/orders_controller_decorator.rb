@@ -69,7 +69,8 @@ Spree::Admin::OrdersController.class_eval do
     	  @order.payments.each do |payment|
     	    payment.payment_source.send("capture", payment)
   	    end
-      	Spree::OrderMailer.accepted_notification(@order).deliver
+  	    # We disable this notification for now, until there is a better scheme of notifications decided
+      	## Spree::OrderMailer.accepted_notification(@order).deliver
   	  rescue Spree::Core::GatewayError => error
   	    # Handle messaging to retailer - error flash that something
   	    flash[:error] = "Something went wrong with the payment on this order. Please hold off on shipping and contact ReserveBar."

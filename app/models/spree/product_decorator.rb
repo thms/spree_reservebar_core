@@ -14,6 +14,16 @@ Spree::Product.class_eval do
     Product.taxons_id_in_tree_any(taxon).scope :find 
   }
   
+  # Used by autosuggest to remove deleted products
+  def self.deleted
+    where('deleted_at is not ?', nil)
+  end
+  
+   # Used by autosuggest to remove deleted products
+  def self.non_available(available_on = nil)
+    where('available_on >= ?', available_on || Time.now)
+  end
+
   def self.rlike_any(fields, values)
     where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} RLIKE ?").join(' OR ') }.join(' OR ')
     self.where([where_str, values.map { |value| "[[:<:]]#{value}" } * fields.size].flatten)
