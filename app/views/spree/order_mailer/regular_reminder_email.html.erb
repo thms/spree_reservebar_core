@@ -15,56 +15,8 @@
 	<% @retailers.each do |retailer| %>
 	<p><strong>Retailer info:</strong> <%= retailer.name %>, <%= retailer.physical_address.try(:state_text) %>, <%= retailer.email %>, <%= retailer.phone %></p>
 	
-	<p><strong>Orders not viewed for over 6 hours since being submitted:</strong></p>
 
-	<table border="0" cellspacing="0" cellpadding="3" style="border-collapse:separate;font-size:12px;text-align:center;border-top:1px solid #CCC;border-left:1px solid #CCC;">
-		<tr>
-			<th width="100" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order ID</th>
-			<th width="220" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order submitted at (EDT)</th>
-			<th width="200" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Hours since submitted</th>
-		</tr>
-		<% retailer.not_viewed_since_submitted(6).each do |order| %>
-		<tr>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= link_to order.number, "http://#{Spree::Config[:site_url]}/admin/orders/#{order.number}" %></td>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= order.completed_at.in_time_zone("Eastern Time (US & Canada)").to_s(:time_without_zone) %></td>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= ((Time.now - order.completed_at) / 3600).round %></td>
-		</tr>
-		<% end %>
-	</table>
-
-	<p><strong>Orders not accepted for over 24 hours since being viewed:</strong></p>
-
-	<table border="0" cellspacing="0" cellpadding="3" style="border-collapse:separate;font-size:12px;text-align:center;border-top:1px solid #CCC;border-left:1px solid #CCC;">
-		<tr>
-			<th width="100" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order ID</th>
-			<th width="220" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order viewed at (EDT)</th>
-			<th width="200" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Hours since viewed</th>
-		</tr>
-		<% retailer.not_accepted_since_viewed(24).each do |order| %>
-		<tr>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= link_to order.number, "http://#{Spree::Config[:site_url]}/admin/orders/#{order.number}" %></td>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= order.viewed_at.in_time_zone("Eastern Time (US & Canada)").to_s(:time_without_zone) %></td>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= ((Time.now - order.viewed_at) / 3600).round %></td>
-		</tr>
-		<% end %>
-	</table>
-
-	<p><strong>Orders not ready for shipping for over 12 hours since being accepted:</strong></p>
-
-	<table border="0" cellspacing="0" cellpadding="3" style="border-collapse:separate;font-size:12px;text-align:center;border-top:1px solid #CCC;border-left:1px solid #CCC;">
-		<tr>
-			<th width="100" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order ID</th>
-			<th width="220" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order accepted at (EDT)</th>
-			<th width="200" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Hours since accepted</th>
-		</tr>
-		<% retailer.not_ready_shipping_since_accepted(12).each do |order| %>
-		<tr>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= link_to order.number, "http://#{Spree::Config[:site_url]}/admin/orders/#{order.number}" %></td>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= order.accepted_at.in_time_zone("Eastern Time (US & Canada)").to_s(:time_without_zone) %></td>
-			<td style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;"><%= ((Time.now - order.accepted_at) / 3600).round %></td>
-		</tr>
-		<% end %>
-	</table>
+	<%= render :partial => "spree/admin/shared/reminded_orders", :locals => {:retailer => retailer} %>
 	<br /><br />
 	<% end %>
 

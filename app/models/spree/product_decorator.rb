@@ -68,7 +68,7 @@ Spree::Product.class_eval do
 	    when String
 	      Spree::Taxon.find_by_name(t) ||
 	      Spree::Taxon.find(:first, :conditions => [
-	        "#{taxons}.permalink LIKE ? OR #{taxons}.permalink = ?", "%#{t}%", "#{t}/"
+	        "#{taxons}.name RLIKE ?", "[[:<:]]#{t}"
 	      ])
 	    end
 	  }.compact.flatten.uniq

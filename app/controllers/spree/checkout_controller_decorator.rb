@@ -19,6 +19,8 @@ Spree::CheckoutController.class_eval do
   rescue_from Exceptions::NotLegalDrinkingAgeError, :with => :rescue_from_not_legal_drinking_age_error
 
 
+
+
   # Ajax call to apply coupon to order
   def apply_coupon
     if @order.update_attributes(object_params)
