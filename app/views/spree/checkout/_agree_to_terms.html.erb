@@ -18,7 +18,17 @@
 
 <%= javascript_tag do %>
 	$(document).ready(function(){
-	  $("#checkout_form_payment").validate();
+	<% if Spree::AddressBook::Config[:show_bill_address_on_cc_form] == true %>
+	  $("#checkout_form_payment").validate({
+		invalidHandler: function(form, validator) {
+			// Reenable main form submit button and the coupon apply button
+			$('form.apply_coupon_checkout_form').find(':submit, :image').attr('disabled', null).addClass('primary').removeClass('disabled');
+			$('form.edit_spree_order').find(':submit, :image').attr('disabled', null).addClass('primary').removeClass('disabled');
+		}
+	});
+	<% else %>
+	  $("#checkout_form_payment").validate();	
+	<% end %>
 	  $("#order_has_accepted_terms").rules("add", {
 			required: true,
 			messages: {

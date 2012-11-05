@@ -15,8 +15,8 @@
 	<% @retailers.each do |retailer| %>
 	<p><strong>Retailer info:</strong> <%= retailer.name %>, <%= retailer.physical_address.try(:state_text) %>, <%= retailer.email %>, <%= retailer.phone %></p>
 	
+
 	<%= render :partial => "spree/admin/shared/reminded_orders", :locals => {:retailer => retailer} %>
-	
 	<br /><br />
 	<% end %>
 

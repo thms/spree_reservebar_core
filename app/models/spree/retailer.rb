@@ -47,6 +47,10 @@ module Spree
     	return true unless not_viewed_since_submitted.empty? && not_accepted_since_viewed.empty? && not_ready_shipping_since_accepted.empty?
     end
   
+    def need_notification?
+      return true unless not_viewed_since_submitted.empty? && not_accepted_since_viewed.empty? && not_ready_shipping_since_accepted.empty?
+    end
+    
     # get the fedex credentials
     def shipping_config
       if Rails.env == "production"
