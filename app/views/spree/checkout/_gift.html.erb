@@ -11,25 +11,27 @@
     <div class="gift_inner" data-hook="gift_inner">
     	<p class="field" id="gfirst_name">
         <%= gift_form.label :first_name, t('gift.first_name') %><span class="req">*</span><br />
-        <%= gift_form.text_field :first_name %>
+        <%= gift_form.text_field :first_name,  %>
       </p>
     	<p class="field" id="glast_name">
         <%= gift_form.label :last_name, t('gift.last_name') %><span class="req">*</span><br />
         <%= gift_form.text_field :last_name %>
       </p>
     	<p class="field" id="gemail">
-        <%= gift_form.label :email, t('gift.email') %><span class="req">*</span><br />
+        <%= gift_form.label :email, t('gift.email') %><br />
         <%= gift_form.text_field :email %>
 		<span class="gnote" style="display:block;line-height:15px;">This email address will be used to notify the gift recipient that a gift has been sent (no details of the gift contents or the sender will be disclosed) and to facilitate delivery. This email address will not be sold or used for spam.</span>
       </p>
     	<p class="field" id="gphone">
-        <%= gift_form.label :phone, t('gift.phone') %><span class="req">*</span><br />
+        <%= gift_form.label :phone, t('gift.phone') %><br />
         <%= gift_form.text_field :phone %>
 		<span class="gnote" style="display:block;line-height:15px;">This phone number will be used to facilitate delivery in case of difficulties by Fedex. This phone number will not be sold or used for telemarketing purposes.</span>
       </p>
     	<p class="field" id="gmessage">
-        <%= gift_form.label :message, t('gift.message') %><br />
+        <%= gift_form.label :message, t('gift.message') %>
+		<label id="message_limit_error" class="error" style="display:none">Character Limit Reached</label><br />
         <%= gift_form.text_area :message, :rows => 4, :placeholder => 'Please type your gift card message here. There is a limit of 335 characters including all greetings and salutations. Please remember to include your name so your gift recipient knows you sent the gift!' %>
+		<label id="message_length_counter" class="error" style="text-align:right;"><span></span> characters left</label>
       </p>
       <%= gift_form.hidden_field :sender_id %>
     </div>
@@ -37,7 +39,7 @@
 </fieldset>
 <% end %>
 
-<%= javascript_tag do %>
+<script type="text/javascript">
 	$(document).ready(function(){
 	  if ($("#order_is_gift").is(":checked"))
 	  	{
@@ -75,18 +77,58 @@
 		});
 
 	  $("#order_gift_attributes_email").rules("add", {
-			required: "#order_is_gift:checked",
 			email: true
 		});
 
-	  $("#order_gift_attributes_phone").rules("add", {
-			required: "#order_is_gift:checked"
-		});
-		
-		
+	
 	  	$("#order_gift_attributes_message").rules("add", {
  			maxlength: 335
  		});
-	  
+
+		$('#message_length_counter > span').replaceWith("<span>" + (335 - $('#order_gift_attributes_message').val().length) + "</span>");
+		function limits(obj, limit){
+			var text = $(obj).val(); 
+			var length = text.length;
+			if(length > limit){
+				$(obj).val(text.substr(0,limit));
+				$('#message_limit_error').show();
+				$("#message_limit_error").css("display","inline");
+				return false;
+			} else {
+				$('#message_length_counter').show();
+				$('#message_length_counter > span').replaceWith("<span>" + (limit - length) + "</span>");
+				$('#message_limit_error').hide();
+				return true;
+			}
+		}
+
+		$('#order_gift_attributes_message').keyup(function(){
+			limits($(this), 335);
+		});
+		
+		// Update the gift message fields when user has entered a new name in a new address.
+		$('#order_ship_address_attributes_firstname').blur(function(){
+			if ($('#order_gift_attributes_first_name').val() == "") {
+				$('#order_gift_attributes_first_name').val($('#order_ship_address_attributes_firstname').val());
+			}
+		});
+		$('#order_ship_address_attributes_lastname').blur(function(){
+			if ($('#order_gift_attributes_last_name').val() == "") {
+				$('#order_gift_attributes_last_name').val($('#order_ship_address_attributes_lastname').val());
+			}
+		});
+		
+		// Update the gift message fields when the user selects another shipping address
+		// We're rendering first name and last name as attributes on the radio buttons, so we can get them in javascript
+		$('input[name="order[ship_address_id]"]').change(function() {
+			if ($('#order_gift_attributes_first_name').val() == "") {
+				$('#order_gift_attributes_first_name').val($(this).attr('first_name'));
+			}
+			if ($('#order_gift_attributes_last_name').val() == "") {
+				$('#order_gift_attributes_last_name').val($(this).attr('last_name'));
+			}
+			
+		});
 	});
-<% end %>
+</script>
+
