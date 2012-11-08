@@ -32,17 +32,21 @@ Spree::OrderMailer.class_eval do
 
   # sent to giftee
   def giftee_notify_email(order, resend=false)
-    @order = order
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "#{t('order_mailer.giftee_notify_email.subject')}"
-    mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
+    unless order.gift.email.blank?
+      @order = order
+      subject = (resend ? "[#{t(:resend).upcase}] " : "")
+      subject += "#{t('order_mailer.giftee_notify_email.subject')}"
+      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+    end
   end
 
   def giftee_shipped_email(order, resend=false)
-    @order = order
-    subject = (resend ? "[#{t(:resend).upcase}] " : "")
-    subject += "#{t('order_mailer.giftee_shipped_email.subject')}"
-    mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
+    unless order.gift.email.blank?
+      @order = order
+      subject = (resend ? "[#{t(:resend).upcase}] " : "")
+      subject += "#{t('order_mailer.giftee_shipped_email.subject')}"
+      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+    end
   end
   
   # sent to retailer

@@ -6,7 +6,7 @@ Spree::CheckoutController.class_eval do
   
   # Ajax update for coupon codes
   respond_to :js, :only => [:apply_coupon]
-  
+
   before_filter :set_gift_params, :only => :update
   
   # if we don't have a retailer that can ship alcohol to the state, we need to set a warning flag and throw the user back to the address state
@@ -17,8 +17,6 @@ Spree::CheckoutController.class_eval do
 
   # if the user has not accetped the legal drinking age flag, we bail
   rescue_from Exceptions::NotLegalDrinkingAgeError, :with => :rescue_from_not_legal_drinking_age_error
-
-
 
 
   # Ajax call to apply coupon to order
@@ -144,6 +142,8 @@ Spree::CheckoutController.class_eval do
     flash[:notice] = "You need to be of legal drinking age to place an order."
     render :edit
   end
+    
+    
     
   
 end
