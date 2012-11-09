@@ -6,28 +6,28 @@ Spree::OrderMailer.class_eval do
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : '')
     subject += "#{t('order_mailer.confirm_email.subject')}"
-    mail(:to => order.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+    mail(:to => order.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
   end
   
   def cancel_email(order, resend = false)
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : '')
     subject += "#{t('order_mailer.cancel_email.subject')}"
-    mail(:to => order.email, :reply_to => "order@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+    mail(:to => order.email, :reply_to => "order@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
   end
 
   def giftor_shipped_email(order, resend=false)
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{t('order_mailer.giftor_shipped_email.subject')}"
-    mail(:to => order.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+    mail(:to => order.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
   end
 
   def giftor_delivered_email(order, resend=false)
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{t('order_mailer.giftor_delivered_email.subject')}"
-    mail(:to => order.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+    mail(:to => order.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
   end
 
   # sent to giftee
@@ -36,7 +36,7 @@ Spree::OrderMailer.class_eval do
       @order = order
       subject = (resend ? "[#{t(:resend).upcase}] " : "")
       subject += "#{t('order_mailer.giftee_notify_email.subject')}"
-      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
     end
   end
 
@@ -45,7 +45,7 @@ Spree::OrderMailer.class_eval do
       @order = order
       subject = (resend ? "[#{t(:resend).upcase}] " : "")
       subject += "#{t('order_mailer.giftee_shipped_email.subject')}"
-      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
     end
   end
   
@@ -54,7 +54,7 @@ Spree::OrderMailer.class_eval do
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{t('order_mailer.retailer_submitted_email.subject')}"
-    mail(:to => order.retailer.email, :reply_to => "orders@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+    mail(:to => order.retailer.email, :reply_to => "orders@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
   end
   
   # send email to reservebar.com that retailer has accepted an order
@@ -63,7 +63,7 @@ Spree::OrderMailer.class_eval do
     @retailer = @order.retailer
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{t('order_mailer.accepted_notification.subject')} ##{order.number}"
-    mail(:to => "management@reservebar.com", :subject => subject)
+    mail(:to => Spree::Config[:mail_notification_to], :subject => subject)
   end
   
   # send email to reservebar.com with all orders that have not been accepted yet
@@ -72,7 +72,7 @@ Spree::OrderMailer.class_eval do
     @orders = Spree::Order.not_accepted_hours(hours).order("spree_orders.updated_at desc")
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "Orders that have not been accepted more than #{hours} hours"
-    mail(:to => "management@reservebar.com", :subject => subject)
+    mail(:to => Spree::Config[:mail_notification_to], :subject => subject)
   end
 
   # Regular status email to management - indicates if any orders are not progressing as needed
@@ -80,7 +80,7 @@ Spree::OrderMailer.class_eval do
     @retailers = Spree::Retailer.active
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{t('order_mailer.regular_reminder_email.subject')}"
-    mail(:to => "management@reservebar.com", :reply_to => "orders@reservebar.com", :subject => subject)
+    mail(:to => Spree::Config[:mail_notification_to], :reply_to => "orders@reservebar.com", :subject => subject)
   end
   
   
@@ -89,6 +89,6 @@ Spree::OrderMailer.class_eval do
     @order = order
     @error = error
     subject = "Payment Capture Failed - #{order.number}"
-    mail(:to => "management@reservebar.com", :subject => subject)
+    mail(:to => Spree::Config[:mail_notification_to], :subject => subject)
   end
 end
