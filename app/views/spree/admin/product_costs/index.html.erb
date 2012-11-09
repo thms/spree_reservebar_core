@@ -14,13 +14,13 @@
 <table class="index" id="listing_product_costs">
   <tr>
   	<th>SKU</th>
-  	<th>Name</th>
+  	<th><%= sort_link @search,:name, t(:name), {}, {:title => 'admin_product_costs_listing_name_title'} %></th>
 	<th>Option Types</th>
     <th>Cost</th>
     <th data-hook="admin_product_cost_index_header_actions"></th>
   </tr>
 
-<% @products.each do |product| %>
+<% @collection.each do |product| %>
 
 <% product_cost = product.master.product_costs.where(:retailer_id => @retailer.id).first  || 
 				  Spree::ProductCost.create(:retailer_id => @retailer.id, :variant_id => product.master.id, :cost_price => product.price) %>
@@ -49,5 +49,5 @@
 <% end %>
 </table>
 
-<%= paginate @products %>
+<%= paginate @collection %>
 
