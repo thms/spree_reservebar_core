@@ -1,7 +1,7 @@
 <% buttons = Spree::Config[:print_buttons] || "invoice"
    buttons = buttons.split(",").collect{|b| b.strip } %>
 <%  buttons.each do |button| %>
-<%= button_link_to(I18n.t(button.to_s+".print"), "/admin/invoice/#{@order.number}/#{button}.pdf", :target => "_blank") %>
+	<%= button_link_to(I18n.t(button.to_s+".print"), "/admin/invoice/#{@order.number}/#{button}.pdf" ,:target => "_blank") %>
 <% end %>
 
 <br class="clear" />

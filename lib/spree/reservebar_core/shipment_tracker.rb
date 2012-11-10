@@ -43,7 +43,14 @@ module Spree
                    new_state = "delivered"
                end
                
-               if shipment.state == 'shipped' && new_state == 'delivered' 
+               if shipment.state == 'pending' && new_state == 'delivered'
+                 shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil
+                 shipment.ship!
+                 shipment.deliver!
+               elsif shipment.state == 'pending' && new_state == 'shipped'
+                 shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil
+                 shipment.ship!
+               elsif shipment.state == 'shipped' && new_state == 'delivered' 
                 shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil
                 shipment.deliver!
               elsif shipment.state == 'ready' && new_state == 'delivered'

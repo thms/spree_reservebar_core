@@ -36,7 +36,7 @@ Spree::OrderMailer.class_eval do
       @order = order
       subject = (resend ? "[#{t(:resend).upcase}] " : "")
       subject += "#{t('order_mailer.giftee_notify_email.subject')}"
-      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
     end
   end
 
@@ -45,7 +45,7 @@ Spree::OrderMailer.class_eval do
       @order = order
       subject = (resend ? "[#{t(:resend).upcase}] " : "")
       subject += "#{t('order_mailer.giftee_shipped_email.subject')}"
-      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => "management@reservebar.com", :subject => subject)
+      mail(:to => order.gift.email, :reply_to => "support@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
     end
   end
   
@@ -81,7 +81,8 @@ Spree::OrderMailer.class_eval do
     subject = (resend ? "[#{t(:resend).upcase}] " : "")
     subject += "#{t('order_mailer.regular_reminder_email.subject')}"
     mail(:to => Spree::Config[:mail_notification_to], :reply_to => "orders@reservebar.com", :subject => subject)
-  end  
+  end
+  
   
   # Send email to reservebar if a payment capture fails for some reason
   def capture_payment_error_notification(order, error)
