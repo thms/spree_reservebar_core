@@ -111,7 +111,7 @@ module Spree
           @collection = Spree::Product.not_deleted.where(["name #{LIKE} ?", "%#{params[:q]}%"])
           @collection = @collection.includes(includes).limit(params[:limit] || 10)
 
-          tmp = Spree::Product.where(["#{Variant.table_name}.sku #{LIKE} ?", "%#{params[:q]}%"])
+          tmp = Spree::Product.not_deleted.where(["#{Variant.table_name}.sku #{LIKE} ?", "%#{params[:q]}%"])
           tmp = tmp.includes(:variants_including_master).limit(params[:limit] || 10)
           @collection.concat(tmp)
 
