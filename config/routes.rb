@@ -1,5 +1,6 @@
 Spree::Core::Engine.routes.prepend do
-  
+  resources :business_giftings
+  get '/business_gifting', :to => 'business_giftings#new', :as => :business_gifting
   
   # route to allow applying a coupon during checkout via Ajax
   match '/checkout/apply_coupon/:state' => 'checkout#apply_coupon', :as => :apply_coupon_checkout
@@ -49,5 +50,6 @@ Spree::Core::Engine.routes.prepend do
     end
 
 		resources :referrals
+		resources :business_giftings
   end
 end

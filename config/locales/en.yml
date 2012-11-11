@@ -57,4 +57,13 @@ en:
   tile_title: "Tile Title"
   shipment_states:
     delivered: delivered
-  
+  business_gifting:
+    first_name: First Name
+    last_name: Last Name
+    company_name: Company Name
+    office_phone: Office Phone
+    mobile_phone: Mobile Phone
+    email: "Email Address"
+    delivery_date: "Approximate Delivery Date"
+    recipients: "Approximate # of recipients"
+    message: "Additional Information/Requests (500 characters)"

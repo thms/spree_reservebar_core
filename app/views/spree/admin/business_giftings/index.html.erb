@@ -1,0 +1,32 @@
+<h1>Listing Business Giftings</h1>
+
+<table class="index">
+  <tr>
+    <th>Name</th>
+    <th>Company name</th>
+    <th>Office phone</th>
+    <th>Mobile phone</th>
+    <th>Email</th>
+    <th>Deliveried at</th>
+    <th>Recipients</th>
+    <th></th>
+  </tr>
+
+<% @business_giftings.each do |business_gifting| %>
+  <tr>
+    <td><%= business_gifting.full_name %></td>
+    <td><%= business_gifting.company_name %></td>
+    <td><%= business_gifting.office_phone %></td>
+    <td><%= business_gifting.mobile_phone %></td>
+    <td><%= business_gifting.email %></td>
+    <td><%= business_gifting.delivery_date %></td>
+    <td><%= business_gifting.recipients %></td>
+    <td><%= link_to 'Show', admin_business_gifting_path(business_gifting) %>
+    <%= link_to 'Edit', edit_admin_business_gifting_path(business_gifting) %>
+    <%= link_to 'Destroy', admin_business_gifting_path(business_gifting), confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= paginate @business_giftings %>
