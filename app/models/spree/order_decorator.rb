@@ -79,7 +79,7 @@ Spree::Order.class_eval do
   
 	
   def gift_notification
-    Spree::OrderMailer.giftee_notify_email(self).deliver
+    Spree::OrderMailer.giftee_notify_email(self).deliver unless self.gift.email.blank?
   end
 	
 	def retailer

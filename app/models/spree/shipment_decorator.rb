@@ -38,7 +38,7 @@ Spree::Shipment.class_eval do
   def after_ship
     inventory_units.each &:ship!
     Spree::OrderMailer.giftor_shipped_email(self.order).deliver()
-    Spree::OrderMailer.giftee_shipped_email(self.order).deliver() if self.order.is_gift?
+    Spree::OrderMailer.giftee_shipped_email(self.order).deliver() if (self.order.is_gift? && !self.order.gift.email.blank?)
   end
   
   
