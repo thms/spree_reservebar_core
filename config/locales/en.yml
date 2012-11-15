@@ -61,9 +61,8 @@ en:
     first_name: First Name
     last_name: Last Name
     company_name: Company Name
-    office_phone: Office Phone
-    mobile_phone: Mobile Phone
+    phone_number: Contact Phone Number
     email: "Email Address"
     delivery_date: "Approximate Delivery Date"
-    recipients: "Approximate # of recipients"
+    recipients: "Approximate # of Gift Recipients"
     message: "Additional Information/Requests (500 characters)"

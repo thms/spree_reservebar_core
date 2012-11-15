@@ -9,15 +9,14 @@
     <%= f.text_field :last_name, :maxlength => 30, :class => "required" %></td>
 		</tr>
 		<tr>
-			<td class="field"><%= f.label :company_name, t('business_gifting.company_name') %><span class="req">*</span><br />
-    		<%= f.text_field :company_name, :maxlength => 30, :class => "required" %></td>
+			<td class="field"><%= f.label :company_name, t('business_gifting.company_name') %><span class="opt">(Optional)</span><br />
+    		<%= f.text_field :company_name, :maxlength => 30 %></td>
 			<td></td>
 		</tr>
 		<tr>
-			<td class="field"><%= f.label :office_phone, t('business_gifting.office_phone') %><span class="req">*</span><br />
-    		<%= f.text_field :office_phone, :maxlength => 10, :class => "required digits" %></td>
-			<td class="field"><%= f.label :mobile_phone, t('business_gifting.mobile_phone') %><br />
-    		<%= f.text_field :mobile_phone, :maxlength => 10, :class => "digits" %></td>
+			<td class="field"><%= f.label :phone_number, t('business_gifting.phone_number') %><span class="req">*</span><br />
+    		<%= f.text_field :phone_number, :maxlength => 10, :class => "required digits" %></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td class="field"><%= f.label :email, t('business_gifting.email') %><span class="req">*</span><br />
@@ -25,14 +24,14 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td class="field"><%= f.label :delivery_date, t('business_gifting.delivery_date') %><span class="req">*</span><br />
-    		<%= f.text_field :delivery_date, :class => "required date" %></td>
-			<td class="field"><%= f.label :recipients, t('business_gifting.recipients') %><span class="req">*</span><br />
-    		<%= f.text_field :recipients, :class => "required number" %></td>
+			<td class="field"><%= f.label :delivery_date, t('business_gifting.delivery_date') %><span class="opt">(Optional)</span><br />
+    		<%= f.text_field :delivery_date, :class => "date" %></td>
+			<td class="field"><%= f.label :recipients, t('business_gifting.recipients') %><span class="opt">(Optional)</span><br />
+    		<%= f.text_field :recipients, :class => "number" %></td>
 		</tr>
 		<tr>
 			<td class="field" colspan="2">
-				<%= f.label :message, t('business_gifting.message') %>
+				<%= f.label :message, t('business_gifting.message') %><span class="opt">(Optional)</span>
 				<label id="message_limit_error" class="error" style="display:none">Character Limit Reached</label><br />
     		<%= f.text_area :message, :maxlength => 500, :rows => 4, :cols => 40 %>
     		<label id="message_length_counter" class="error" style="text-align:right;"><span></span> characters left</label>
@@ -46,6 +45,7 @@
 <style type="text/css">
 	#new_spree_business_gifting table {border-collapse: inherit;}
 	#new_spree_business_gifting span.req {color:red;}
+	#new_spree_business_gifting span.opt {color:#666;}
 	#business_gifting_message {width:500px;}
 	.actions {margin:10px 0;}
 </style>
