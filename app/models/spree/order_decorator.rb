@@ -119,6 +119,11 @@ Spree::Order.class_eval do
     self.shipping_categories.first == Spree::ShippingCategory.find_by_name('Wine')
   end
   
+  # returns true if this order contains alcoholic items, used by fedex requests to add alcohol and so forth
+  def contains_alcohol?
+    (self.shipping_categories - [1,2,3,4]).empty? && !self.shipping_categories.empty?
+  end
+  
   
   # Calculates the total amount due to the retailer based on current settings
   # Note that the gift packaging cost does not go to the retailer, but all sales tax does

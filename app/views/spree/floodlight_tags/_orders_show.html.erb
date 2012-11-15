@@ -1,0 +1,47 @@
+<% 	
+	quantity = 0
+	price = 0
+	products = []
+	items = @order.line_items.select {|l| l.product.name.include? "Veuve" } 
+	items.each do |item|
+		quantity = quantity + item.quantity
+		price = price + (item.product.price * item.quantity)
+		products << item.product.name
+	end
+	products = products.join(',')
+%>
+
+<!--
+Start of DoubleClick Floodlight Tag: Please do not remove
+Activity name of this tag: VC ReserveBar Sales Confirmation Page
+URL of the webpage where the tag is expected to be placed: http://www.reservebar.com//orders/
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 11/13/2012
+-->
+<iframe src="http://2723186.fls.doubleclick.net/activityi;src=2723186;type=2012s414;cat=vcres021;qty=1;cost=0;u9=<%= price -%>;u8=Champagne;u7=<%= products -%>;u10=<%= quantity -%>;ord=<%= @order.number -%>?" width="1" height="1" frameborder="0" style="display:none"></iframe>
+
+<!-- End of DoubleClick Floodlight Tag: Please do not remove -->
+
+
+<% 	
+	quantity = 0
+	price = 0
+	products = []
+	items = @order.line_items.select {|l| l.product.name.include? "Ardberg" } 
+	items.each do |item|
+		quantity = quantity + item.quantity
+		price = price + (item.product.price * item.quantity)
+		products << item.product.name
+	end
+	products = products.join(',')
+%>
+<!--
+Start of DoubleClick Floodlight Tag: Please do not remove
+Activity name of this tag: Ardbeg ReserveBar Sales Confirmation Page
+URL of the webpage where the tag is expected to be placed: http://www.reservebar.com//orders/
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 11/13/2012
+-->
+<iframe src="http://3708650.fls.doubleclick.net/activityi;src=3708650;type=sales190;cat=ardbe475;qty=1;cost=0;u10=<%= quantity -%>;u9=<%= price -%>;u8=Spirits;u7=<%= products -%>;ord=<%= @order.number -%>?" width="1" height="1" frameborder="0" style="display:none"></iframe>
+
+<!-- End of DoubleClick Floodlight Tag: Please do not remove -->
