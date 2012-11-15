@@ -1,0 +1,8 @@
+<span class="cc-type">
+	<% unless order.creditcards.first.cc_type.blank? %>
+  		<%= image_tag "creditcards/icons/#{order.creditcards.first.cc_type}.png"%>
+  		<%= t(:ending_in)%> <%= order.creditcards.first.last_digits %>
+	<% else %>
+	  		Credit Card <%= t(:ending_in)%> <%= order.creditcards.first.last_digits %>
+	<% end %>
+</span>

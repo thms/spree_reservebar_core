@@ -9,10 +9,10 @@
 		<% @body_id = 'login' %>
 		<div id="existing-customer">
 			<h6><%= t(:login_as_returning) %></h6>
-			<p><%= t(:login_prompt) %></p>
+			<p style="font-weight:bold;font-size:14px;">or <%= link_to "Sign Up Now as a New Member", spree.signup_path %></p>
 			<div data-hook="login">
 				<%= render :partial => 'spree/shared/login' %>
-				<div class="options"><%= t(:or) %> <%= link_to t(:forgot_password), spree.new_user_password_path %></div>
+				<%= link_to t(:forgot_password), spree.new_user_password_path %>
 			</div>
 		</div>
 		<div data-hook="login_extras"></div>
