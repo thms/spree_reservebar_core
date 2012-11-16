@@ -1,6 +1,19 @@
 <div class="add-to-cart">
 	<% if @product.shipping_category.name == "Non Shipping" %>
-		<p>Please call <strong>877-Reserve</strong> to speak with a ReserveBar Experiences Consultant</p>
+		<p>Please call 1-855-GIFT-FAST to speak with a ReserveBar Experiences Specialist to discuss pricing and other information regarding this luxurious experience.  If you prefer, you may email us at experiences@reservebar.com with the following information, and a ReserveBar Experiences Specialist will contact you at your convenience.</p>
+		<ul style="list-style:outside;margin-left:12px;">
+			<li>First Name</li>
+			<li>Last Name</li>
+			<li>Phone</li>
+			<li>Email Address</li>
+			<li>Preferred contact method: Email or Phone</li>
+			<li>if phone, best time to reach you (include time zone)</li>
+			<li>Additional Information/Requests</li>
+		</ul>
+		<%= javascript_tag do %>
+			$("#product-price").parent().css("width", "600px");
+			$("#product-price").hide();
+		<% end %>
 	<% else %>
 	  <% if @product.has_stock? || Spree::Config[:allow_backorders] %>      
 	    <%= number_field_tag (@product.has_variants? ? :quantity : "variants[#{@product.master.id}]"),

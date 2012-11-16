@@ -27,7 +27,10 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       # Caclulate weight of packaging
       package_weight = Spree::Calculator::ActiveShipping::PackageWeight.for(shipment.order)
       
-      package = ActiveMerchant::Shipping::Package.new(weight + gift_packaging_weight + package_weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
+      # Round up the weight to the nearest lbs, like Fedex does in their calculations. At this point, the weight is on oz (due to the setting of unit_mlutiplier)
+      total_weight = ((weight + gift_packaging_weight + package_weight) / multiplier).ceil * multiplier
+      
+      package = ActiveMerchant::Shipping::Package.new(total_weight, Spree::ActiveShipping::Config[:default_box_size], :units => Spree::ActiveShipping::Config[:units].to_sym)
       
       # make request to fedex
       shipper = ActiveMerchant::Shipping::Location.new(
@@ -65,7 +68,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :payment_type => 'THIRD_PARTY',  
           :shipper_email => retailer.email, 
           :recipient_email => recipient_email, 
-          :alcohol => true, 
+          :alcohol => shipment.order.contains_alcohol?, 
           :invoice_number => shipment.number, 
           :po_number => shipment.order.number,
           :image_type => ActiveShipping::DEFAULT_IMAGE_TYPE,
