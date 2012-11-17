@@ -1,0 +1,20 @@
+<div id="forgot-password">
+  <h6><%= t(:forgot_password) %></h6>
+
+  <p>Enter your email address below. Instructions to reset your password will be emailed to you:</p>
+
+  <%= form_for Spree::User.new, :as => :user, :url => spree.user_password_path do |f| %>
+    <p>
+      <%= f.label :email, t(:email) %><br />
+      <%= f.email_field :email, :size => 37 %>
+    </p>
+    <p>
+      <%= f.submit t(:reset_password), :class => 'button primary' %>
+    </p>
+  <% end %>
+</div>
+
+<style type="text/css">
+	#forgot-password {width:auto;}
+	#forgot-password p {padding-top:0;}
+</style>

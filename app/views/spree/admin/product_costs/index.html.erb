@@ -14,13 +14,13 @@
 <table class="index" id="listing_product_costs">
   <tr>
   	<th>SKU</th>
-  	<th>Name</th>
+  	<th><%= sort_link @search,:name, t(:name), {}, {:title => 'admin_product_costs_listing_name_title'} %></th>
 	<th>Option Types</th>
     <th>Cost</th>
     <th data-hook="admin_product_cost_index_header_actions"></th>
   </tr>
 
-<% @products.each do |product| %>
+<% @collection.each do |product| %>
 
 <% product_cost = product.master.product_costs.where(:retailer_id => @retailer.id).first  || 
 				  Spree::ProductCost.create(:retailer_id => @retailer.id, :variant_id => product.master.id, :cost_price => product.price) %>
@@ -49,5 +49,32 @@
 <% end %>
 </table>
 
-<%= paginate @products %>
+<%= paginate @collection %>
 
+<% content_for :sidebar do %>
+  <div data-hook="admin_product_costs_sidebar">
+    <%= form_for([:admin, @search], :url => admin_retailer_product_costs_path(@retailer)) do |f| %>
+      <div class="box">
+        <h3><%= t(:search) %></h3>
+
+        <%- locals = {:f => f} %>
+        <div data-hook="admin_product_costs_index_search">
+          <p>
+            <%= f.label :name_contains, t(:name) %><br />
+            <%= f.text_field :name_contains, :size => 15 %>
+          </p>
+          <p>
+            <%= f.label :variants_including_master_sku_contains, t(:sku) %><br />
+            <%= f.text_field :variants_including_master_sku_contains, :size => 15 %>
+          </p>
+        </div>
+
+        <div data-hook="admin_product_costs_index_search_buttons">
+          <p class="form-buttons">
+            <%= button t(:search) %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

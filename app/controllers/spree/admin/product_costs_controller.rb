@@ -8,8 +8,10 @@ module Spree
       # GET /retailer/1/product_costs.json
       # Get a list of all products, so we show all variants and cost for the retailer, even if the retailer's cost is not yet set
       def index
-        @products = Spree::Product.not_deleted.includes(:variants).page(params[:page]).per(Spree::Config[:orders_per_page])
-        respond_with @products
+        respond_with(@collection) do |format|
+          format.html
+          format.json { render :json => json_data }
+        end
        end
        
        
@@ -91,6 +93,30 @@ module Spree
 
     	protected
     	
+      def collection
+        return @collection if @collection.present?
+        
+        unless request.xhr?
+          params[:search] ||= {}
+          
+          params[:search][:meta_sort] ||= "name.asc"
+          @search = Spree::Product.not_deleted.metasearch(params[:search])
+          
+          @collection = @search.relation.group_by_products_id.includes([:master, {:variants => [:images, :option_values]}]).page(params[:page]).per(Spree::Config[:admin_products_per_page])
+        else
+          includes = [{:variants => [:images,  {:option_values => :option_type}]}, :master, :images]
+          
+          @collection = Spree::Product.not_deleted.where(["name #{LIKE} ?", "%#{params[:q]}%"])
+          @collection = @collection.includes(includes).limit(params[:limit] || 10)
+          
+          tmp = Spree::Product.not_deleted.where(["#{Variant.table_name}.sku #{LIKE} ?", "%#{params[:q]}%"])
+          tmp = tmp.includes(:variants_including_master).limit(params[:limit] || 10)
+          @collection.concat(tmp)
+          
+          @collection.uniq
+        end
+      end
+         	
       private
   
       # Load up retailer
