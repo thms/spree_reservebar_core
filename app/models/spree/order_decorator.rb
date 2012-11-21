@@ -130,7 +130,7 @@ Spree::Order.class_eval do
   # Note that the gift packaging cost does not go to the retailer, but all sales tax does
   def total_amount_due_to_retailer
     shipping = self.retailer.reimburse_shipping_cost ? self.ship_total : 0.0
-    product_cost = (self.line_items.collect {|line_item| line_item.variant.product_costs.where(:retailer_id => self.retailer_id).first.cost_price * line_item.quantity }).sum
+    product_cost = (self.line_items.collect {|line_item| line_item.product_cost_for_retailer }).sum
     self.tax_total + shipping + product_cost
   end
   
