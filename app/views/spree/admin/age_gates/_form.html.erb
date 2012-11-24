@@ -1,0 +1,12 @@
+<%= form_for([:admin, @age_gate]) do |f| %>
+
+	<div class="field">
+	  <%= f.label :path %>
+	  <%= f.text_field :path %>
+	</div>
+
+	<div class="actions">
+	  <%= f.submit %>
+	</div>
+
+<% end %>

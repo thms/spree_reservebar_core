@@ -1,0 +1,27 @@
+<h1>Age Gates</h1>
+<p>Age gates can be defined for each individual page or enabled globally for all pages</p>
+
+<div class="toolbar" data-hook="toolbar">
+  <ul class="actions">
+    <li id="new_age_gate_link">
+      <%= button_link_to t(:new_age_gate), new_object_url, {:remote => true, :icon => 'add', :id => 'admin_new_age_gate'} %>
+    </li>
+  </ul>
+  <br class="clear" />
+</div>
+
+<div id="new_age_gate" data-hook></div>
+
+<table class="index" id="listing_product_costs">
+  <tr>
+  	<th>Path</th>
+    <th data-hook="admin_age_gate_index_header_actions"></th>
+  </tr>
+
+<% @collection.each do |age_gate| %>
+	<tr>
+		<td><%= age_gate.path %></td>
+		<td><%= link_to 'Destroy', admin_age_gate_path(age_gate), confirm: 'Are you sure?', method: :delete %></td>
+	</tr>
+<% end %>
+</table>
