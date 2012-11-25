@@ -14,7 +14,7 @@ class Spree::AgeGateController < Spree::BaseController
       if age(birthdate) > 20
         #test passed, let him through
         session[:age_gate] = "passed"
-        redirect_back_or_default '/'
+        redirect_to request.referrer
       else
         #test failed, block session and redirect to we're sorry page
         session[:age_gate] = "failed"
