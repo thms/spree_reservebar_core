@@ -22,9 +22,9 @@ OrderNumber,Order details link,Customer email address,Product name,OrderDate,Ord
 				order.adjustments.eligible.promotion.first.try(:amount),
 				(order.line_items.collect {|line_item| line_item.margin_for_site }).sum,
 				(order.line_items.collect {|line_item| line_item.margin_for_site }).sum - (order.adjustments.eligible.promotion.first.nil? ? 0 : order.adjustments.eligible.promotion.first.amount.abs),
-				order.retailer.name, 
+				order.retailer.try(:name), 
 				(order.line_items.collect {|line_item| line_item.product_cost_for_retailer }).sum,
-				order.total_amount_due_to_retailer
+				order.retailer ? order.total_amount_due_to_retailer : 0
 			]
   end
 end %>
@@ -40,7 +40,7 @@ OrderNumber,OrderDate,OrderState,PaymentState,ShipmentState,Tax,ProductCostForRe
 				order.shipment_state,
 				order.tax_total, 
 				(order.line_items.collect {|line_item| line_item.product_cost_for_retailer }).sum,
-				order.total_amount_due_to_retailer
+				order.retailer ? order.total_amount_due_to_retailer : 0
 			]
   end
 end %>
