@@ -5,7 +5,12 @@ Spree::Core::Engine.routes.prepend do
   # route to allow applying a coupon during checkout via Ajax
   match '/checkout/apply_coupon/:state' => 'checkout#apply_coupon', :as => :apply_coupon_checkout
   
+  # age gate routes
+  match '/age_gate/validate_age' => 'age_gate#validate_age', :as => :age_gate_validate_age
+  
   namespace :admin do
+    
+    resources :age_gates
     
     match '/get_retailer_data' => 'overview#get_retailer_data'
     match '/orders/get_retailer_data' => 'orders#get_retailer_data'

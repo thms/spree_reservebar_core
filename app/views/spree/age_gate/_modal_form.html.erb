@@ -1,0 +1,38 @@
+<script>
+$(function() {
+	// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+	$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+	$("#age-gate-dialog").dialog({
+		autoOpen: true,
+		height: 500,
+		width: 500,
+		modal: true,
+		closeOnEscape: false,
+		resizable: false,
+		draggable: false,
+		title: "",
+		beforeClose: function( event, ui ) {return false;}
+	});
+
+});
+</script>
+<div id="age-gate-dialog">
+
+	<center>
+		<figure id="logo" class="columns alpha six" data-hook>
+		  <%= logo %>
+		</figure>
+	</center>
+	<h3 style="margin:60px auto 24px auto;">YOU LOOK SO YOUNG FOR YOUR AGE…</h3>
+	<p>…so we need to ask for your birth date.  At ReserveBar we are committed to responsible gifting so we need to check that you can legally enjoy our products.</p>
+	<br /><br />
+	<center>
+	<%= form_tag(age_gate_validate_age_path) do %>
+		<%= date_select :age_gate, :birthdate, :start_year => 1922, :end_year => Date.today.year - 10,  %><br /><br />
+		<%= submit_tag 'Submit' %>
+	<% end %>
+	</center>
+	<div class="clearfix"></div>
+	
+</div>
