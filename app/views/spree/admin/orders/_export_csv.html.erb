@@ -1,9 +1,9 @@
 <% 
 	query = request.GET
-	query[:search][:created_at_greater_than] = params[:search][:created_at_greater_than].iso8601[0..9] if params[:search][:created_at_greater_than]
-	query[:search][:created_at_greater_than] =  params[:search][:completed_at_greater_than].iso8601[0..9] if params[:search][:completed_at_greater_than]
-	query[:search][:created_at_less_than] = params[:search][:created_at_less_than].iso8601[0..9] if params[:search][:created_at_less_than]
-	query[:search][:created_at_less_than] = params[:search][:completed_at_less_than].iso8601[0..9] if params[:search][:completed_at_less_than]
+	query[:search][:created_at_greater_than] = params[:search][:created_at_greater_than] if params[:search][:created_at_greater_than]
+	query[:search][:created_at_greater_than] =  params[:search][:completed_at_greater_than] if params[:search][:completed_at_greater_than]
+	query[:search][:created_at_less_than] = params[:search][:created_at_less_than] if params[:search][:created_at_less_than]
+	query[:search][:created_at_less_than] = params[:search][:completed_at_less_than] if params[:search][:completed_at_less_than]
 %>
-<%= link_to 'Orders report', '/admin/orders.csv?type=order' + query.to_query %> / 
-<%= link_to 'Product sales report', '/admin/orders.csv?type=product' + query.to_query %>
+<%= link_to 'Orders report', '/admin/orders/export.csv?type=order&' + query.to_query %> / 
+<%= link_to 'Product sales report', '/admin/orders/export.csv?type=product&' + query.to_query %>

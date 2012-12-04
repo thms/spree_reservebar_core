@@ -45,6 +45,7 @@ Spree::Core::Engine.routes.prepend do
       end
       collection do
       	get :regular_reminder_email
+      	get :export
       end
     end
 
