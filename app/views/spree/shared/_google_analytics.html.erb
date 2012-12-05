@@ -11,7 +11,7 @@
     pageTracker._trackPageview();
   <% end -%>
 
-  <% if flash[:commerce_tracking].blank? %>
+  <% if flash[:commerce_tracking] %>
 
     <%= javascript_tag do -%>
       // report e-commerce transaction information when applicable
