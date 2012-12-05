@@ -1,3 +1,5 @@
+<% if flash[:commerce_tracking] %>
+
 <% 	
 	quantities = []
 	total_price = 0
@@ -91,3 +93,5 @@ Creation Date: 11/29/2012
 <iframe src="http://1866820.fls.doubleclick.net/activityi;src=1866820;type=sales676;cat=henne507;qty=1;cost=<%= total_price -%>;u10=<%= quantities -%>;u9=<%= prices -%>;u8=<%= categories -%>;u7=<%= products -%>;ord=<%= @order.number -%>?" width="1" height="1" frameborder="0" style="display:none"></iframe>
 
 <!-- End of DoubleClick Floodlight Tag: Please do not remove -->
+
+<% end %>

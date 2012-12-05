@@ -1,0 +1,48 @@
+<% if tracker = Spree::Tracker.current %>
+
+  <%= javascript_tag do -%>
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  <% end -%>
+
+  <%= javascript_tag do -%>
+    var pageTracker = _gat._getTracker("<%= tracker.analytics_id %>");
+    pageTracker._initData();
+    pageTracker._trackPageview();
+  <% end -%>
+
+  <% if flash[:commerce_tracking].blank? %>
+
+    <%= javascript_tag do -%>
+      // report e-commerce transaction information when applicable
+      pageTracker._addTrans(
+      "<%= @order.number %>",    //Order Number
+      "<%= @order.retailer.name -%>",    //Affiliation
+      "<%= @order.total %>",    //Order total
+      "<%= @order.adjustments.tax.sum(:amount).to_s %>",    //Tax Amount
+      "<%= @order.adjustments.shipping.sum(:amount).to_s %>",    //Ship Amount
+      "<%= @order.ship_address.city -%>",    //City
+      "<%= @order.ship_address.state.name -%>",    //State
+      "<%= @order.ship_address.country.iso3 -%>"    //Country
+      );
+      <% @order.line_items.each do |line_item| %>
+        pageTracker._addItem("<%= @order.number %>", "<%= line_item.variant.sku %>", "<%= line_item.variant.product.name %>",
+          "<%= line_item.variant.product.shipping_category.name -%>", "<%= line_item.price %>", "<%= line_item.quantity %>");
+		<% if line_item.gift_package %>
+        	pageTracker._addItem("<%= @order.number %>", "<%= line_item.gift_package.sku %>", "<%= line_item.gift_package.title %>",
+          	"PACKAGING", "<%= line_item.gift_package.price %>", "<%= line_item.quantity %>");
+		<% end %>
+      <% end %>
+
+	<% @order.adjustments.promotion.eligible.each do |adjustment| %>
+		pageTracker._addItem("<%= @order.number %>", 
+		"<%= adjustment.originator.promotion.code.blank? ? adjustment.originator.promotion.description :  adjustment.originator.promotion.code %>", 
+		"<%= adjustment.originator.promotion.code.blank? ? adjustment.originator.promotion.description :  adjustment.originator.promotion.code %>",
+          "PROMO", "<%= adjustment.amount %>", "1");
+	<% end %>
+      pageTracker._trackTrans();
+    <% end %>
+
+  <% end %>
+
+<% end %>
