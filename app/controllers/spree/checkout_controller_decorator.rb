@@ -23,20 +23,22 @@ Spree::CheckoutController.class_eval do
   def apply_coupon
     if @order.update_attributes(object_params)
 
-      fire_event('spree.checkout.update')
-
       if @order.coupon_code.present?
 
-        if Spree::Promotion.exists?(:code => @order.coupon_code)
-          fire_event('spree.checkout.coupon_code_added', :coupon_code => @order.coupon_code)
-          # If it doesn't exist, raise an error!
-          # Giving them another chance to enter a valid coupon code
-          @message = "Coupon applied"
+        if (Spree::Promotion.exists?(:code => @order.coupon_code))
+          if Spree::Promotion.where(:code => @order.coupon_code).last.eligible?(@order)
+            fire_event('spree.checkout.coupon_code_added', :coupon_code => @order.coupon_code)
+            # If it doesn't exist, raise an error!
+            # Giving them another chance to enter a valid coupon code
+            @message = "Coupon applied"
+          else
+            @message = "The coupon cannot be applied to this order"
+          end
         else
           @message = t(:promotion_not_found)
         end
       end
-      # Need to reload the order, otehrwise total is not updated
+      # Need to reload the order, otherwise total is not updated
       @order.reload
       respond_with(@order, @message)
     end

@@ -56,6 +56,14 @@ Spree::Admin::OrdersController.class_eval do
 
 	  @search = Spree::Order.metasearch(params[:search])
 
+	def export
+	  params[:search] ||= {}
+	  params[:search][:completed_at_is_not_null] ||= '1' if Spree::Config[:show_only_complete_orders_by_default]
+	  @show_only_completed = params[:search][:completed_at_is_not_null].present?
+	  params[:search][:meta_sort] ||= @show_only_completed ? 'completed_at.desc' : 'created_at.desc'
+
+	  @search = Spree::Order.metasearch(params[:search])
+
 	  if !params[:search][:created_at_greater_than].blank?
 	    params[:search][:created_at_greater_than] = Time.zone.parse(params[:search][:created_at_greater_than]).beginning_of_day rescue ""
 	  end
@@ -77,6 +85,7 @@ Spree::Admin::OrdersController.class_eval do
 		end
 		respond_with(@orders)
 	end
+
 
   def get_retailer_data
   	if params[:retailer_id] && !params[:retailer_id].empty?

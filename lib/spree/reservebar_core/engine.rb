@@ -20,25 +20,17 @@ module Spree
         app.config.spree.add_class('retailers')
         app.config.spree.retailers = Spree::ReservebarCore::Environment.new
       end
-      ## TODO: figure out if we need any of the below stuff
-if false
-      initializer 'spree.reservebar_core.register.retailer.calculators' do |app|
+
+      initializer 'spree.promo.register.promotion.calculators', :after => 'spree.promo.environment' do |app|
+        app.config.spree.calculators.promotion_actions_create_adjustments << Spree::Calculator::PercentItemTotalWithCap
+        app.config.spree.calculators.promotion_actions_create_adjustments << Spree::Calculator::PercentItemTotalPlusFreeShipping
+        app.config.spree.calculators.promotion_actions_create_adjustments << Spree::Calculator::FreeShippingCheapestOnly
       end
 
-      initializer 'spree.promo.register.promotions.rules' do |app|
-        app.config.spree.promotions.rules = [
-          Spree::Promotion::Rules::ItemTotal,
-          Spree::Promotion::Rules::Product,
-          Spree::Promotion::Rules::User,
-          Spree::Promotion::Rules::FirstOrder,
-          Spree::Promotion::Rules::UserLoggedIn]
-      end
+#      initializer 'spree.promo.register.promotions.rules' do |app|
+#        app.config.spree.promotions.rules << nil
+#      end
 
-      initializer 'spree.promo.register.promotions.actions' do |app|
-        app.config.spree.promotions.actions = [Spree::Promotion::Actions::CreateAdjustment,
-          Spree::Promotion::Actions::CreateLineItems]
-      end
-end
     end
   end
 end
