@@ -12,11 +12,15 @@ $(function() {
 		resizable: false,
 		draggable: false,
 		title: "",
+		dialogClass: "age-gate-dialog",
 		beforeClose: function( event, ui ) {return false;}
 	});
 
 });
 </script>
+<style type="text/css">
+  .age-gate-dialog .ui-widget-header .ui-icon {display:none;}
+</style>
 <div id="age-gate-dialog">
 
 	<center>
