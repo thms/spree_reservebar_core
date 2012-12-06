@@ -19,7 +19,7 @@ Spree::Admin::ProductsController.class_eval do
         else
           includes = [{:variants => [:images,  {:option_values => :option_type}]}, :master, :images]
 
-          @collection = super.where(["name #{LIKE} ? and deleted_at is ?", "%#{params[:q]}%", nil])
+          @collection = super.where(["name #{LIKE} ? and deleted_at is ?", "%#{params[:q]}%", nil]).order("updated_at desc")
           @collection = @collection.includes(includes).limit(params[:limit] || 10)
 
           tmp = super.where(["#{Spree::Variant.table_name}.sku #{LIKE} ?", "%#{params[:q]}%"])
