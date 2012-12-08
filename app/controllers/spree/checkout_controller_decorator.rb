@@ -59,6 +59,8 @@ Spree::CheckoutController.class_eval do
       # Somehow this got lost along the way, force it here, where the retailer (and therefore the tax rate) is known
       # If the retailer is changed, we need to recreate the tax charge
       current_order.create_tax_charge!
+      ## Reload the current order, the tax charge does not show up on the first page load
+      @order.reload
     end
   end
 

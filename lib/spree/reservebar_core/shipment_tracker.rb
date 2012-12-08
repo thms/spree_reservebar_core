@@ -57,7 +57,7 @@ module Spree
                 shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil
                 shipment.ship!
                 shipment.deliver!
-              elsif shipment.state == 'ready'
+              elsif shipment.state == 'ready' && new_state == 'shipped'
                 shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil
                 shipment.ship!
               end
