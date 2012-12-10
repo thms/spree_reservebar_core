@@ -1,6 +1,12 @@
 Spree::Core::Engine.routes.prepend do
   
   
+  
+  # Routes for business gift white glove service
+  resources :business_giftings
+  get '/business_gifting', :to => 'business_giftings#new', :as => :business_gifting
+  
+  
   # route to allow applying a coupon during checkout via Ajax
   match '/checkout/apply_coupon/:state' => 'checkout#apply_coupon', :as => :apply_coupon_checkout
   
@@ -8,6 +14,9 @@ Spree::Core::Engine.routes.prepend do
   match '/age_gate/validate_age' => 'age_gate#validate_age', :as => :age_gate_validate_age
   
   namespace :admin do
+    
+    
+    resources :business_giftings
     
     resources :age_gates
     

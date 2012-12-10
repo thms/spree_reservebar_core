@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>First name:</b>
+  <%= @business_gifting.first_name %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%= @business_gifting.last_name %>
+</p>
+
+<p>
+  <b>Company name:</b>
+  <%= @business_gifting.company_name %>
+</p>
+
+<p>
+  <b>Contact Phone Number:</b>
+  <%= @business_gifting.phone_number %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @business_gifting.email %>
+</p>
+
+<p>
+  <b>Delivery date:</b>
+  <%= @business_gifting.delivery_date %>
+</p>
+
+<p>
+  <b>Recipients:</b>
+  <%= @business_gifting.recipients %>
+</p>
+
+<p>
+  <b>Message:</b>
+  <%= @business_gifting.message %>
+</p>
+
+<p>
+  <b>Created at:</b>
+  <%= @business_gifting.created_at %>
+</p>
+<p>
+  <b>Updated at:</b>
+  <%= @business_gifting.updated_at %>
+</p>
+
+<%= link_to 'Edit', edit_admin_business_gifting_path(@business_gifting) %> |
+<%= link_to 'Back', admin_business_giftings_path %>

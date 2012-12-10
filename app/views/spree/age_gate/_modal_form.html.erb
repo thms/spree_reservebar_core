@@ -12,11 +12,17 @@ $(function() {
 		resizable: false,
 		draggable: false,
 		title: "",
+		dialogClass: "age-gate-dialog",
 		beforeClose: function( event, ui ) {return false;}
 	});
 
 });
 </script>
+
+<style type="text/css">
+.age-gate-dialog .ui-widget-header .ui-icon {display:none;}
+</style>
+
 <div id="age-gate-dialog">
 
 	<center>
@@ -25,14 +31,17 @@ $(function() {
 		</figure>
 	</center>
 	<h3 style="margin:60px auto 24px auto;">YOU LOOK SO YOUNG FOR YOUR AGE…</h3>
-	<p>…so we need to ask for your birth date.  At ReserveBar we are committed to responsible gifting so we need to check that you can legally enjoy our products.</p>
+	<p>... so we need to check that you can legally enjoy our products.  Are you of legal drinking age?</p>
 	<br /><br />
 	<center>
 	<%= form_tag(age_gate_validate_age_path) do %>
-		<%= date_select :age_gate, :birthdate, :start_year => 1922, :end_year => Date.today.year - 10,  %><br /><br />
-		<%= submit_tag 'Submit' %>
+		<!-- 
+		<%= date_select :age_gate, :birthdate, :start_year => 1922, :end_year => Date.today.year - 10,  %> 
+		<br /><br /> -->
+		<%= submit_tag 'Yes', :value => 'Yes' %>&nbsp;&nbsp;<%= button_tag 'No', :value => 'No' %>
 	<% end %>
 	</center>
+	<p>ReserveBar promotes <a href="http://www.drinkiq.com/" target="_blank">responsible drinking</a> and discourages alcohol misuse. Please click on the link for details.</p>
 	<div class="clearfix"></div>
 	
 </div>

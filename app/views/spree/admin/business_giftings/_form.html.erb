@@ -1,0 +1,49 @@
+<%= form_for([:admin, @business_gifting]) do |f| %>
+  <% if @business_gifting.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@business_gifting.errors.count, "error") %> prohibited this business_gifting from being saved:</h2>
+
+      <ul>
+      <% @business_gifting.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :company_name %>
+    <%= f.text_field :company_name %>
+  </div>
+  <div class="field">
+    <%= f.label :phone_number %>
+    <%= f.text_field :Contact  %>
+  </div>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :delivery_date %>
+    <%= f.text_field :delivery_date %>
+  </div>
+  <div class="field">
+    <%= f.label :recipients %>
+    <%= f.text_field :recipients %>
+  </div>
+  <div class="field">
+    <%= f.label :message %>
+    <%= f.text_area :message, :rows => 4, :cols => 40 %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
