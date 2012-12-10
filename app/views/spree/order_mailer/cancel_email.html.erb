@@ -150,7 +150,7 @@
 		      <tr>
 		        <td width="60%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= sanitize(item.variant.product.name, :tags => %w(sup)) %>
             </td>
-		        <td width="9px" style="background:<%= bgcolor -%>"><br>
+		        <td width="60px" style="background:<%= bgcolor -%>; text-align:center;">Quantity: <%= item.quantity %>
             </td>
 		        <td style="background:<%= bgcolor -%>;font-size:12px;width:74pt;font-family:Georgia;text-decoration:none;font-weight:400">
             	<%= number_to_currency(item.price * item.quantity) %>
@@ -170,8 +170,7 @@
 		        <td height="9" style=" border-bottom:2px solid #593D2B" colspan="3">&nbsp;</td>
 	          </tr>
 		      <tr>
-		        <td valign="bottom" height="18" style="text-align: right; color: rgb(193, 56, 40); font-family: georgia,serif;"><strong>SubTotal</strong></td>
-		        <td>&nbsp;</td>
+		        <td colspan="2" valign="bottom" height="18" style="text-align: right; color: rgb(193, 56, 40); font-family: georgia,serif;padding-right:15px;"><strong>SubTotal</strong></td>
 		        <td valign="bottom" height="18" style="color: rgb(193, 56, 40); font-family: georgia,serif;"><strong><%= number_to_currency(@order.item_total + @order.gift_packaging_total) %></strong></td>
 	          </tr>
 		      <tr>
@@ -180,8 +179,7 @@
 		      <% @order.adjustments.eligible.each do |adjustment| %>
 					<% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
 						<tr class="total">
-						  <td valign="bottom" height="18" style="text-align: right; font-family: georgia,serif;"><strong><%= adjustment.label %></strong></td>
-						  <td width="2px"><br _moz_dirty="" type="_moz"></td>
+						  <td colspan="2" valign="bottom" height="18" style="text-align: right; font-family: georgia,serif;padding-right:15px;"><strong><%= adjustment.label %></strong></td>
 						  <td valign="bottom" height="18" style="font-family: georgia,serif;"><span><%= number_to_currency adjustment.amount %></span></td>
 						</tr>
 					<% end %>
@@ -189,8 +187,7 @@
 		        <td colspan="3"><br _moz_dirty="" type="_moz"></td>
 	          </tr>
 		      <tr>
-		        <td valign="top" height="36" style="text-align: right; font-size: 15px; color: rgb(89, 61, 43); font-family: georgia,serif;"><strong>Order Total</strong></td>
-		        <td width="2px"><br _moz_dirty="" type="_moz"></td>
+		        <td colspan="2" valign="top" height="36" style="text-align: right; font-size: 15px; color: rgb(89, 61, 43); font-family: georgia,serif;padding-right:15px;"><strong>Order Total</strong></td>
 		        <td valign="top" height="36" style="font-size: 15px; color: rgb(89, 61, 43); font-family: georgia,serif;"><strong><%= number_to_currency(@order.total) %></strong></td>
 	          </tr>
 	        </tbody></table></td>
