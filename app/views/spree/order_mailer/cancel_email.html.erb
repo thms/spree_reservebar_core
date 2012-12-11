@@ -170,7 +170,8 @@
 		        <td height="9" style=" border-bottom:2px solid #593D2B" colspan="3">&nbsp;</td>
 	          </tr>
 		      <tr>
-		        <td colspan="2" valign="bottom" height="18" style="text-align: right; color: rgb(193, 56, 40); font-family: georgia,serif;padding-right:15px;"><strong>SubTotal</strong></td>
+		        
+			<td colspan="2" valign="bottom" height="18" style="text-align: right; color: rgb(193, 56, 40); font-family: georgia,serif;padding-right:15px;"><strong>SubTotal</strong></td>
 		        <td valign="bottom" height="18" style="color: rgb(193, 56, 40); font-family: georgia,serif;"><strong><%= number_to_currency(@order.item_total + @order.gift_packaging_total) %></strong></td>
 	          </tr>
 		      <tr>
@@ -187,7 +188,7 @@
 		        <td colspan="3"><br _moz_dirty="" type="_moz"></td>
 	          </tr>
 		      <tr>
-		        <td colspan="2" valign="top" height="36" style="text-align: right; font-size: 15px; color: rgb(89, 61, 43); font-family: georgia,serif;padding-right:15px;"><strong>Order Total</strong></td>
+				<td colspan="2" valign="top" height="36" style="text-align: right; font-size: 15px; color: rgb(89, 61, 43); font-family: georgia,serif;padding-right:15px;"><strong>Order Total</strong></td>
 		        <td valign="top" height="36" style="font-size: 15px; color: rgb(89, 61, 43); font-family: georgia,serif;"><strong><%= number_to_currency(@order.total) %></strong></td>
 	          </tr>
 	        </tbody></table></td>
