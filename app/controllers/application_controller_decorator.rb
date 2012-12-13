@@ -23,7 +23,7 @@ ApplicationController.class_eval do
   def save_referer_and_enable_age_gate_if_google
     unless session[:first_referer]
       session[:first_referer] = request.env["HTTP_REFERER"] || 'none'
-      session[:enable_age_gate] == true if session[:first_referer].include?('google')
+      session[:enable_age_gate] = true if session[:first_referer].include?('google')
     end
   end
 end
