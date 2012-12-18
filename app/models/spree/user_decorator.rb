@@ -3,6 +3,7 @@ Spree::User.class_eval do
 	has_and_belongs_to_many :retailers, :join_table => :spree_retailers_users
 	has_many :sent_gifts, :class_name => "Gift", :foreign_key => "sender_id"
 	has_one :referral, :as => :referrible
+	has_many :complete_orders, :class_name => "Spree::Order", :conditions => "spree_orders.state = 'complete'"
 
 	# Only if the user has role retailer_admin...:
 	#belongs_to :retailer

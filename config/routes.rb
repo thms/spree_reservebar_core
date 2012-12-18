@@ -58,6 +58,12 @@ Spree::Core::Engine.routes.prepend do
       	get :export
       end
     end
+    
+    resources :users do
+      collection do
+      	get :export
+      end
+    end
 
     # Add a route to print a test label for the shipping methods
     resources :shipping_methods do
