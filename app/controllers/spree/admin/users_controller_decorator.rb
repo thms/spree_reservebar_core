@@ -4,6 +4,11 @@ Spree::Admin::UsersController.class_eval do
 
   create.after :save_retailer
   update.before :save_retailer
+  
+  
+  def export
+    @users = Spree::User.registered
+  end
 
   protected
   

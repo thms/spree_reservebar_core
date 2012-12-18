@@ -1,0 +1,13 @@
+<% require 'csv' %>
+user name,email address,date they subscribed,how many purchases they have made,last date they made a purchase,whether they have signed up to our newsletter
+<%= CSV.generate do |csv|
+  @users.each do |user|
+    csv << [user.login, 
+				user.email,
+				user.created_at.to_date,
+				user.complete_orders.size,
+				(user.complete_orders.last.completed_at.to_date if user.complete_orders.last && user.complete_orders.last.completed_at),
+				('Yes' if Spree::NewsSubscription.newsletter.find_by_user_id(user.id))
+			]
+  end
+end %>
