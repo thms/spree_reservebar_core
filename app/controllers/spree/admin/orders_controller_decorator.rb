@@ -53,6 +53,7 @@ Spree::Admin::OrdersController.class_eval do
 	  params[:search][:completed_at_is_not_null] ||= '1' if Spree::Config[:show_only_complete_orders_by_default]
 	  @show_only_completed = params[:search][:completed_at_is_not_null].present?
 	  params[:search][:meta_sort] ||= @show_only_completed ? 'completed_at.desc' : 'created_at.desc'
+	  params[:search][:state_does_not_equal] = 'canceled'
 
 	  @search = Spree::Order.metasearch(params[:search])
 
