@@ -61,7 +61,7 @@ Spree::Core::Engine.routes.prepend do
     
     resources :users do
       collection do
-      	get :export
+        get :export
       end
     end
 
