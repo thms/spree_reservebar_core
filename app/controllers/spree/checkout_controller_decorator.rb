@@ -26,13 +26,23 @@ Spree::CheckoutController.class_eval do
       if @order.coupon_code.present?
 
         if (Spree::Promotion.exists?(:code => @order.coupon_code))
-          if Spree::Promotion.where(:code => @order.coupon_code).last.eligible?(@order)
+          if (Spree::Promotion.where(:code => @order.coupon_code).last.eligible?(@order) && Spree::Promotion.where(:code => @order.coupon_code).last.order_activatable?(@order))
             fire_event('spree.checkout.coupon_code_added', :coupon_code => @order.coupon_code)
             # If it doesn't exist, raise an error!
             # Giving them another chance to enter a valid coupon code
             @message = "Coupon applied"
           else
-            @message = "The coupon cannot be applied to this order"
+            # Check why the coupon cannot be applied (at least a few checks)
+            promotion = Spree::Promotion.where(:code => @order.coupon_code).last
+            if promotion.expired?
+              @message = "The coupon is expired or not yet active."
+            elsif promotion.usage_limit_exceeded?(@order)
+              @message = "The coupon cannot be applied, it's usage limit has been exceeded."
+            elsif promotion.created_at.to_i > @order.created_at.to_i
+              @message = "The coupon cannot be applied because it has been created after the order."
+            else
+              @message = "The coupon cannot be applied to this order."
+            end
           end
         else
           @message = t(:promotion_not_found)
