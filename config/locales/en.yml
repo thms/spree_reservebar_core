@@ -60,6 +60,8 @@ en:
   free_shipping_cheapest_only: "Free shipping for the cheapest method"
   percent_item_total_plus_free_shipping: "Percent off item total and free shipping on cheapest method"
   uplift: "Uplift"
+  tax_with_gifts_promos_and_shipping: "Sales tax on item total, gift packaging, promos and shipping"
+  tax_all_adjustments: "Sales tax on item total, gift packaging, promos, shipping and all other adjustments"
   business_gifting:
       first_name: First Name
       last_name: Last Name

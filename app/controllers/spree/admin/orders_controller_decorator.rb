@@ -53,7 +53,8 @@ Spree::Admin::OrdersController.class_eval do
 	  params[:search][:completed_at_is_not_null] ||= '1' if Spree::Config[:show_only_complete_orders_by_default]
 	  @show_only_completed = params[:search][:completed_at_is_not_null].present?
 	  params[:search][:meta_sort] ||= @show_only_completed ? 'completed_at.desc' : 'created_at.desc'
-
+    params[:search][:state_does_not_equal] = 'canceled'
+    
 	  @search = Spree::Order.metasearch(params[:search])
 
 	  if !params[:search][:created_at_greater_than].blank?
@@ -95,6 +96,15 @@ Spree::Admin::OrdersController.class_eval do
     load_order
     if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
     	@order.update_attribute(:accepted_at, Time.now)
+    	
+    	# If the order only has one payment on it (all order here should have only a single payment)
+    	# and the total order amount is lower than the payment amount, due to adjustments made after the order was submitted
+    	# reduce the amount in the payment to the order total
+    	if @order.payments.count == 1 && @order.payment.pending? && @order.total < @order.payment.amount
+    	  @order.payment.update_attribute(:amount, @order.total)
+    	  @order.payments.reload
+  	  end
+  	  
     	begin
     	  @order.payments.each do |payment|
     	    payment.payment_source.send("capture", payment)

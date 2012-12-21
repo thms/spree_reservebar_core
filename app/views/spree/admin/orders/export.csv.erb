@@ -14,7 +14,7 @@ OrderNumber,Order details link,Customer email address,Product name,OrderDate,Ord
 				order.payment_state,
 				order.shipment_state,
 				order.total, 
-				order.line_items.map(&:price).sum,
+				order.line_items.map{|line_item| line_item.price * line_item.quantity}.sum,
 				order.gift_packaging_total,
 				order.ship_total, 
 				order.tax_total, 
