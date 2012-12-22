@@ -63,6 +63,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         recipient_email = shipment.order.email
       end
       fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
+      # this may fail and raise an Exception , e.g. if hte shipping address does not pass validation on their end
       response, request_xml = fedex.ship(shipper, recipient, package, 
           :payor_account_number => Spree::ActiveShipping::Config[:payor_account_number], # this uses resservebar.com's account number for third party billing
           :payment_type => 'THIRD_PARTY',  
@@ -75,7 +76,6 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE,
           :service_type => shipment.shipping_method.calculator.class.service_type
       )
-    
       # store response
       if response.success?
         shipment_detail = Spree::ShipmentDetail.new(:shipment_id => shipment.id)
@@ -94,16 +94,18 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       
         # update shipment cost and tracking
         shipment.update_attributes(:tracking => response.tracking_number, :cost => response.total_price)
+        flash[:notice] = "Shipment is registered with FedEx"
+      else
+        flash[:error] = response.message
       end
-      flash[:notice] = "Shipment is registered with FedEx"
       if current_user.has_role?("admin")
         redirect_to admin_order_shipments_url(shipment.order)
       else
         redirect_to admin_order_url(shipment.order)
       end
     rescue Exception => e
+
       flash[:error] = e.message
-      raise
       if current_user.has_role?("admin")
         redirect_to admin_order_shipments_url(shipment.order)
       else
