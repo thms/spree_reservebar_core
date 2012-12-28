@@ -39,7 +39,7 @@
 		<% if current_user.has_role?('admin') %>
       		<td><%= link_to t("payment_states.#{order.payment_state}"), admin_order_payments_path(order) if order.payment_state %></td>
 	      	<td><%= link_to t("shipment_states.#{order.shipment_state}"), admin_order_shipments_path(order) if order.shipment_state %></td>
-	      	<td><%= #{order.retailer.name} %></td>
+	      	<td><%= order.retailer.name %></td>
 		<% else %>
       		<td><%= order.shipment_state.upcase if order.shipment_state %></td>
 		<% end %>
