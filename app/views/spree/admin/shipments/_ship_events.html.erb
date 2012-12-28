@@ -1,0 +1,16 @@
+<% if @shipment.shipment_detail && @shipment.shipment_detail.ship_events %>
+	<table class="index" style="width:100%;" data-hook="admin_shipment_ship_events">
+		<tr>
+			<th>Event</th>
+			<th>Location</th>
+			<th>Timestamp</th>
+		</tr>
+	<% @shipment.shipment_detail.ship_events.each do |event| %>
+			<tr>
+				<td><%= event.name %></td>
+				<td><%= event.location %></td>
+				<td><%= event.time %></td>
+			</tr>
+	<% end %>
+	</table>
+<% end %>
