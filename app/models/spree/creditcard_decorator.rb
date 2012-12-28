@@ -23,7 +23,7 @@ Spree::Creditcard.class_eval do
     record_log payment, response
 
     if response.success?
-      Payment.create(:order => payment.order,
+      Spree::Payment.create(:order => payment.order,
                             :source => payment,
                             :payment_method => payment.payment_method,
                             :amount => amount.abs * -1,
