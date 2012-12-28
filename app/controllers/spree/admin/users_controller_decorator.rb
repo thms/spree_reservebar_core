@@ -10,6 +10,10 @@ Spree::Admin::UsersController.class_eval do
     @users = Spree::User.registered
   end
 
+  def export
+    @users = Spree::User.registered
+  end
+  
   protected
   
   def save_retailer

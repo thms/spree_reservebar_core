@@ -11,6 +11,7 @@ en:
   retailers: Retailers
   listing_retailers: "Listing Retailers"
   new_retailer: "New Retailer"
+  referrals: Referrals
   content: Content
   order_cancel: Cancel Order
   ship_address: Shipping Address
@@ -56,6 +57,15 @@ en:
   tile_title: "Tile Title"
   shipment_states:
     delivered: delivered
+  business_gifting:
+    first_name: First Name
+    last_name: Last Name
+    company_name: Company Name
+    phone_number: Contact Phone Number
+    email: "Email Address"
+    delivery_date: "Approximate Delivery Date"
+    recipients: "Approximate # of Gift Recipients"
+    message: "Additional Information/Requests (500 characters)"
   flat_percent_with_cap: "Flat percent with cap(maximum dollar amount)"
   free_shipping_cheapest_only: "Free shipping for the cheapest method"
   percent_item_total_plus_free_shipping: "Percent off item total and free shipping on cheapest method"

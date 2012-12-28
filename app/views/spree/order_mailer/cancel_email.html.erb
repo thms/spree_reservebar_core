@@ -180,8 +180,7 @@
 		      <% @order.adjustments.eligible.each do |adjustment| %>
 					<% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
 						<tr class="total">
-						  <td valign="bottom" height="18" style="text-align: right; font-family: georgia,serif;"><strong><%= adjustment.label %></strong></td>
-						  <td width="2px"><br _moz_dirty="" type="_moz"></td>
+						  <td colspan="2" valign="bottom" height="18" style="text-align: right; font-family: georgia,serif;padding-right:15px;"><strong><%= adjustment.label %></strong></td>
 						  <td valign="bottom" height="18" style="font-family: georgia,serif;"><span><%= number_to_currency adjustment.amount %></span></td>
 						</tr>
 					<% end %>

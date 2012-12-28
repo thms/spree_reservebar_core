@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# to automatic change the deal state
+# application base directory 
+base_dir=/var/www/reservebar.com/current
+cd $base_dir
+RAILS_ENV=production /usr/local/bin/rake admin:orders:regular_reminder_email

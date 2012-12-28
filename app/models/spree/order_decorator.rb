@@ -7,6 +7,7 @@ Spree::Order.class_eval do
 
 	has_and_belongs_to_many :retailers, :join_table => :spree_orders_retailers
 	belongs_to :gift
+	has_one :referral, :as => :referrible
 	
 	accepts_nested_attributes_for :gift
 

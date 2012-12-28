@@ -1,9 +1,9 @@
 Dear Admin,
 
-An order has been accepted by a retailer.
+There was an order that was accepted by a retailer.
 
 Order Number: <%= @order.number %>
-Accepted at:  <%= @order.accepted_at.in_time_zone("Eastern Time (US & Canada)").to_s(:time_without_zone) %>
+Accepted at:  <%= @order.accepted_at.to_s(:short) %>
 
 Retailer Information
 ============================================================

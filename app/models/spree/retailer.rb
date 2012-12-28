@@ -42,6 +42,10 @@ module Spree
     def not_ready_shipping_since_accepted(number_of_hours = 6)
       orders.where(["spree_orders.accepted_at is not null and spree_orders.accepted_at <= ? and spree_orders.state <> ? and spree_orders.shipment_state = ?", Time.now - number_of_hours.hours, "canceled", "pending"]).order("spree_orders.accepted_at asc")
     end
+    
+    def need_notification?
+    	return true unless not_viewed_since_submitted.empty? && not_accepted_since_viewed.empty? && not_ready_shipping_since_accepted.empty?
+    end
   
     def need_notification?
       return true unless not_viewed_since_submitted.empty? && not_accepted_since_viewed.empty? && not_ready_shipping_since_accepted.empty?

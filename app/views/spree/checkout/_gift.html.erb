@@ -2,7 +2,7 @@
 <div style="clear:both;margin-top:24px;">&nbsp;</div>
 <div id="checkout-gift" data-hook="checkout_gift_box">
   <%= form.check_box :is_gift %>&nbsp;
-  <%= form.label :is_gift, "I want to send this as a gift" %>
+  <%= form.label :is_gift, "Please send this order as a gift" %>
 </div>
 <fieldset id="gift_form" data-hook>
   <% @order.gift ||= Spree::Gift.new(:sender_id => @order.user_id) %>

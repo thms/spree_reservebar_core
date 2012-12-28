@@ -7,6 +7,12 @@
 		<td><%= address_form.text_field :lastname %></td>
 	</tr>
 	<tr>
+    <td><%= address_form.label :firstname, t(:firstname) + ':' %></td>
+    <td><%= address_form.text_field :firstname %></td>
+    <td><%= address_form.label :lastname, t(:lastname) + ':' %></td>
+    <td><%= address_form.text_field :lastname %></td>
+  </tr>
+	<tr>
     <td><%= address_form.label :address1, t(:street_address) + ':' %></td>
     <td><%= address_form.text_field :address1 %></td>
     <td><%= address_form.label :address2, t(:street_address_2) + ':' %></td>

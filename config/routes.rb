@@ -1,5 +1,6 @@
 Spree::Core::Engine.routes.prepend do
-  
+  resources :business_giftings
+  get '/business_gifting', :to => 'business_giftings#new', :as => :business_gifting
   
   
   # Routes for business gift white glove service
@@ -69,6 +70,7 @@ Spree::Core::Engine.routes.prepend do
       get :print_test_label
     end
 
-
+		resources :referrals
+		resources :business_giftings
   end
 end
