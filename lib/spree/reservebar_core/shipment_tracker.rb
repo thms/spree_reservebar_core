@@ -27,7 +27,7 @@ module Spree
         new_logger.info("===== #{retailer.name} start =====")
 
         fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
-        retailer.orders.where(:shipment_state => ['pending', 'ready', 'shipped']).each do |order|
+        retailer.orders.complete.where(:shipment_state => ['pending', 'ready', 'shipped']).each do |order|
           new_logger.info("===== Retailer: #{retailer.name} Order #{order.number} old state: #{order.shipment_state} =====")
           order.shipments.each do |shipment|
             begin
@@ -62,10 +62,12 @@ module Spree
                
                if shipment.state == 'pending' && new_state == 'delivered'
                  shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil
+                 shipment.ready!
                  shipment.ship!
                  shipment.deliver!
                elsif shipment.state == 'pending' && new_state == 'shipped'
                  shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil
+                 shipment.ready!
                  shipment.ship!
                elsif shipment.state == 'shipped' && new_state == 'delivered' 
                 shipment.order.update_attribute_without_callbacks(:packed_at, Time.now - 1.hour) if shipment.order.packed_at == nil

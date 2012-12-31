@@ -5,12 +5,21 @@
 			<th>Location</th>
 			<th>Timestamp</th>
 		</tr>
-	<% @shipment.shipment_detail.ship_events.each do |event| %>
+	<% if @shipment.shipment_detail.ship_events.respond_to?(:each) %>
+	 <%   @shipment.shipment_detail.ship_events.each do |event| %>
 			<tr>
 				<td><%= event.name %></td>
 				<td><%= event.location %></td>
 				<td><%= event.time %></td>
 			</tr>
+	<% end %>
+	<% else %> 
+		<tr>
+			<td><%= @shipment.shipment_detail.ship_events.name %></td>
+			<td><%= @shipment.shipment_detail.ship_events.location %></td>
+			<td><%= @shipment.shipment_detail.ship_events.time %></td>
+		</tr>
+	
 	<% end %>
 	</table>
 <% end %>

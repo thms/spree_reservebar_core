@@ -8,13 +8,21 @@
 					<th>Event</th>
 					<th>Location</th>
 					<th>Timestamp</th>
-				</tr>
-			<% @order.shipment.shipment_detail.ship_events.each do |event| %>
-					<tr>
-						<td><%= event.name %></td>
-						<td><%= event.location %></td>
-						<td><%= event.time %></td>
-					</tr>
+				</tr> 
+			<% if @order.shipment.shipment_detail.ship_events.respond_to?(:each) %>
+				<% @order.shipment.shipment_detail.ship_events.each do |event| %>
+						<tr>
+							<td><%= event.name %></td>
+							<td><%= event.location %></td>
+							<td><%= event.time %></td>
+						</tr>
+				<% end %>
+			<% else %>
+			<tr>
+				<td><%= @order.shipment.shipment_detail.ship_events.name %></td>
+				<td><%= @order.shipment.shipment_detail.ship_events.location %></td>
+				<td><%= @order.shipment.shipment_detail.ship_events.time %></td>
+			</tr>
 			<% end %>
 			</table>
 		<% end %>
