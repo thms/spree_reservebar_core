@@ -21,7 +21,7 @@ Spree::Creditcard.class_eval do
     end
 
     ## Thomas: add action here, until we update to a later version of active merchant
-    response[:action] = "CREDIT" unless response[:action]
+    response.params['action'] = "CREDIT" unless response.params['action']
     record_log payment, response
 
     if response.success?
@@ -48,7 +48,7 @@ Spree::Creditcard.class_eval do
 
     response = payment_gateway.authorize((amount * 100).round, self, gateway_options(payment))
     ## Thomas: add action here, until we update to a later version of active merchant
-    response[:action] = "AUTHORIZE" unless response[:action]
+    response.params['action'] = "AUTHORIZE" unless response.params['action']
     record_log payment, response
 
     if response.success?
@@ -70,7 +70,7 @@ Spree::Creditcard.class_eval do
 
     response = payment_gateway.purchase((amount * 100).round, self, gateway_options(payment))
     ## Thomas: add action here, until we update to a later version of active merchant
-    response[:action] = "PURCHASE" unless response[:action]
+    response.params['action'] = "PURCHASE" unless response.params['action']
     record_log payment, response
 
     if response.success?
@@ -100,7 +100,7 @@ Spree::Creditcard.class_eval do
     end
 
     ## Thomas: add action here, until we update to a later version of active merchant
-    response[:action] = "CAPTURE" unless response[:action]
+    response.params['action'] = "CAPTURE" unless response.params['action']
     record_log payment, response
 
     if response.success?
@@ -120,7 +120,7 @@ Spree::Creditcard.class_eval do
 
     response = payment_gateway.void(payment.response_code, minimal_gateway_options(payment, false))
     ## Thomas: add action here, until we update to a later version of active merchant
-    response[:action] = "VOID" unless response[:action]
+    response.params['action'] = "VOID" unless response.params['action']
     record_log payment, response
 
     if response.success?
