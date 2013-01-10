@@ -64,7 +64,12 @@ Spree::Order.class_eval do
 	# Reservebar.com uses the retailer's physial address, rather then the ship_address to determine taxes
 	# Returns the relevant zone (if any) to be used for taxation purposes.  Uses default tax zone
   # unless there is a specific match
+  # When shipping across state lines, no sales tax needs to be collected, so we return nil, when that happens
   def tax_zone
+    # Handle case of shipping across state boundaries first
+    return nil if (retailer && (retailer.physical_address.state_id != ship_address.state_id))
+    
+    # Handle other cases:
     if Spree::Config[:tax_using_retailer_address]
       if retailer
         zone_address = retailer.physical_address

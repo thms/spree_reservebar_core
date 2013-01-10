@@ -71,5 +71,9 @@ en:
       delivery_date: "Approximate Delivery Date"
       recipients: "Approximate # of Gift Recipients"
       message: "Additional Information/Requests (500 characters)"
+  promotion_rule_types:
+    number_of_items:
+      name: Number of Items in the Cart
+      description: Triggers when the user has equal or more items (bottles) in the cart
       
   

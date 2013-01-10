@@ -1,0 +1,6 @@
+<p class="field">
+  <label for="<%= "#{param_prefix}_preferred_number_of_items" %>">
+    <%= t('promotion_rule_types.number_of_items.description') %>
+    <%= text_field_tag "#{param_prefix}[preferred_number_of_items]", promotion_rule.preferred_number_of_items, :size => 10 %>
+  </label>
+</p>

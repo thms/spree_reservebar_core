@@ -26,7 +26,11 @@ module Spree
         app.config.spree.calculators.promotion_actions_create_adjustments << Spree::Calculator::PercentItemTotalPlusFreeShipping
         app.config.spree.calculators.promotion_actions_create_adjustments << Spree::Calculator::FreeShippingCheapestOnly
       end
-      
+
+      initializer 'spree.promo.register.promotion.rules', :after => 'spree.promo.environment' do |app|
+        app.config.spree.promotions.rules << Spree::Promotion::Rules::NumberOfItems
+      end
+     
       initializer "spree.register.calculators", :after => 'spree.core.environment' do |app|
         app.config.spree.calculators.tax_rates << Spree::Calculator::TaxWithGiftsPromosAndShipping
         app.config.spree.calculators.tax_rates << Spree::Calculator::TaxAllAdjustments
