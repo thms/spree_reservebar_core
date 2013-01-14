@@ -18,6 +18,8 @@ Spree::CheckoutController.class_eval do
   # if the user has not accetped the legal drinking age flag, we bail
   rescue_from Exceptions::NotLegalDrinkingAgeError, :with => :rescue_from_not_legal_drinking_age_error
 
+  # if the taxcloud api throws an error, e.g. when the state does not match the zip code, show that error and go back to the address page
+  rescue_from TaxCloud::Errors::ApiError, :with => :rescue_from_taxcloud_error
 
   # Ajax call to apply coupon to order
   def apply_coupon
@@ -145,6 +147,17 @@ Spree::CheckoutController.class_eval do
     flash[:notice] = "You need to be of legal drinking age to place an order."
     render :edit
   end
+  
+  # Called if the user enters an address where tax and zip do not match or other taxcloud errors
+  def rescue_from_taxcloud_error(exception)
+    begin
+      flash[:notice] = exception.message.split(/\n/)[2]
+    rescue
+      flash[:notice] = "There seems to be a problem with address you entered. Please check that the state, city and zip code match."
+    end
+    redirect_to '/checkout/address'
+  end
+  
     
     
   

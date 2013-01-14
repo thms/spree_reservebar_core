@@ -62,6 +62,7 @@ en:
   uplift: "Uplift"
   tax_with_gifts_promos_and_shipping: "Sales tax on item total, gift packaging, promos and shipping"
   tax_all_adjustments: "Sales tax on item total, gift packaging, promos, shipping and all other adjustments"
+  tax_cloud_description: "Sales tax on item total, gift packaging, promos, shipping and all other adjustments calculated by Taxcloud.net"
   business_gifting:
       first_name: First Name
       last_name: Last Name

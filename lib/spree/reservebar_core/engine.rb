@@ -8,6 +8,9 @@ module Spree
         Dir.glob(File.join(File.dirname(__FILE__), '../../../app/**/*_decorator*.rb')) do |c|
           Rails.configuration.cache_classes ? require(c) : load(c)
         end
+        Dir.glob(File.join(File.dirname(__FILE__), '../../../lib/tax_cloud/*.rb')) do |c|
+          Rails.configuration.cache_classes ? require(c) : load(c)
+        end
         
         # Register new searcher class
         Spree::Config.searcher_class = Spree::Search::ReservebarSearch
@@ -34,6 +37,8 @@ module Spree
       initializer "spree.register.calculators", :after => 'spree.core.environment' do |app|
         app.config.spree.calculators.tax_rates << Spree::Calculator::TaxWithGiftsPromosAndShipping
         app.config.spree.calculators.tax_rates << Spree::Calculator::TaxAllAdjustments
+        app.config.spree.calculators.tax_rates << Spree::Calculator::TaxCloudCalculator
+        
       end
       
 
