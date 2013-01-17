@@ -1,7 +1,5 @@
 Spree::Admin::BaseController.class_eval do
-  #before_filter :authorize_admin
-  skip_before_filter :authorize_admin
-  skip_before_filter :admin_required
+  before_filter :authorize_admin
   
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.warn "Access denied on #{exception.action} #{exception.subject.inspect}"
