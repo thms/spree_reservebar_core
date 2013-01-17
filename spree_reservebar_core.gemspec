@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_reservebar_core'
-  s.version     = '0.6.26'
+  s.version     = '0.6.27'
   s.summary     = 'Spree Commerce Extensions for reservebar.com'
 
   s.author        = 'Thomas Boltze'

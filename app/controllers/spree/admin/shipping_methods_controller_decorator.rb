@@ -1,8 +1,7 @@
 Spree::Admin::ShippingMethodsController.class_eval do
 
-  skip_before_filter :admin_required, :only => :print_test_label
-  skip_before_filter :authorize_admin, :only => :print_test_label
-  skip_load_and_authorize_resource :only => :print_test_label
+  skip_before_filter :admin_required, :only => [:print_test_label]
+  skip_before_filter :authorize_admin, :only => [:print_test_label]
 
   def print_test_label_test
     headers['Content-Type'] = "text/plain"
