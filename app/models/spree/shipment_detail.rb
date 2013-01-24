@@ -7,4 +7,7 @@ class Spree::ShipmentDetail < ActiveRecord::Base
   # We get the shipevents as arrays and want to just get them in and out as arrays
   serialize :ship_events
   
+  # Prevent more than one sipment detail to exist for any given shipment:
+  
+  
 end

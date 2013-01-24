@@ -78,6 +78,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       )
       # store response
       if response.success?
+        Spree::ShipmentDetail.where(:shipment_id => shipment.id).destroy_all
         shipment_detail = Spree::ShipmentDetail.new(:shipment_id => shipment.id)
         shipment_detail.label = response.label
         shipment_detail.xml = response.xml
@@ -94,6 +95,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       
         # update shipment cost and tracking
         shipment.update_attributes(:tracking => response.tracking_number, :cost => response.total_price)
+        
         flash[:notice] = "Shipment is registered with FedEx"
       else
         flash[:error] = response.message

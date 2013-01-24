@@ -1,5 +1,5 @@
 <% if shipment.shipment_detail.nil? %>
-	<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post %>
+	<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post, :disable_with => "Please wait..." %>
 <% else %>
 
 	<%= link_to_with_icon 'fedex-icon', "Print FedEx Label", "javascript:showPrintDialog('#{shipment.number}', '#{admin_order_shipment_shipment_detail_print_label_url(@order, shipment, shipment.shipment_detail)}?token=#{shipment.shipment_detail.token}', 'raw', 'zebra');" %>
