@@ -33,7 +33,7 @@ Spree::Order.class_eval do
 		# we had called order.finalize! here, which was then executed twice....
 		after_transition :to => 'complete' do |order, transition|
 			order.gift_notification if order.is_gift?
-			Spree::OrderMailer.retailer_submitted_email(order).deliver if order.retailer
+			Spree::OrderMailer.retailer_submitted_email(order).deliver if (order.retailer || !Spree::MailLog.has_email_been_sent_already?(order, 'Order::retailer_submitted_email') )
 		end
 		
 	end
@@ -84,7 +84,7 @@ Spree::Order.class_eval do
   
 	
   def gift_notification
-    Spree::OrderMailer.giftee_notify_email(self).deliver unless self.gift.email.blank?
+    Spree::OrderMailer.giftee_notify_email(self).deliver unless (self.gift.email.blank? || Spree::MailLog.has_email_been_sent_already?(self, 'Order::giftee_notify_email'))
   end
 	
 	def retailer

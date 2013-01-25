@@ -122,7 +122,7 @@ Spree::Admin::OrdersController.class_eval do
     redirect_to admin_order_url(@order)
   end
   
-  # Purpose: retailer has packd the order and it is ready for pick up by Fedex / Courier
+  # Purpose: retailer has packed the order and it is ready for pick up by Fedex / Courier
   def order_complete
     load_order
     if @order.packed_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)

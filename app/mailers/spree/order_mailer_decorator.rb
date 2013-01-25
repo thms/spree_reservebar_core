@@ -91,4 +91,5 @@ Spree::OrderMailer.class_eval do
     subject = "Payment Capture Failed - #{order.number}"
     mail(:to => Spree::Config[:mail_notification_to], :subject => subject)
   end
+  
 end

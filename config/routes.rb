@@ -15,10 +15,12 @@ Spree::Core::Engine.routes.prepend do
   
   namespace :admin do
     
+    match 'test/test' => "test#test"
     
     resources :business_giftings
     
     resources :age_gates
+    resources :counties
     
     match '/get_retailer_data' => 'overview#get_retailer_data'
     match '/orders/get_retailer_data' => 'orders#get_retailer_data'
