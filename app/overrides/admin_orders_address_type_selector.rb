@@ -7,5 +7,5 @@ Deface::Override.new(:virtual_path => "spree/admin/orders/show",
 Deface::Override.new(:virtual_path => "spree/admin/shared/_address_form",
   :name => "admin_orders_address_type",
   :insert_after => "code[erb-loud]:contains('f.text_field :phone')",
-  :text => " <%= f.check_box :is_business %> This is a business address.",
+  :text => " <%= f.check_box :is_business %> This is a business address. (If you change this, you need to select a new shipping method afterwards.)",
   :disabled => false)
