@@ -12,7 +12,11 @@ Spree::TaxRate.class_eval do
   if Spree::Config[:use_taxcloud]
     def adjust(order)
       if self.calculator.class.name == "Spree::Calculator::TaxCloudCalculator"
-        taxcloud_rate = TaxCloud::Rate.lookup(order.retailer.physical_address, order.ship_address)
+        if order.retailer
+          taxcloud_rate = TaxCloud::Rate.lookup(order.retailer.physical_address, order.ship_address)
+        else
+          taxcloud_rate = 0
+        end
         label = "#{tax_category.name} #{taxcloud_rate * 100}%"
       else
         label = "#{tax_category.name} #{amount * 100}%"

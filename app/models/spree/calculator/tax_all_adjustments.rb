@@ -1,5 +1,5 @@
 # Calculates tax based on the line item total + adjustments due to promotions + shipping cost + gift packaging
-# TODO: shold we include 
+# TODO: should we include 
 # so when promo incudes free shipping everything evens out.
 
 module Spree
@@ -32,7 +32,7 @@ module Spree
         line_items_total = matched_line_items.sum(&:total)
         
         matched_adjustments = order.adjustments.eligible.select do |adjustment|
-          adjustment.originator_type != 'Spree::TaxRate'
+          (adjustment.originator_type != 'Spree::TaxRate') && !adjustment.is_due_to_groupon_style_promo?
         end
         adjustments_total = matched_adjustments.sum(&:amount)
 
