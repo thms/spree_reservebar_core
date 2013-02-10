@@ -29,11 +29,11 @@ Spree::Order.class_eval do
 		before_transition :to => 'delivery', :do => :validate_legal_drinking_age?
 				
 		# add the gift notification after order.finalize!
-		# note that this adds a new callback to the chain, it does not overreid the existing callbacks
+		# note that this adds a new callback to the chain, it does not override the existing callbacks
 		# we had called order.finalize! here, which was then executed twice....
 		after_transition :to => 'complete' do |order, transition|
 			order.gift_notification if order.is_gift?
-			Spree::OrderMailer.retailer_submitted_email(order).deliver if (order.retailer || !Spree::MailLog.has_email_been_sent_already?(order, 'Order::retailer_submitted_email') )
+			Spree::OrderMailer.retailer_submitted_email(order).deliver if (order.retailer && !Spree::MailLog.has_email_been_sent_already?(order, 'Order::retailer_submitted_email') )
 		end
 		
 	end
