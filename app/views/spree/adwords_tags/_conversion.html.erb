@@ -1,0 +1,20 @@
+<% if flash[:commerce_tracking] %>
+<%= "<!-- Google Code for SEM Conversions Conversion Page -->".html_safe %>
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 995526936;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "dfBvCMCBiwQQmJLa2gM";
+var google_conversion_value = <%= @order.total -%>;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/995526936/?value=<%= @order.total -%>&amp;label=dfBvCMCBiwQQmJLa2gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<% end %>

@@ -1,0 +1,11 @@
+<%= javascript_tag do %>
+	$(document).ready(function() {
+	  $("#checkout_form_delivery").validate();	
+	  $("input[name='order[shipping_method_id]']").rules("add", {
+			required: true,
+			messages: {
+				required: "Please select a shipping method."
+			}
+		});
+	});
+<% end %>
