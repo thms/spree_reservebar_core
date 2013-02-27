@@ -69,7 +69,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :payment_type => 'THIRD_PARTY',  
           :shipper_email => retailer.email, 
           :recipient_email => recipient_email, 
-          :alcohol => shipment.order.contains_alcohol?, 
+          :alcohol => true, # shipment.order.contains_alcohol?, ## Patched on Feb 27, 2013, to account for wrong usage of shipping categories
           :invoice_number => shipment.number, 
           :po_number => shipment.order.number,
           :image_type => ActiveShipping::DEFAULT_IMAGE_TYPE,
