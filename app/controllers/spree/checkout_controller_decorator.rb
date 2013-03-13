@@ -1,4 +1,5 @@
 require 'spree/reservebar_core/retailer_selector'
+require 'spree/reservebar_core/retailer_selector_county'
 require 'spree/reservebar_core/order_splitter'
 require 'exceptions'
 
@@ -66,8 +67,11 @@ Spree::CheckoutController.class_eval do
   # Need to handle that some way or other.
   def before_delivery
 
-    retailer = Spree::ReservebarCore::RetailerSelector.select(current_order)
-    
+    if Spree::Config[:use_county_based_routing]
+      retailer = Spree::ReservebarCore::RetailerSelectorCounty.select(current_order)
+    else
+      retailer = Spree::ReservebarCore::RetailerSelector.select(current_order)
+    end
     # And save the association between order and retailer
     if retailer.id != current_order.retailer_id
       current_order.retailer = retailer
@@ -130,7 +134,11 @@ Spree::CheckoutController.class_eval do
       We realize this is not an ideal situation, but we trust our extensive selection of #{shippable_names} will provide your gift recipient an equally meaningful experience.  We apologize for the inconvenience and thank you again for gifting with ReserveBar.".html_safe
     elsif result[:unshippable].count > 0 && result[:shippable].count == 0
       # We can;t ship any of the items, tell the user what other items we can ship 
-      shippable_names = Spree::ReservebarCore::RetailerSelector.find_shippable_category_names(current_order.ship_address.state)
+      if Spree::Config[:use_county_based_routing]
+        shippable_names = Spree::ReservebarCore::RetailerSelectorCounty.find_shippable_category_names(current_order.ship_address.state)
+      else
+        shippable_names = Spree::ReservebarCore::RetailerSelector.find_shippable_category_names(current_order.ship_address.state)
+      end
       unshippable_names = Spree::ShippingCategory.find(result[:unshippable]).map(&:name).join(', ')
       flash[:notice] = "Thank you for attempting to purchase #{unshippable_names}, unfortunately, we currently cannot accept orders for delivery of #{unshippable_names} to your intended state due to that state's regulations.  However, we are able to accept orders for #{shippable_names} to be delivered to that state. Please remove #{unshippable_names} from your shopping cart and browse our extensive selection of #{shippable_names} for your gift purchase. <br />
       We realize this is not your first choice, but we trust our selection of #{shippable_names} will prove to be an attractive alternative.".html_safe
