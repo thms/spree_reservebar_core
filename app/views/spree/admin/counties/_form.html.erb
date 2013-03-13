@@ -1,0 +1,34 @@
+<%= form_for([:admin, @county]) do |f| %>
+
+<div class="field">
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+</div>
+<div class="field">
+  <%= f.label :state %>
+  <%= f.collection_select(:state_id, Spree::State.where(:country_id => Spree::Country.where(:iso => "US")).order("abbr ASC"),:id, :abbr)  %>
+</div>
+<div class="field">
+  <%= f.label :geometry %>
+  <%= f.text_area :geometry %>
+</div>
+<div class="field">
+  <%= f.label :geo_id %>
+  <%= f.text_field :geo_id %>
+</div>
+<div class="field">
+  <%= f.label :geo_id2 %>
+  <%= f.text_field :geo_id2 %>
+</div>
+<div class="field">
+  <%= f.label :county_num %>(Google)
+  <%= f.text_field :county_num %>
+</div>
+  <%= f.hidden_field :country_id, :value => Spree::Country.where(:iso => "US").first.id %>
+
+
+	<div class="actions">
+	  <%= f.submit %>
+	</div>
+
+<% end %>

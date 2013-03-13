@@ -11,6 +11,10 @@
       		<%= link_to t(:edit_retailer_details), edit_admin_retailer_url(@retailer) %>
     	</li>
 
+    	<li<%== ' class="active"' if current == 'Edit Counties' %>>
+      		<%= link_to t(:edit_retailer_counties), admin_retailer_counties_url(@retailer) %>
+    	</li>
+
     	<li<%== ' class="active"' if current == 'Product Costs' %>>
       		<%= link_to t(:product_costs), admin_retailer_product_costs_url(@retailer) %>
     	</li>

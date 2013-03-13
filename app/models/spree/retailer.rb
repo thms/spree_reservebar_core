@@ -12,6 +12,10 @@ module Spree
     has_and_belongs_to_many :tax_rates, :join_table => :spree_retailers_tax_rates
     
     has_many :product_costs
+    
+    # Assign counties to retailers
+    has_and_belongs_to_many :counties, :join_table => :spree_counties_retailers
+    
   
     validates :name, :payment_method, :phone, :email, :presence => true
   
@@ -29,6 +33,21 @@ module Spree
       event :suspend do
         transition :from => ['new', 'active'], :to => 'suspended'
       end
+    end
+    
+    # default retailer means this retailer can ship to any county in it's state. Only used for county-based retailer routing
+    def is_default?
+      self.is_default == true
+    end
+    
+    # Return nil if there is no default retailer for the state, or the default retailer for the state
+    def self.default_in_state(state)
+      joins(:physical_address).active.where(:is_default => true, :spree_addresses => {:state_id => state.id}).first
+    end
+    
+    # Return all retailers in a given state
+    def self.in_state(state)
+      joins(:physical_address).active.where(:spree_addresses => {:state_id => state.id})
     end
     
     def not_viewed_since_submitted(number_of_hours = 3)

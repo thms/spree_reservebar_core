@@ -109,6 +109,23 @@ module Spree
 				  format.html { render :template => "spree/retailer_mailer/regular_reminder_email.html.erb", :layout => false }
 				end
       end
+      
+      # GET /retailers/1/counties
+      # Show all counties in the state with a checkbox indicating whether they have been assigned to the retailer
+      def counties
+        @retailer = Retailer.find(params[:retailer_id])
+        @counties = Spree::County.find_all_by_state_id(@retailer.physical_address.state_id)
+      end
+      
+      # PUT /retailers/1/update_counties
+      # Update counties and is_default
+      def update_counties
+        @retailer = Retailer.find(params[:retailer_id])
+        params[:retailer][:county_ids] ||= []
+        @retailer.update_attributes(params[:retailer])
+        flash[:notice] = "County assignment has been updated"
+        redirect_to admin_retailer_counties_url(@retailer)
+      end
 
     	protected
 	

@@ -1,0 +1,44 @@
+<%= render :partial => 'spree/admin/retailers/retailer_tabs', :locals => { :current => 'Edit Counties' } %>
+
+<h1>Retailer county assignment</h1>
+<p>This allows changing the counties assigned to a retailer. The county logic is used for order routing. It only affects retailer selection when more than one in-state retailer can fulfill the order. IT is used for legal compliance in Texas, and splitting large state like California between retailers. <//>
+<p>If a retailer is assigned as the default for a state, he will get al orders that are not routed to another retailer that is assigned to a given county. This is useful, when county lookup for an address fails (which can happen), or to make it easier to make sure all counties are assigned to at least one retailer. For states where shipping across county boundaries is illegal (Texas), make sure that no retailer is designated as the default.</p>
+
+<%= form_for [:admin, @retailer], :url => {:action => 'update_counties'}, :html => {:method => :put} do |f| %>
+
+	<%= f.check_box :is_default %> <label>Default Retailer for the State of <%= @retailer.physical_address.state.abbr -%></label>
+	<br /><br />
+	
+<table class="index" id="listing_counties">
+  <tr>
+	<th>Assigned</th>
+	<th>Name</th>
+  	<th>State</th>
+  </tr>
+
+	<tr>
+		<td><%= check_box_tag :select_all %> <label id="select_all_label">Select All</label></td>
+		<td></td>
+		<td></td>
+	</tr>
+<% @counties.each do |county| %>
+	<tr>
+		<td><%= check_box_tag 'retailer[county_ids][]', county.id, @retailer.county_ids.include?(county.id), :class => 'county_selector' %></td>
+		<td><%= county.name %></td>
+		<td><%= county.state_abbr %></td>
+	</tr>
+<% end %>
+</table>
+	<%= f.submit 'Update' %>
+<% end %>
+
+<%= javascript_tag do %>
+$('#select_all').click (function () {
+  $('.county_selector').prop('checked', this.checked);
+	if (this.checked) {
+		$('#select_all_label').html('Unselect All');
+	} else {
+		$('#select_all_label').html('Select All');	
+	}
+});
+<% end %>

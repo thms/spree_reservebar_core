@@ -1,0 +1,32 @@
+<h1Counties</h1>
+<p>Counties are normally mass imported and should not be edited by hand</p>
+
+<div class="toolbar" data-hook="toolbar">
+  <ul class="actions">
+    <li id="new_county_link">
+      <%= button_link_to t(:new_county), new_object_url, {:remote => true, :icon => 'add', :id => 'admin_county_gate'} %>
+    </li>
+  </ul>
+  <br class="clear" />
+</div>
+
+<div id="new_county" data-hook></div>
+
+<table class="index" id="listing_product_costs">
+  <tr>
+	<th>Name</th>
+  	<th>State</th>
+  	<th>Country</th>
+    <th data-hook="admin_county_index_header_actions"></th>
+  </tr>
+
+<% @collection.each do |county| %>
+	<tr>
+		<td><%= county.name %></td>
+		<td><%= county.state_abbr %></td>
+		<td><%= county.country.name %></td>
+		<td><%= link_to 'Edit', edit_admin_county_path(county) %> | <%= link_to 'Destroy', admin_county_path(county), confirm: 'Are you sure?', method: :delete %></td>
+	</tr>
+<% end %>
+</table>
+

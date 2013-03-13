@@ -33,11 +33,15 @@ module Spree
           line_item.product.tax_category == rate.tax_category
         end
         line_items_total = matched_line_items.sum(&:total)
-        
+                
+        # get all eligible adjustments, but skip taxes and adjustments due to groupon style promos
+        # For groupon style promos, the user pays sales tax on the original retail price.
+        # The adjustment is over the value already paid to groupon
         matched_adjustments = order.adjustments.eligible.select do |adjustment|
-          adjustment.originator_type != 'Spree::TaxRate'
+          (adjustment.originator_type != 'Spree::TaxRate') && !adjustment.is_due_to_groupon_style_promo?
         end
         adjustments_total = matched_adjustments.sum(&:amount)
+        
 
         round_to_two_places((line_items_total + adjustments_total + order.gift_packaging_total) * taxcloud_rate)
       end
