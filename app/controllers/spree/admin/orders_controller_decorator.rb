@@ -80,6 +80,7 @@ Spree::Admin::OrdersController.class_eval do
 	end
 
 
+  # Change the currently selected retailer, only avaialble to an admin user.
   def get_retailer_data
   	if params[:retailer_id] && !params[:retailer_id].empty?
   		session[:current_retailer_id] = params[:retailer_id]
