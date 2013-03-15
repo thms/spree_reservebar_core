@@ -15,7 +15,9 @@ module Spree
     
     # Assign counties to retailers
     has_and_belongs_to_many :counties, :join_table => :spree_counties_retailers
-    
+
+    # Enable shipping methods for retailers
+    has_and_belongs_to_many :shipping_methods, :join_table => :spree_retailers_shipping_methods
   
     validates :name, :payment_method, :phone, :email, :presence => true
   

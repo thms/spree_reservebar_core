@@ -32,6 +32,8 @@ Spree::Core::Engine.routes.prepend do
       get :regular_reminder_email
       get :counties
       put :update_counties
+      get :shipping_methods
+      put :update_shipping_methods
     end
 
     

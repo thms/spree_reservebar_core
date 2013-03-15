@@ -127,6 +127,24 @@ module Spree
         redirect_to admin_retailer_counties_url(@retailer)
       end
 
+
+      # GET /retailers/1/shipping_methods
+      # Show all shipping methods
+      def shipping_methods
+        @retailer = Retailer.find(params[:retailer_id])
+        @shipping_methods = Spree::ShippingMethod.all
+      end
+      
+      # PUT /retailers/1/update_shipping_methods
+      # Update shiping methods
+      def update_shipping_methods
+        @retailer = Retailer.find(params[:retailer_id])
+        params[:retailer][:shipping_method_ids] ||= []
+        @retailer.update_attributes(params[:retailer])
+        flash[:notice] = "Shipping methods have been updated"
+        redirect_to admin_retailer_shipping_methods_url(@retailer)
+      end
+
     	protected
 	
     	def collection

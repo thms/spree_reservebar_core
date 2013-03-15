@@ -1,0 +1,38 @@
+<%= render :partial => 'spree/admin/retailers/retailer_tabs', :locals => { :current => 'Edit Shipping Methods' } %>
+
+<h1>Retailer Shipping Methods Enabling</h1>
+<p>This allows changing the shipping methods enabled for a retailer. Only enabled shipping methods will show for the user on the front end and the admin on the backend. Use this to </p>
+
+<%= form_for [:admin, @retailer], :url => {:action => 'update_shipping_methods'}, :html => {:method => :put} do |f| %>
+	
+<table class="index" id="listing_shipping_methods">
+  <tr>
+	<th>Enabled</th>
+	<th>Name</th>
+  </tr>
+
+	<tr>
+		<td><%= check_box_tag :select_all %> <label id="select_all_label">Select All</label></td>
+		<td></td>
+		<td></td>
+	</tr>
+<% @shipping_methods.each do |shipping_method| %>
+	<tr>
+		<td><%= check_box_tag 'retailer[shipping_method_ids][]', shipping_method.id, @retailer.shipping_method_ids.include?(shipping_method.id), :class => 'shipping_method_selector' %></td>
+		<td><%= shipping_method.name %></td>
+	</tr>
+<% end %>
+</table>
+	<%= f.submit 'Update' %>
+<% end %>
+
+<%= javascript_tag do %>
+$('#select_all').click (function () {
+  $('.shipping_method_selector').prop('checked', this.checked);
+	if (this.checked) {
+		$('#select_all_label').html('Unselect All');
+	} else {
+		$('#select_all_label').html('Select All');	
+	}
+});
+<% end %>

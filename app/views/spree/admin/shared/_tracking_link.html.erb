@@ -1,1 +1,8 @@
-<%= link_to shipment.tracking, "http://www.fedex.com/tracking?action=track&language=english&last_action=&ascend_header=1&cntry_code=us&initial=x&mps=y&tracknumbers=#{shipment.tracking}", :target => "_blank" if shipment.tracking %>
+<% if shipment.shipping_method.carrier_name == 'Fedex' || Spree::ReservebarCore::TrackingUtils.tracking_service(shipment.tracking) == 'fedex' %>
+	<%= link_to shipment.tracking, "http://www.fedex.com/tracking?action=track&language=english&last_action=&ascend_header=1&cntry_code=us&initial=x&mps=y&tracknumbers=#{shipment.tracking}", :target => "_blank" if shipment.tracking %>
+
+<% elsif Spree::ReservebarCore::TrackingUtils.tracking_service(shipment.tracking) == 'ups' %>
+	<%= link_to shipment.tracking, "http://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums=#{shipment.tracking}", :target => "_blank" if shipment.tracking %>
+<% end %>
+
+
