@@ -33,7 +33,9 @@
 		  <tbody><tr>
 		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute"><p>Dear <%= @order.bill_address.firstname %>:</p>
 		      <p>RE: Order Number: <a href="http://<%= Spree::Config[:site_url] %>/orders/<%= @order.number %>"><%= @order.number %></a></p>
-		      <p>This email is to notify you that your order below has been successfully delivered. You may view the delivery details with your gift’s FedEx Tracking Number: <a href="http://www.fedex.com/Tracking?language=english&cntry_code=us&tracknumbers=<%= @order.shipment.try(:tracking) %>" target="_blank"><%= @order.shipment.try(:tracking) %></a></p>
+		      <p>This email is to notify you that your order below has been successfully delivered. You may view the delivery details with your gift’s Tracking Number: 
+			<%= render :partial => '/spree/admin/shared/tracking_link', :locals => {:shipment => @order.shipment} %>
+			</p>
 		      <p>Thank you again for your order. We look forward to serving you and exceeding your expectations every time here at ReserveBar.com. If you have any questions, please visit our FAQ page on our site or contact us at support@reservebar.com.</p>
 		  		<p>Gratefully yours,<br>
 		    		ReserveBar.com<br>

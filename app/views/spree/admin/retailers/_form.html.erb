@@ -91,24 +91,46 @@
 
 <fieldset>
 <legend>FedEx Settings</legend>
+<p>You must provide either FedEx or UPS credentials, but not both for a retailer</p>
   <div class="field">
     <%= f.label :fedex_key %>
     <%= f.text_field :fedex_key %> <span class="required">*</span>
-  </div>
-  <div class="field">
-    <%= f.label :fedex_password %>
-    <%= f.text_field :fedex_password %> <span class="required">*</span>
   </div>
   <div class="field">
     <%= f.label :fedex_account_number %>
     <%= f.text_field :fedex_account %> <span class="required">*</span>
   </div>
   <div class="field">
+    <%= f.label :fedex_password %>
+    <%= f.text_field :fedex_password %> <span class="required">*</span>
+  </div>
+  <div class="field">
     <%= f.label :fedex_meter %>
     <%= f.text_field :fedex_meter %> <span class="required">*</span>
   </div>
-
 </fieldset>
+
+<fieldset>
+<legend>UPS Settings</legend>
+<p>You must provide either FedEx or UPS credentials, but not both for a retailer. Note, that you must provide UPS credentials for a retailer to enable tracking of packages, even if the retailer (like Florida) does not use the UPS gateway for rate lookups or ship requests.</p>
+  <div class="field">
+    <%= f.label :ups_key %>
+    <%= f.text_field :ups_key %> <span class="required">*</span>
+  </div>
+  <div class="field">
+    <%= f.label :ups_account_number %>
+    <%= f.text_field :ups_account_number %> <span class="required">*</span>
+  </div>
+  <div class="field">
+    <%= f.label :ups_username %>
+    <%= f.text_field :ups_username %> <span class="required">*</span>
+  </div>
+  <div class="field">
+    <%= f.label :ups_password %>
+    <%= f.text_field :ups_password %> <span class="required">*</span>
+  </div>
+</fieldset>
+
 
 <fieldset>
 <legend>Contact Info</legend>

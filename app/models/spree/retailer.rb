@@ -68,12 +68,21 @@ module Spree
       return true unless not_viewed_since_submitted.empty? && not_accepted_since_viewed.empty? && not_ready_shipping_since_accepted.empty?
     end
     
-    # get the fedex credentials
+    # get the fedex/ups credentials
+    # A single retailer must only have one of them set
     def shipping_config
       if Rails.env == "production"
-        {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter }
+        unless fedex_key.blank?
+          {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter }
+        else
+          {:key => ups_key, :password => ups_password, :origin_account => ups_account_number, :login => ups_username }
+        end
       else
-        {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter, :test => true }
+        unless fedex_key.blank?
+          {:key => fedex_key, :password => fedex_password, :account => fedex_account, :login => fedex_meter, :test => true }
+        else
+          {:key => ups_key, :password => ups_password, :origin_account => ups_account_number, :login => ups_username, :test => true }
+        end
       end
     end
     

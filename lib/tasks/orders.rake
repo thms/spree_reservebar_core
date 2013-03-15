@@ -13,7 +13,9 @@ namespace :admin do
     
     desc "Get updates to shipments for all outstanding orders."
     task :get_tracking_updates => :environment do
-      Spree::ReservebarCore::ShipmentTracker.get_all_fedex_events
+      #Spree::ReservebarCore::ShipmentTracker.get_all_fedex_events
+      #Spree::ReservebarCore::ShipmentTracker.get_all_ups_events
+      Spree::ReservebarCore::ShipmentTracker.get_all_shipment_events
     end
 
   end

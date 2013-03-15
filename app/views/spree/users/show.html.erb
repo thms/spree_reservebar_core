@@ -29,7 +29,7 @@
           <td><%= t("order_state.#{order.extended_state}") %></td>
           <td>
 			<% unless order.extended_state == 'ready_for_pick_up' %>
-				<a href="http://www.fedex.com/Tracking?language=english&cntry_code=us&tracknumbers=<%= order.shipment.try(:tracking) %>" target="_blank"><%= order.shipment.try(:tracking) %></a>
+				<%= render :partial => '/spree/admin/shared/tracking_link', :locals => {:shipment => order.shipment} %>
 			<% end %>
 		</td>
           <td><%= number_to_currency order.total %></td>

@@ -14,8 +14,13 @@ Spree::ShippingMethod.class_eval do
   end
   
   # Test if the shipping method has been enabled for this retailer
+  # This seems to be called sometimes before the the ship address is saved and th retailer is assigned
   def available_to_retailer?(retailer)
-    self.retailer_ids.include?(retailer.id)
+    if retailer
+      self.retailer_ids.include?(retailer.id)
+    else
+      true
+    end
   end
   
   def carrier_name
