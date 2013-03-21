@@ -37,8 +37,11 @@ module Spree
       initializer "spree.register.calculators", :after => 'spree.core.environment' do |app|
         app.config.spree.calculators.tax_rates << Spree::Calculator::TaxWithGiftsPromosAndShipping
         app.config.spree.calculators.tax_rates << Spree::Calculator::TaxAllAdjustments
-        app.config.spree.calculators.tax_rates << Spree::Calculator::TaxCloudCalculator
-        
+        app.config.spree.calculators.tax_rates << Spree::Calculator::TaxCloudCalculator     
+      end
+      
+      initializer "spree.register.calculators", :after => 'spree.core.environment' do |app|
+        app.config.spree.calculators.shipping_methods << Spree::Calculator::Florida
       end
       
 

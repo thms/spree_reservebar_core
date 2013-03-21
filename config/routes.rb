@@ -21,6 +21,12 @@ Spree::Core::Engine.routes.prepend do
     
     resources :age_gates
     resources :counties
+
+    resources :products do
+      get :routes
+      get :edit_routes
+      put :update_routes
+    end
     
     match '/get_retailer_data' => 'overview#get_retailer_data'
     match '/orders/get_retailer_data' => 'orders#get_retailer_data'

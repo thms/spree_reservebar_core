@@ -1,5 +1,32 @@
 Spree::Admin::ProductsController.class_eval do
   
+  
+  # View the final routes after all routing decisions have been made
+  def routes
+    @product = ::Spree::Product.find_by_permalink(params[:product_id])
+  end
+  # Edit the routing assignment
+  def edit_routes
+    @product = ::Spree::Product.find_by_permalink(params[:product_id])
+    @collection = ::Spree::Route.find_all_by_product_id(@product.id)
+  end
+  
+  # Sends the routing information for all active retailers
+  # {routes => {"1" => "preferred", "2" => 'last_resort'}}
+  def update_routes
+    @product = ::Spree::Product.find_by_permalink(params[:product_id])
+    @routes = params[:routes]
+    @routes.each do |retailer_id, value|
+      if Spree::Route.exists?(:product_id => @product.id, :retailer_id => retailer_id)
+        Spree::Route.where(:product_id => @product.id, :retailer_id => retailer_id).first.update_attribute(:route, value)
+      else
+        Spree::Route.create(:product_id => @product.id, :retailer_id => retailer_id, :route => value)
+      end
+    end
+    flash[:notice] = "Routes for this product have been updated"
+    redirect_to admin_product_routes_url(@product)
+  end
+  
   protected
   
       def collection

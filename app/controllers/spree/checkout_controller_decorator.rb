@@ -1,5 +1,6 @@
 require 'spree/reservebar_core/retailer_selector'
 require 'spree/reservebar_core/retailer_selector_county'
+require 'spree/reservebar_core/retailer_selector_profit'
 require 'spree/reservebar_core/order_splitter'
 require 'exceptions'
 
@@ -68,7 +69,7 @@ Spree::CheckoutController.class_eval do
   def before_delivery
 
     if Spree::Config[:use_county_based_routing]
-      retailer = Spree::ReservebarCore::RetailerSelectorCounty.select(current_order)
+      retailer = Spree::ReservebarCore::RetailerSelectorProfit.select(current_order)
     else
       retailer = Spree::ReservebarCore::RetailerSelector.select(current_order)
     end
@@ -135,7 +136,7 @@ Spree::CheckoutController.class_eval do
     elsif result[:unshippable].count > 0 && result[:shippable].count == 0
       # We can;t ship any of the items, tell the user what other items we can ship 
       if Spree::Config[:use_county_based_routing]
-        shippable_names = Spree::ReservebarCore::RetailerSelectorCounty.find_shippable_category_names(current_order.ship_address.state)
+        shippable_names = Spree::ReservebarCore::RetailerSelectorProfit.find_shippable_category_names(current_order.ship_address.state)
       else
         shippable_names = Spree::ReservebarCore::RetailerSelector.find_shippable_category_names(current_order.ship_address.state)
       end

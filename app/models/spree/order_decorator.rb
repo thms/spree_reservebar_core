@@ -138,11 +138,25 @@ Spree::Order.class_eval do
     self.tax_total + shipping + product_cost
   end
   
+  # Calculate the profit if we route this order to a given retailer, based on the product costs table.
+  def profit(retailer)
+    begin
+      (self.line_items.collect {|line_item| line_item.profit(retailer) }).sum
+    rescue
+      0
+    end
+  end
+  
   
   # Returns the number of bottles in the order, so we can limit 
   # Cache counts?
   def number_of_bottles
     bottles = self.line_items.inject(0) {|bottles, line_item| bottles + line_item.quantity}
+  end
+  
+  # true if the order contains products that are routed towards / away from any retailer
+  def contains_routed_products?
+    line_items.inject(false) {|routed, line_item| routed = routed || line_item.product.is_routed?}
   end
   
   private

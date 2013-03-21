@@ -1,0 +1,6 @@
+<li<%== ' class="active"' if current == "Retailer Routes" %>>
+  <%= link_to t("retailer_routes"), admin_product_edit_routes_url(@product) %>
+</li>
+<li<%== ' class="active"' if current == "Final Routes" %>>
+  <%= link_to t("final_routes"), admin_product_routes_url(@product) %>
+</li>

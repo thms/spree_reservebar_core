@@ -2,12 +2,10 @@
 module Spree
   module ReservebarCore
 
-    class RetailerSelectorCounty
+    class RetailerSelectorProfit
       
-      # Retailer in state gets picked if he can ship over retailer out of state that can also ship
-      # Selects a retailer for the supplied order
-      # Initial algorithm for testing: pick where state matches or first
-      # Exceptions: If we do not have a retailer in the ship-to state, we have to reject the order.
+      # Base retailer selection on profits, and prefer in-state over out of state
+      # uses scoring mechanism to simplify the code
       def self.select(order)
         
         # Get the state of the shipping address
@@ -25,59 +23,72 @@ module Spree
         # if we can't ship anything to the state, bail out early:
         raise Exceptions::NoRetailerShipsToStateError unless can_ship_to_state?(state)
         
-        # Try and find a retailer that can ship all items to the state
+        # Try and find a retailer that can ship all items to the state (eliminate all retailers that can't ship to the state)
         query = []
         order.shipping_categories.each do |shipping_category_id|
           query << "ships_#{Spree::ShippingCategory.find(shipping_category_id).name.downcase.gsub(' ','_')}_to like :state"
         end
         retailers = Spree::Retailer.active.where(query.join(' and '),  :state => "%#{state.abbr}%")
         
-        # if we have retailers in the state, check county based routing rules (if we have a county)
-        if retailers.select {|r| r.physical_address.state == state}.count > 0 && county
-          other_retailers_in_state = retailers.select {|r| r.physical_address.state == state && r.is_default == false}
-          # If a non-default retailer can ship to the county, pick that one
-          # This should 
-          retailer = other_retailers_in_state.select {|r| r.county_ids.include?(county.id)}.first
-          
-          # If we did not find one, but there is a default retailer in the state, pick that one
-          if retailer == nil 
-            retailer = retailers.select {|r| r.physical_address.state == state && r.is_default == true}.first
-          end
-          
-          # If we still do not have an in-state retailer, then the county is not covered by them, and routing stops. 
-          if retailer == nil
-            raise Exceptions::NoRetailerShipsToCountyError
-          end
-          
-        else # We either do no have a county, or we do not have in-state retailers. 
-          # If we do not have a county, but we have an in-state retailer that is the default for the state, assign to him
-          # If we do not have in-state retailers, county routing does not apply, so pick one.
-          # 
-          # Reject if county is unkown and there is not default retailer in the state.
-          if retailers.count > 1
-            begin
-              retailer = retailers.select {|r| (r.physical_address.state == state) && (r.is_default == true)}.first
-            rescue
-              retailer = retailers.select {|r| (r.physical_address.state != state)}.first
-            end
-          elsif retailers.count == 1
-            retailer_candidate = retailers.first
-            if retailer_candidate.physical_address.state == state && county
-              retailer = retailer_candidate
-            elsif retailer_candidate.physical_address.state == state && retailer_candidate.is_default
-              retailer = retailer_candidate
-            elsif retailer_candidate.physical_address.state == state
-              retailer = retailer_candidate
-            end
+        # score county based routing rules - not very efficient, better to reject them outright rahter than to calculate scores later on
+        # county_scores = retailers.map {|retailer| {retailer.id => retailer.can_ship_to_county?(county) ? 1 : -10000 }}
+        # reject all retailers that cannot deliver to the county in question
+        retailers.reject! {|retailer| !retailer.can_ship_to_county?(county, state)}
+        
+        if retailers.count == 0
+          raise Exceptions::NoRetailerCanShipFullOrderError
+        end
+        
+        # Score the different retailers to find the one to assign the order to
+        if retailers.count > 1
+          # score order profit
+          profit_scores = retailers.map {|retailer| {retailer.id => order.profit(retailer)}}
+          profit_scores = profit_scores.reduce Hash.new, :merge
+        
+          # score in-state vs out of state (to break a potential tie if two retailers can fulfil the order with equal profit)
+          in_state_scores = retailers.map {|retailer| {retailer.id => order.ship_address.state_id == retailer.physical_address.state_id ? 1 : 0}}
+          in_state_scores = in_state_scores.reduce Hash.new, :merge
+        
+          # score specifically routed products in the order
+          if order.contains_routed_products?
+            route_scores = retailers.map {|retailer| {retailer.id => retailer_route_score(retailer, order)}}
           else
-            retailer = nil
-            #  raise no retailer found error 
-            raise Exceptions::NoRetailerCanShipFullOrderError
+            route_scores = retailers.map {|retailer| {retailer.id => 0}}
           end
+          route_scores = route_scores.reduce Hash.new, :merge
+        
+          # Combine scores and eliminate all that have negative score:
+          scores = profit_scores
+          scores.merge!(in_state_scores) {|key, v1, v2| v1 + v2}
+          scores.merge!(route_scores) {|key, v1, v2| v1 + v2}
+        
+          # Sort by highest score first so we only have one retailer left
+          scores = scores.to_a
+          scores.sort! {|a,b| b[1] <=> a[1]}
+          retailer_id  = scores.first[0]
+          retailer = (retailers.select {|r| r.id == retailer_id}).first
+        else
+          retailer = retailers.first
         end
               
+        # Raise exception if we did not find a retailer
+        if retailer == nil
+          raise Exceptions::NoRetailerCanShipFullOrderError
+        end
+        
         # Return the retailer if we have found one.
         retailer
+      end
+      
+      # Calculate a score for a retailer's routed products
+      # If there are products in the order that are routed to the retailer: +1000
+      # If there are products in the order that are routed away from the retailer: -10
+      def self.retailer_route_score(retailer, order)
+        score = 0
+        # If there are products in the order that are routed to the retailer: +1000
+        score = score + 1000 unless (retailer.routes.preferred.map(&:product_id) & order.products.map(&:id)).empty?
+        score = score - 1000 unless (retailer.routes.last_resort.map(&:product_id) & order.products.map(&:id)).empty?
+        score
       end
   
       # check whether we can ship anything at all to the selected state
@@ -123,18 +134,7 @@ module Spree
         names.join(', ')
       end
       
-      # Finds the retailer with the highest profit margin, if there are more than one
-      # Calculation of profit is based on the product costs per retailer
-      # Expects an array of retailers and an order
-      def self.select_retailer_by_profit(order, retailers)
-        # Bail early if there is only one retailer
-        return retailers[0] if retailers.count == 1
-        # Calculate profit for each candidate retailer and return the one with the highest profit
-        profits = retailers.map {|retailer| {:retailer => retailer, :profit => order.profit(retailer)}}
-        profits.sort! {|a,b| b[:profit] <=> a[:profit]}
-        profits.first[:retailer]
-      end
-      
+       
       
     end
   end

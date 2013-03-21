@@ -77,5 +77,6 @@ en:
       name: Number of Items in the Cart
       description: Triggers when the user has equal or more items (bottles) in the cart
   edit_retailer_counties: "Edit Counties"
+  florida_special: "Florida Retailer Rates"
       
   

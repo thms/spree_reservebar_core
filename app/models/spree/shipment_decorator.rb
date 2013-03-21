@@ -69,6 +69,12 @@ Spree::Shipment.class_eval do
     !shipped? && !delivered?
   end
   
+  # Returns the number of bottles in the shipment
+  # Cache counts?
+  def number_of_bottles
+    bottles = self.line_items.inject(0) {|bottles, line_item| bottles + line_item.quantity}
+  end
+  
      
   
 end

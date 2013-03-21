@@ -11,7 +11,11 @@ module Spree
     has_and_belongs_to_many :users, :join_table => :spree_retailers_users
     has_and_belongs_to_many :tax_rates, :join_table => :spree_retailers_tax_rates
     
+    # Defines the amount payable to a retailer for a given sku. Used for reporting and profit based routing.
     has_many :product_costs
+    
+    # Routes assign a product to a given retailer, used for retailer assignment
+    has_many :routes
     
     # Assign counties to retailers
     has_and_belongs_to_many :counties, :join_table => :spree_counties_retailers
@@ -40,6 +44,35 @@ module Spree
     # default retailer means this retailer can ship to any county in it's state. Only used for county-based retailer routing
     def is_default?
       self.is_default == true
+    end
+    
+    # test if the retailer can ship an order to the county
+    # assumptions: if the retailer state is not the same as the county's state, the retailer can ship (this get overruled by retailer to state assignment anyway)
+    # If retailer is default in the county's state, he can ship
+    # if the county is excplitely assigned to the retailer, he can ship
+    # Need to pass in the state of the shipping address explicetly, because county lookup may have failed.
+    def can_ship_to_county?(county, state)
+      result = false
+      if county == nil 
+        if physical_address.state_id != state.id
+          result = true
+        else
+          if is_default?
+            result = true
+          end
+        end
+      else # we have a county
+        if (physical_address.state_id != county.state_id)
+          result = true
+        else
+          if is_default?
+            result = true
+          elsif county_ids.include?(county.id)
+            result = true
+          end
+        end
+      end
+      result
     end
     
     # Return nil if there is no default retailer for the state, or the default retailer for the state

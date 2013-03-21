@@ -1,0 +1,55 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => {:current => "Final Routes"} %>
+
+<h2>Final Retailer Assignment</h2>
+<p>This lists per state the final assignment of an order to a retailer in a given state, if the order only contained this product. It takes the entire routing logic, geo ranges, county rules, in-state vs out of state, profit and retailer route, into account.</p>
+
+@product = Spree::Product.find_by_permalink('ardberg-oiskey')
+state = Spree::State.find_by_abbr('NY')
+
+<table class="index">
+<% 
+	order = Spree::Order.new
+	address = Spree::Address.new
+	order.ship_address = address
+	order.add_variant(@product.master,  1)
+ 	Spree::State.order("abbr ASC").each do |state|
+		order.ship_address.update_attribute(:state_id, state.id)
+		if state.abbr == 'TX'
+			counties = ['Harris', 'Houston','Dallas', 'Bexar', 'Austin']
+			retailers = []
+			counties.each do |county_name|
+				county = Spree::County.find_by_name_and_state_abbr(county_name,'TX')
+				order.ship_address.update_attribute(:county_id, county.id)
+				begin
+					retailer = Spree::ReservebarCore::RetailerSelectorProfit.select(order)
+				rescue
+					retailer = nil
+				end
+				retailers << retailer
+			end
+			order.ship_address.update_attribute(:county_id, nil)
+		else
+			begin
+				retailer = Spree::ReservebarCore::RetailerSelectorProfit.select(order)
+			rescue
+				retailer = nil
+			end
+		end
+%>
+	<% if state.abbr == 'TX' %>
+		<% retailers.each_with_index do |retailer, index| %>
+			<tr>
+				<td><%= state.abbr %> - <%= counties[index] %></td>
+				<td><%= retailer ? "#{retailer.name}, #{retailer.physical_address.state.abbr}" : "Can't ship" %></td>
+			</tr>
+		<% end %>
+	<% else %>
+		<tr>
+			<td><%= state.abbr %></td>
+			<td><%= retailer ? "#{retailer.name}, #{retailer.physical_address.state.abbr}" : "Can't ship" %></td>
+		</tr>
+	<% end %>
+	<% end %>
+</table>

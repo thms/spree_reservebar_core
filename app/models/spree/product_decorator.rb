@@ -1,5 +1,10 @@
 Spree::Product.class_eval do
   
+  belongs_to :brand
+  
+  # Routes assign a product to a given retailer, used for retailer assignment
+  has_many :routes
+  
   # scope for finding products in a set of taxon trees
   scope :taxons_id_in_tree_any, lambda {|*taxons| 
     taxons = [taxons].flatten
@@ -55,6 +60,11 @@ Spree::Product.class_eval do
   def ships_to_all_states?
     method = "ships_#{self.shipping_category.name.downcase.gsub(' ','_')}_to".to_sym
     (Spree::Retailer.active.map(&method) - [""]).join(',').split(',').uniq.count == Spree::State.count
+  end
+  
+  # True if this product is routed towards/away from any retailer
+  def is_routed?
+    !(routes.reject {|r| r.route == 'neutral'}).empty?
   end
   
   private

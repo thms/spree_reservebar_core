@@ -1,0 +1,29 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => {:current => "Retailer Routes"} %>
+
+<h2>Assign Retailer Preferences</h2>
+<p>The normal state here is 'neutral'. This should only be used to define exceptions to the usual routing of orders to retailers. It overrides all other routing rules (e.g. in-state, profit, etc.) and has the following effect.</p>
+<ul>
+<li>If a retailer is the preferred fulfiller for a SKU, an order that contains the SKU and is in the geo range of the retailer will be assigned to this retailer
+<li>If a retailer is the last resort fulfiller for a SKU, an order that contains the SKU will only be assigned to that retailer if no other retailer can fulfill the order
+<li>It is possible to assign more than one retailer as the preferred fulfiller, e.g. when the two retailers cover different geo ranges.
+<li>These rules only have an effect when there is more than one retailer that can fulfill the order based on geo ranges, county rules, etc.
+</ul>
+<%= form_for [:admin, @product], :url => {:action => 'update_routes'}, :html => {:method => :put} do |f| %>
+<table class="index">
+	<tr>
+		<th>Retailer</th>
+		<th>Route</th>
+		<th>Action</th>
+	</tr>
+	<% Spree::Retailer.active.each do |retailer| %>
+		<tr>
+			<td><%= "#{retailer.name}, #{retailer.physical_address.state.abbr}" %></td>
+			<td><%= select_tag "routes[#{retailer.id}]", options_from_collection_for_select(Spree::Route::MODES, :to_s, :humanize, :selected =>  retailer.routes.where(:product_id => @product.id).first.try(:route) || 'neutral') %></td>
+			<td></td>
+		</tr>
+	<% end %>
+</table>
+<%= f.submit 'Update' %>
+<% end %>
