@@ -1,0 +1,11 @@
+
+<% if request.params[:msging] && chunk = Spree::ContentChunk.where(:kind => request.params[:msging]).first %>
+	<div class="campaign-chunk" style="margin-bottom:12px;">
+		<% unless chunk.image %>
+			<h3><%= chunk.title %></h3>
+			<%= chunk.body -%>
+		<% else %>
+			<%= image_tag chunk.image  %>
+		<% end %>
+	</div>
+<% end %>
