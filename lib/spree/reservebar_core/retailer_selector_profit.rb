@@ -30,10 +30,10 @@ module Spree
         end
         retailers = Spree::Retailer.active.where(query.join(' and '),  :state => "%#{state.abbr}%")
         
-        # score county based routing rules - not very efficient, better to reject them outright rahter than to calculate scores later on
+        # score county based routing rules - not very efficient, better to reject them outright rather than to calculate scores later on
         # county_scores = retailers.map {|retailer| {retailer.id => retailer.can_ship_to_county?(county) ? 1 : -10000 }}
         # reject all retailers that cannot deliver to the county in question
-        retailers.reject! {|retailer| !retailer.can_ship_to_county?(county, state)}
+        retailers = retailers.reject {|retailer| !retailer.can_ship_to_county?(county, state)}
         
         if retailers.count == 0
           raise Exceptions::NoRetailerCanShipFullOrderError
