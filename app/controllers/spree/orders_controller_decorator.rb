@@ -5,7 +5,7 @@ Spree::OrdersController.class_eval do
   
   rescue_from Exceptions::BottleLimitPerOrderExceededError, :with => :bottle_limit_exceeded
   
-  # add custimization to line item after the other stuff - will that even work?
+  # Add customization to line item after the other stuff - will that even work?
   after_filter :handle_customization, :only => [:populate, :update]
   
   protected

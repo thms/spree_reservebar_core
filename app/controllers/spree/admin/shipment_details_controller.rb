@@ -67,7 +67,7 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
       response, request_xml = fedex.ship(shipper, recipient, package, 
           :payor_account_number => Spree::ActiveShipping::Config[:payor_account_number], # this uses resservebar.com's account number for third party billing
           :payment_type => 'THIRD_PARTY',  
-          :shipper_email => retailer.email, 
+          :shipper_email => retailer.email.split(',').first.strip,  # Allows us to enter emails in retailer setup with comma separation, Fedex only accepts one email per request.
           :recipient_email => recipient_email, 
           :alcohol => true, # shipment.order.contains_alcohol?, ## Patched on Feb 27, 2013, to account for wrong usage of shipping categories
           :invoice_number => shipment.number, 
