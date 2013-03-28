@@ -3,7 +3,7 @@
 <% if engraving_item && engraving_item.preferred_customization %>
 
 	<div style="border:1px solid #888;padding:6px;">
-		<b>This order requires custom engraving for all Johnny Walker Blue Engraved bottles</b>
+		<b>This order requires custom engraving for all Johnnie Walker Blue Engraved bottles</b>
 		<% customization_data = JSON.parse(engraving_item.preferred_customization) %>
 		<% customization_data["data"].each do |key,value| %>
 			<div><%= "#{key.humanize}: #{value}" %></div>
