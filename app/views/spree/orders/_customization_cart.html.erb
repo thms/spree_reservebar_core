@@ -1,0 +1,22 @@
+<% if line_item.variant.sku == "JWBCEB" && line_item.preferred_customization %>
+
+	<div>
+		<b>Your Engraving:</b>
+		<% customization_data = JSON.parse(line_item.preferred_customization) %>
+		<input type=hidden name="customization[type]" value="jwb_engraving" />
+		<% customization_data["data"].each do |key,value| %>
+			<div><input type=text name='customization[data][<%= key -%>]' placeholder="<%= key.humanize -%>" value="<%= value -%>" onkeyup="validateEngraving(this);" style="font-size:11px;text-align:center;"/></div>
+		<% end %>
+	</div>
+<% end %>
+
+<%= javascript_tag do %>
+
+	validateEngraving = function(element) {
+		var value = element.value;
+		value = value.replace(/[!12?]/gi, '');
+		value = value.substring(0,15);
+		value = value.toUpperCase();
+		element.value = value;
+	}
+<% end %>

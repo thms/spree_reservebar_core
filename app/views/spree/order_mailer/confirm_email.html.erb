@@ -158,6 +158,18 @@
 		      <% bgcolor = cycle('#d8d8d8', '#ffffff') %>
 		      <tr>
 		        <td width="50%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= sanitize(item.variant.product.name, :tags => %w(sup)) %>
+			
+					<% if item.variant.sku == "JWBCEB" && item.preferred_customization %>
+
+						<div>
+							<b>Your Engraving:</b>
+							<% customization_data = JSON.parse(item.preferred_customization) %>
+							<% customization_data["data"].each do |key,value| %>
+								<div><%= "#{key.humanize}: #{value}" %></div>
+							<% end %>
+						</div>
+					<% end %>
+			
             </td>
 		        <td width="60px" style="background:<%= bgcolor -%>; text-align:center;">Quantity: <%= item.quantity %>
             </td>

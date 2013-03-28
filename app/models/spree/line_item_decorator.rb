@@ -20,4 +20,10 @@ Spree::LineItem.class_eval do
     
   end
   
+  # Allows use to add arbitrary customization data to any line item
+  # To be used with the Johnnie Walker Blue Label, might later replace with spree_flexi_variants
+  # Example data: {:type => 'jwb_engraving, :data => {:line1 => 'bla', :line2 => 'said', :line3 => 'toad'}}
+  # Can we derive partial names from the type? - I hope so.
+  preference :customization, :string, :default => nil
+  
 end

@@ -1,0 +1,34 @@
+<table class="line_items" >
+  <tr>
+    <td class="sku bold"><%= I18n.t(:sku) unless @receipt %></td>
+    <td class="desc bold"><%= I18n.t(:item_description) %></td>
+    <td class="price bold"><%=I18n.t(:price)  unless @packaging_slip or @receipt%></td>
+    <td class="qty bold"><%=I18n.t(:qty) %> </td>
+    <td class="size bold">Size</td>
+    <td class="gift_package bold"><%= t(:gift_packaging) %></td>
+    <td class="total bold" align="right"><%=I18n.t(:total) unless @packaging_slip%></td>
+  </tr>
+  <% @order.line_items.each do |item| %>
+  <tr>
+    <td class="cell"><%=item.variant.product.sku unless @receipt%></td>
+    <td class="cell"><%=sanitize(item.variant.full_name, :tags => %w(sup))%>
+	<% if item.variant.sku == "JWBCEB" && item.preferred_customization %>
+
+		<div>
+			<b>Your Engraving:</b>
+			<% customization_data = JSON.parse(item.preferred_customization) %>
+			<% customization_data["data"].each do |key,value| %>
+				<div><%= "#{key.humanize}: #{value}" %></div>
+			<% end %>
+		</div>
+	<% end %>
+	</td>
+    <td class="cell"><%=number_to_currency(item.tax_price) unless @packaging_slip or @receipt%></td>
+    <td class="cell"><%=item.quantity %></td>
+    <td class="cell"><%= item.variant.bottle_size %></td>
+    <td class="gift_packaging"><%= item.gift_package ? item.gift_package.title : "None" %> <%= "(#{I18n.t(:price)}: #{number_to_currency(item.gift_package.price)})" unless !item.gift_package or @packaging_slip or @receipt %></td>
+    <td class="cell" align="right"><%=number_to_currency(item.tax_price * item.quantity + (item.gift_package ? item.gift_package.price * item.quantity : 0)) unless
+     @packaging_slip%></td>
+  </tr>
+  <% end %>
+</table>

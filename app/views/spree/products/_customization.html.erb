@@ -1,0 +1,33 @@
+<% if @product.master.sku == "JWBCEB" %>
+
+<div style="width:577px;height:235px;background:url('/assets/jwb_engraving.jpg');position:relative;border:1px solid #fbb917;margin-top:12px;margin-bottom:12px;">
+	<div style="position:absolute;top:100px;left:83px;width:100px;height:100px;color:#fbb917;text-align:center;">
+		<div id='preview1'></div>
+		<div id='preview2'></div>
+		<div id='preview3'></div>
+	</div>
+	<div style="position:absolute;top:30px;right:50px;height:200px;width:210px;">
+		<h4 style="color:#fbb917;">Your Engraving</h4>
+		<input type=hidden name="customization[type]" value="jwb_engraving" />
+		<input type=text name='customization[data][line1]' placeholder="Line 1" style="text-align:center;" onkeyup="validateAndPreviewEngraving('1',this);" /><br/ >
+		<input type=text name='customization[data][line2]' placeholder="Line 2" style="text-align:center;" onkeyup="validateAndPreviewEngraving('2',this);" /><br/ >
+		<input type=text name='customization[data][line3]' placeholder="Line 3" style="text-align:center;" onkeyup="validateAndPreviewEngraving('3',this);" /><br/ ><br/ >
+		<p style="color:#fbb917;line-height:1.3em;font-size:11px;">
+		Symbols and punctuation, such as "!", "?" and numbers &lt; "3" do not appear clearly on the Engraved Johnnie Walker Blue Label bottle. Please do not use them. They will not be processed on your order.
+		</p>
+	</div>
+</div>
+
+<%= javascript_tag do %>
+
+	validateAndPreviewEngraving = function(line, element) {
+		var value = element.value;
+		value = value.replace(/[!12?]/gi, '');
+		value = value.substring(0,15);
+		value = value.toUpperCase();
+		element.value = value;
+		$("#preview" + line).html(value);
+	}
+<% end %>
+
+<% end %>

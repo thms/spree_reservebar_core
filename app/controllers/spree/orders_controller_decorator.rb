@@ -5,8 +5,25 @@ Spree::OrdersController.class_eval do
   
   rescue_from Exceptions::BottleLimitPerOrderExceededError, :with => :bottle_limit_exceeded
   
+  # add custimization to line item after the other stuff - will that even work?
+  after_filter :handle_customization, :only => [:populate, :update]
   
   protected
+  
+  def handle_customization
+    @order = current_order(false)
+    # Only process if we got customization data
+    if params[:customization]
+      # Find line items that can be customized, and set its preferred_customization_data
+      begin
+        line_item = @order.line_items.joins(:variant).where(:spree_variants => {:sku => 'JWBCEB'}).first
+        line_item.preferred_customization = params[:customization].to_json 
+      rescue Exception => e
+        # Don't do anything for now
+        Rails.logger.warn "Failed updating line item with customization data. Order #{@order.number}"
+      end  
+    end
+  end
   
 
   def bottle_limit_exceeded

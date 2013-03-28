@@ -59,7 +59,19 @@
 
     <% @order.line_items.each do |item| %>
       <tr data-hook="order_details_line_item_row">
-        <td width="400"><%= sanitize(item.variant.product.name, :tags => %w(sup)) %> <%= "(" + variant_options(item.variant) + ")" unless item.variant .option_values.empty? %></td>
+        <td width="400"><%= sanitize(item.variant.product.name, :tags => %w(sup)) %> <%= "(" + variant_options(item.variant) + ")" unless item.variant .option_values.empty? %>
+		<% if item.variant.sku == "JWBCEB" && item.preferred_customization %>
+
+			<div>
+				<b>Requires Custom Engraving</b>
+				<% customization_data = JSON.parse(item.preferred_customization) %>
+				<% customization_data["data"].each do |key,value| %>
+					<div><%= "#{key.humanize}: #{value}" %></div>
+				<% end %>
+			</div>
+		<% end %>
+
+		</td>
         <td class="qty"><%= item.quantity %></td>
         <td class="size"><%= item.variant.bottle_size %></td>
 		<td class="gift_packaging"><%= item.gift_package ? item.gift_package.title : "None" %></td>

@@ -1,0 +1,10 @@
+<% if item.variant.sku == "JWBCEB" && item.preferred_customization %>
+
+	<div>
+		<b>Your Engraving:</b>
+		<% customization_data = JSON.parse(item.preferred_customization) %>
+		<% customization_data["data"].each do |key,value| %>
+			<div><%= "#{key.humanize}: #{value}" %></div>
+		<% end %>
+	</div>
+<% end %>
