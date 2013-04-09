@@ -1,8 +1,12 @@
-<% if line_item.variant.sku == "JWBCEB" && line_item.preferred_customization %>
-
+<% if line_item.variant.sku == "JWBCEB" %>
+<% if line_item.preferred_customization == nil 
+		customization_data = {'data' => {'line1' => '', 'line2' => '', 'line3' => ''}}
+	else
+		customization_data = JSON.parse(line_item.preferred_customization) 
+  end
+%>
 	<div>
 		<b>Your Engraving:</b>
-		<% customization_data = JSON.parse(line_item.preferred_customization) %>
 		<input type=hidden name="customization[type]" value="jwb_engraving" />
 		<% customization_data["data"].each do |key,value| %>
 			<div><input type=text name='customization[data][<%= key -%>]' placeholder="<%= key.humanize -%>" value="<%= value -%>" onkeyup="validateEngraving(this);" style="font-size:11px;text-align:center;"/></div>
