@@ -5,23 +5,34 @@ Spree::OrdersController.class_eval do
   
   rescue_from Exceptions::BottleLimitPerOrderExceededError, :with => :bottle_limit_exceeded
   
-  # Add customization to line item after the other stuff - will that even work?
+  # Add customization to line item after the other stuff 
   after_filter :handle_customization, :only => [:populate, :update]
   
   protected
   
+  # We'll need to add customization data to the SKU's either when it was submitted in the form or when the SKU requires it but it has not been 
+  # submitted. The latter happens when SKUis added to the cart from a taxon page, where the form data is not available.
   def handle_customization
     @order = current_order(false)
-    # Only process if we got customization data
+    # Process if we got customization data from the product or cart page
     if params[:customization]
-      # Find line items that can be customized, and set its preferred_customization_data
+      # Find line item that can be customized, and set its preferred_customization_data
       begin
         line_item = @order.line_items.joins(:variant).where(:spree_variants => {:sku => 'JWBCEB'}).first
         line_item.preferred_customization = params[:customization].to_json 
       rescue Exception => e
         # Don't do anything for now
         Rails.logger.warn "Failed updating line item with customization data. Order #{@order.number}"
-      end  
+      end
+    else # Check if a customizable SKU has been added without the customizatiob data in the form
+      # Find line item that can be customized, and set its preferred_customization_data
+      begin
+        line_item = @order.line_items.joins(:variant).where(:spree_variants => {:sku => 'JWBCEB'}).first
+        line_item.preferred_customization = {'type' => 'jwb_engraving', 'data' => {'line1' => '', 'line2' => '', 'line3' => ''}}
+      rescue Exception => e
+        # Don't do anything for now
+        Rails.logger.warn "Failed updating line item with customization data. Order #{@order.number}"
+      end        
     end
   end
   
