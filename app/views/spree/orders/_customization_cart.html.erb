@@ -1,7 +1,7 @@
 <% if line_item.variant.sku == "JWBCEB" && line_item.preferred_customization %>
 		
 	<div>
-		<b>Your Engraving:</b>
+		<b>Your Engraving: </b><small>(please hit 'Update' if you change it here)</small>
 		<% customization_data = JSON.parse(line_item.preferred_customization) %>
 		<input type=hidden name="customization[type]" value="jwb_engraving" />
 		<% customization_data["data"].each do |key,value| %>
