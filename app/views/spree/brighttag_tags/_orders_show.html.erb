@@ -4,15 +4,15 @@
 <script type="text/javascript">
 
 var pageData = {
-	'navigation' : {
-		'pageName' : 'Confirmation'
+	"navigation" : {
+		"pageName" : "Confirmation"
 	},
-	'order' : {
-		'id' : '<%= @order.number %>',
-		'sender': {'city': '<%= @order.bill_address.city -%>', 'state': '<%= @order.bill_address.state.abbr -%>' }
+	"order" : {
+		"id" : "<%= @order.number %>",
+		"sender": {"city": "<%= @order.bill_address.city -%>", "state": "<%= @order.bill_address.state.abbr -%>" }
 	},
-	'items' : [
-	<%= (@order.line_items.map { |line_item| "{'productID': '#{line_item.variant.sku}', 'productName': '#{line_item.variant.name}', 'quantity': #{line_item.quantity}, 'productBrand' : '#{line_item.product.brand.title}' }" if line_item.product.brand.brand_owner.title == 'Diageo' }).join(',') %>
+	"items" : [
+	<%= (@order.line_items.map { |line_item| '{"productID": "' + line_item.variant.sku + '", "productName": "' + line_item.variant.name + '", "quantity": ' + line_item.quantity.to_s + ', "productBrand" : "' + line_item.product.brand.title + '" }' if line_item.product.brand.brand_owner.title == "Diageo" }).join(",") %>
 	]
 };
 

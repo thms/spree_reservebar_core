@@ -1,13 +1,13 @@
 
-<% if @taxon.children.empty? && Spree::BrandOwner.find_by_title('Diageo').brands.map(&:title).include?(@taxon.name) %>
+<% if @taxon.children.empty? && Spree::BrandOwner.find_by_title("Diageo").brands.map(&:title).include?(@taxon.name) %>
 
 <script type="text/javascript">
 var pageData = {
-	'navigation' : {
-		'pageName' : 'Brand'
+	"navigation" : {
+		"pageName" : "Brand"
 	},
-	'items' : {
-		'productBrand' : '<%= @taxon.name -%>'
+	"items" : {
+		"productBrand" : "<%= @taxon.name -%>"
 	}};
 
   (function () {

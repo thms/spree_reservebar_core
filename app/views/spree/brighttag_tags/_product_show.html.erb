@@ -1,19 +1,19 @@
-<% if @product.brand.brand_owner.title == 'Diageo' %>
+<% if @product.brand.brand_owner.title == "Diageo" %>
 <script type="text/javascript">
 var pageData = {
-	'navigation' : {
-		'pageName' : 'Product'
+	"navigation" : {
+		"pageName" : "Product"
 	},
-	'items' : {
-		'productID' : '<%= @product.master.sku -%>',
-		'productName' : '<%= @product.name -%>',
-		'productCategory' : '<%= @product.shipping_category.name -%>',
-		'productBrand' : '<%= @product.brand.title -%>'
+	"items" : {
+		"productID" : "<%= @product.master.sku -%>",
+		"productName" : "<%= @product.name -%>",
+		"productCategory" : "<%= @product.shipping_category.name -%>",
+		"productBrand" : "<%= @product.brand.title -%>"
 	}};
 
 
-$("#add-to-cart-button").on('click', function() {
-	$(document).trigger('itemAddedToCart', ['<%= @product.master.sku -%>', '<%= @product.name -%>', '<%= @product.brand.title -%>']);
+$("#add-to-cart-button").on("click", function() {
+	$(document).trigger("itemAddedToCart", ["<%= @product.master.sku -%>", "<%= @product.name -%>", "<%= @product.brand.title -%>"]);
 });
 
   (function () {
