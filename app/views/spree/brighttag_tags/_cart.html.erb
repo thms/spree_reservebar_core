@@ -8,7 +8,7 @@ var pageData = {
 		"id" : "<%= @order.number %>"
 	},
 	"items" : [
-	<%= (@order.line_items.map { |line_item| '{"productID": "' + line_item.variant.sku + '", "productName": "' + line_item.variant.name +'", "quantity": ' + line_item.quantity.to_s + ', "productBrand" : "' + line_item.product.brand.title + '" }' if line_item.product.brand.brand_owner.title == "Diageo" }).join(",") %>
+	<%= (@order.line_items.map { |line_item| '{"productID": "' + line_item.variant.sku + '", "productName": "' + line_item.variant.name + '", "quantity": ' + line_item.quantity.to_s + ', "productBrand" : "' + line_item.product.brand.title + '" }' if line_item.product.brand.brand_owner.title == "Diageo" }).join(",") %>
 	]
 };
 
