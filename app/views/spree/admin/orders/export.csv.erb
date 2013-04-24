@@ -51,7 +51,7 @@ end %>
 
 <% else %>
 <% if current_user.has_role?("admin") %>
-OrderNumber,Order details link,Customer email address,Product name,Number of bottles,Multiple products in the order,OrderDate,OrderState,PaymentState,ShipmentState,Product price,GiftPackagingCost(not paid to retailer),RB margin (Product price - product cost),Promo,Total promo discount($),Retailer,ProductCostForRetailer
+OrderNumber,Order details link,Customer email address,Ship-to State,Product name,Number of bottles,Multiple products in the order,OrderDate,OrderState,PaymentState,ShipmentState,Product price,GiftPackagingCost(not paid to retailer),RB margin (Product price - product cost),Promo,Total promo discount($),Retailer,ProductCostForRetailer
 <%= CSV.generate do |csv|
   @orders.each do |order|
     line_items = order.line_items
@@ -59,6 +59,7 @@ OrderNumber,Order details link,Customer email address,Product name,Number of bot
       csv << [order.number, 
 				url_for(:id => order.number, :action => 'show', :controller => 'admin/orders', :only_path => false, :protocol => 'https'),
 				order.email,
+				order.ship_address.state.abbr,
 				line_item.product.nil? ? nil : strip_tags(line_item.product.name).gsub(/&quot;|,/, ''),
 				line_item.quantity,
 				(line_items.size > 1 ? "Yes" : "No"),
