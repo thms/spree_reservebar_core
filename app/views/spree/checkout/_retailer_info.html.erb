@@ -1,0 +1,5 @@
+<% if @order.retailer.physical_address.state.abbr == 'NY' %>
+	<div class="retailer-info">
+		This order will be fulfilled by "<%= @order.retailer.name %>", <%= @order.retailer.physical_address.to_string %>, Phone: <%= @order.retailer.phone %>
+	</div>
+<% end %>

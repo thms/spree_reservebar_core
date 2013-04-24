@@ -115,8 +115,10 @@ Spree::Admin::OrdersController.class_eval do
   	  rescue Spree::Core::GatewayError => error
   	    # Handle messaging to retailer - error flash that something
   	    flash[:error] = "Something went wrong with the payment on this order. Please hold off on shipping and contact ReserveBar."
-  	    # Handle email to reservbar that something went wrong
-  	    Spree::OrderMailer.capture_payment_error_notification(@order, error)
+  	    # Dump error to separate log
+  	    log_payment_error(error)
+  	    # Send email to reservbar that something went wrong
+  	    Spree::OrderMailer.capture_payment_error_notification(@order, error).deliver
   	    @order.update_attribute(:accepted_at, nil)
 	    end
     end
@@ -170,6 +172,12 @@ Spree::Admin::OrdersController.class_eval do
   	@order.update_attributes(:unread => false, :viewed_at => Time.now) if @order.unread && (@order.retailer && @order.retailer == @current_retailer)
   end
   
+  def log_payment_error(exception)
+    new_logger = Logger.new('log/payment_errors.log')
+    new_logger.info("\n\n===== Exception Caught at #{Time.now} for Order Number #{order.number} =====")
+    new_logger.info(exception.message)
+    new_logger.info("\n\n===== End Exception  =====\n\n")
+  end
 
   
 
