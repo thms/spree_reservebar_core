@@ -63,10 +63,20 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
         recipient_email = shipment.order.email
       end
       fedex = ActiveMerchant::Shipping::FedEx.new(retailer.shipping_config)
-      # this may fail and raise an Exception , e.g. if hte shipping address does not pass validation on their end
+
+      # Set New York to Sender billing, iso third party
+      if retailer.physical_address.state.abbr == 'NY'
+        payment_type = 'SENDER'
+        payor_account_number = retailer.fedex_account
+      else
+        payment_type = 'THIRD_PARTY'
+        payor_account_number = Spree::ActiveShipping::Config[:payor_account_number] # this uses resservebar.com's account number for third party billing
+      end
+
+      # this may fail and raise an Exception , e.g. if the shipping address does not pass validation on their end
       response, request_xml = fedex.ship(shipper, recipient, package, 
-          :payor_account_number => Spree::ActiveShipping::Config[:payor_account_number], # this uses resservebar.com's account number for third party billing
-          :payment_type => 'THIRD_PARTY',  
+          :payor_account_number => payor_account_number, 
+          :payment_type => payment_type,  
           :shipper_email => retailer.email.split(',').first.strip,  # Allows us to enter emails in retailer setup with comma separation, Fedex only accepts one email per request.
           :recipient_email => recipient_email, 
           :alcohol => true, # shipment.order.contains_alcohol?, ## Patched on Feb 27, 2013, to account for wrong usage of shipping categories
