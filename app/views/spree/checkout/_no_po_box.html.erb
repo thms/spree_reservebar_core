@@ -1,0 +1,13 @@
+<% if @order.state == 'address' %>
+	<%= javascript_tag do %>
+		$(document).ready(function(){
+			$.validator.addMethod("noPoBox", function(value) {
+				var isPoBox = /\b[p]*(ost)*\.*\s*[o|0]*(ffice)*\.*\s*b[o|0]x\b/i;
+				return !isPoBox.test(value);
+			}, "* P.O. Box addresses are not allowed for shipping");
+	
+			$("#order_ship_address_attributes_address1").rules("add", "noPoBox");
+			$("#order_ship_address_attributes_address2").rules("add", "noPoBox");
+		});
+	<% end %>
+<% end %>
