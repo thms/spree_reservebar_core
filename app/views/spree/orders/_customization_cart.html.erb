@@ -7,6 +7,9 @@
 		<% customization_data["data"].each do |key,value| %>
 			<div><input type=text name='customization[data][<%= key -%>]' placeholder="<%= key.humanize -%>" value="<%= value -%>" onkeyup="validateEngraving(this);" style="font-size:11px;text-align:center;"/></div>
 		<% end %>
+		<div>
+			<small>Symbols and punctuation, such as "!", "?" and the numbers "1" &amp; "2" do not appear clearly on the Engraved Johnnie Walker Blue Label bottle. Please do not use them. They will not be processed on your order.</small>
+		</div>
 	</div>
 <% end %>
 

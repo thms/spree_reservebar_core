@@ -134,13 +134,23 @@ Spree::Admin::OrdersController.class_eval do
     redirect_to admin_order_url(@order)
   end
 
-  # used for testing only
+  # used for testing only to preview the email
   def giftor_shipped_email
     load_order
     respond_with(@order) do |format|
       format.html { render :template => "spree/order_mailer/giftor_shipped_email.html.erb", :layout => false }
     end
   end
+
+  # used for testing only to preview the email
+  def retailer_submitted_email
+    load_order
+    respond_with(@order) do |format|
+      format.html { render :template => "spree/order_mailer/retailer_submitted_email.html.erb", :layout => false }
+    end
+  end
+
+  # used for testing only to preview the email
 
   def regular_reminder_email
     @retailers = Spree::Retailer.active
