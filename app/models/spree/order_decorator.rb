@@ -38,6 +38,11 @@ Spree::Order.class_eval do
 		
 	end
 	
+	# Calculate the shipping_surcharges for the order, based on lline items
+	def shipping_surcharge
+	  line_items.inject(0.0) {|charge, line_item| charge = charge + (line_item.quantity * line_item.shipping_surcharge)}
+  end
+	
 	# Pseudo states that embedd special logic for reservebar.com
 	# uses packed_at column to allow the retailer to indicate that he pas packed the item and it is ready for pick up 
 	# we'll do state transition such that retailer hits 'ready for pick up' , which changes packed_at, and then fede scanning changes to shipped

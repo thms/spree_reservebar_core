@@ -20,6 +20,11 @@ Spree::LineItem.class_eval do
     
   end
   
+  # Calculate any shipping surcharges for a line item,based on the shipping surcharges for the product
+  def shipping_surcharge
+    variant.product.shipping_surcharge * quantity
+  end
+  
   # Allows use to add arbitrary customization data to any line item
   # To be used with the Johnnie Walker Blue Label, might later replace with spree_flexi_variants
   # Example data: {:type => 'jwb_engraving, :data => {:line1 => 'bla', :line2 => 'said', :line3 => 'toad'}}
