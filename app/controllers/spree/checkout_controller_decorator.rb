@@ -118,7 +118,7 @@ Spree::CheckoutController.class_eval do
   # called if user attempts to place order in a county where we do not ship
   def rescue_from_no_retailer_ships_to_county_error
     flash[:notice] = "Thank you for attempting to make a purchase with ReserveBar. We appreciate your business; unfortunately, due to regulations in the state, which vary county by county, we cannot deliver to the county where you intend to have the order delivered.  Please sign up for an <a href='/account'>email notification</a> for when counties are added to our offering, and you will receive a discount coupon for future purchase.  
-    <br />In the meantime, if you have other gifting needs for delivery in other counties or states, we invite you to continue shopping. Delivery information is provided on every product detail page (just under the 'Add to Cart' button). You can also review our delivery map at www.reservebar.com/delivery.   We apologize for the inconvenience and thank you again for gifting with ReserveBar.".html_safe
+    <br />In the meantime, if you have other gifting needs for delivery in other counties or states, we invite you to continue shopping. Delivery information is provided on every product detail page (just under the 'Add to Cart' button). You can also review our <a href='/pages/delivery'>delivery map</a>. We apologize for the inconvenience and thank you again for gifting with ReserveBar.".html_safe
     redirect_to cart_path
   end
   

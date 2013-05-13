@@ -1,11 +1,11 @@
 <% if line_item.variant.sku == "JWBCEB" && line_item.preferred_customization %>
 		
 	<div>
-		<b>Your Engraving: </b><small>(please hit 'Update' if you change it here)</small>
+		<b>Your Engraving: </b><small>(please hit 'Update' if you change it)</small>
 		<% customization_data = JSON.parse(line_item.preferred_customization) %>
 		<input type=hidden name="customization[type]" value="jwb_engraving" />
 		<% customization_data["data"].each do |key,value| %>
-			<div><input type=text name='customization[data][<%= key -%>]' placeholder="<%= key.humanize -%>" value="<%= value -%>" onkeyup="validateEngraving(this);" style="font-size:11px;text-align:center;"/></div>
+			<div><input type=text class='required' name='customization[data][<%= key -%>]' placeholder="<%= key.humanize -%>" value="<%= value -%>" onchange="validateEngraving(this);" onkeyup="validateEngraving(this);" style="font-size:11px;text-align:center;"/></div>
 		<% end %>
 		<div>
 			<small>Symbols and punctuation, such as "!", "?" and the numbers "1" &amp; "2" do not appear clearly on the Engraved Johnnie Walker Blue Label bottle. Please do not use them. They will not be processed on your order.</small>
@@ -15,11 +15,29 @@
 
 <%= javascript_tag do %>
 
+	var engravingGuard = false;
 	validateEngraving = function(element) {
 		var value = element.value;
 		value = value.replace(/[!12?]/gi, '');
 		value = value.substring(0,15);
 		value = value.toUpperCase();
 		element.value = value;
+		if (engravingGuard == false) {
+			$('#checkout-link').click(function(e) {
+				e.preventDefault();
+				alert('Please update cart to save your changes to the engraving before commencing to checkout.');
+			});
+			engravingGuard = true;
+		}
 	}
+	
+	// check that at least one line of engraving data has been entered, before commencing to checkout
+	$(document).ready(function() {
+		$('#checkout-link').click(function(e) {
+			if ($('[name="customization[data][line1]"]').val().length == 0) {
+				alert('Please enter at least the first line of your engraving data and update the cart.');
+			}
+		});
+	});
+
 <% end %>

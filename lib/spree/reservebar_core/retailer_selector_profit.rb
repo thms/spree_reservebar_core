@@ -18,25 +18,30 @@ module Spree
         rescue
           county = nil
         end
-    
 
         # if we can't ship anything to the state, bail out early:
         raise Exceptions::NoRetailerShipsToStateError unless can_ship_to_state?(state)
         
-        # Try and find a retailer that can ship all items to the state (eliminate all retailers that can't ship to the state)
+        # Find all retailers that can ship all items to the state
         query = []
         order.shipping_categories.each do |shipping_category_id|
           query << "ships_#{Spree::ShippingCategory.find(shipping_category_id).name.downcase.gsub(' ','_')}_to like :state"
         end
         retailers = Spree::Retailer.active.where(query.join(' and '),  :state => "%#{state.abbr}%")
         
-        # score county based routing rules - not very efficient, better to reject them outright rather than to calculate scores later on
-        # county_scores = retailers.map {|retailer| {retailer.id => retailer.can_ship_to_county?(county) ? 1 : -10000 }}
-        # reject all retailers that cannot deliver to the county in question
-        retailers = retailers.reject {|retailer| !retailer.can_ship_to_county?(county, state)}
-        
+        # No retailer can ship all items to the state, bail out here
         if retailers.count == 0
           raise Exceptions::NoRetailerCanShipFullOrderError
+        end
+        
+        # score county based routing rules - not very efficient, better to reject them outright rather than to calculate scores later on
+        # county_scores = retailers.map {|retailer| {retailer.id => retailer.can_ship_to_county?(county) ? 1 : -10000 }}
+        # reject all in-state retailers that cannot deliver to the county in question, this leaves all out of state retailers through, since they are supposed to be able to ship to all counties in another state
+        retailers = retailers.reject {|retailer| !retailer.can_ship_to_county?(county, state)}
+        
+        # If we have no retailers after this step, ths can only be due to county rules based rejection
+        if retailers.count == 0
+          raise Exceptions::NoRetailerShipsToCountyError
         end
         
         # Score the different retailers to find the one to assign the order to
@@ -102,27 +107,6 @@ module Spree
         Spree::Retailer.active.where("ships_other_products_to like :state", :state => "%#{state.abbr}%").count > 0
       end
 
-      # check whether we can ship anything at all to the selected county, only applicable if the state has at least one in-state retailer
-      # desired behaviour: break off search if in-state retailers could be assigned the order, but none ships to the selected county
-      # We only get here if we can ship to the state, county shipping rules are after the state shipping rules
-      # can be used early in the process to check if we can accept an order that ships to a county
-      # If county is nil, we can ship by default (since that means that the shipping address does not have a  county)
-      # Fundamentatlly flawed - do not use
-      def self.can_ship_to_county?(county)
-        # current version: based on Retailer's county assignment
-        
-        if county == nil
-          # If the county for the address is nil, we can ship TODO: might need to change that logic such that we can only ship if the county is nil and we have a default retailer
-          return true
-        elsif Spree::Retailer.default_in_state(county.state)
-          # if we have a default retailer for that state, we can ship
-          return true
-        elsif Spree::Retailer.active.joins(:counties).where(:spree_counties_retailers => {:county_id => county.id}).exists?
-          return true
-        else
-          return false
-        end
-      end
       
       # if we cannot ship the selected categories to the state, check what other categories (if any) we can ship there
       def self.find_shippable_category_names(state)
