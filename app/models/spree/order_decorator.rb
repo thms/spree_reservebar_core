@@ -205,6 +205,17 @@ Spree::Order.class_eval do
     end
   end
   
+  # Pulled in from 1.3.2 version to update the payment_state of the order on cancel
+  def after_cancel
+    restock_items!
+
+    #TODO: make_shipments_pending
+    OrderMailer.cancel_email(self).deliver
+    OrderMailer.cancel_email_retailer(self).deliver
+    unless %w(partial shipped delivered).include?(shipment_state)
+      self.payment_state = 'credit_owed'
+    end
+  end
   
   
   

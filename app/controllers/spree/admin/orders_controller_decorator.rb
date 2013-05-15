@@ -95,7 +95,10 @@ Spree::Admin::OrdersController.class_eval do
   # Purpose: retailer accepts the order
   def accept
     load_order
-    if @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
+    # If the order has been canceled, the retailer can no longer accept it
+    if @order.state == 'canceled' 
+      flash["notice"] = 'This order has been canceled - do not process it!'
+    elsif @order.accepted_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
     	@order.update_attribute(:accepted_at, Time.now)
     	
     	# If the order only has one payment on it (all order here should have only a single payment)
@@ -128,7 +131,9 @@ Spree::Admin::OrdersController.class_eval do
   # Purpose: retailer has packed the order and it is ready for pick up by Fedex / Courier
   def order_complete
     load_order
-    if @order.packed_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
+    if @order.state == 'canceled' 
+      flash["notice"] = 'This order has been canceled - do not process it!'
+    elsif @order.packed_at.blank? && (@current_retailer && @current_retailer.id == @order.retailer_id)
     	@order.update_attribute(:packed_at, Time.now)
     end
     redirect_to admin_order_url(@order)
@@ -147,6 +152,14 @@ Spree::Admin::OrdersController.class_eval do
     load_order
     respond_with(@order) do |format|
       format.html { render :template => "spree/order_mailer/retailer_submitted_email.html.erb", :layout => false }
+    end
+  end
+
+  # used for testing only to preview the email
+  def retailer_canceled_email
+    load_order
+    respond_with(@order) do |format|
+      format.html { render :template => "spree/order_mailer/cancel_email_retailer.html.erb", :layout => false }
     end
   end
 
@@ -184,7 +197,7 @@ Spree::Admin::OrdersController.class_eval do
   
   def log_payment_error(exception)
     new_logger = Logger.new('log/payment_errors.log')
-    new_logger.info("\n\n===== Exception Caught at #{Time.now} for Order Number #{order.number} =====")
+    new_logger.info("\n\n===== Exception Caught at #{Time.now} for Order Number #{@order.number} =====")
     new_logger.info(exception.message)
     new_logger.info("\n\n===== End Exception  =====\n\n")
   end

@@ -1,4 +1,4 @@
-<% if @product.master.sku == "JWBCEB" %>
+<% if @product.master.sku.start_with?("JWBCEB") %>
 
 <div style="width:577px;height:235px;background:url('/assets/jwb_engraving.jpg');position:relative;border:1px solid #fbb917;margin-top:12px;margin-bottom:12px;">
 	<div style="position:absolute;top:100px;left:83px;width:100px;height:100px;color:#fbb917;text-align:center;">

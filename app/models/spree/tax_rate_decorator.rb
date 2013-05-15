@@ -9,7 +9,6 @@ Spree::TaxRate.class_eval do
   # When using tax cloud, the tax rate is not known until we get the tax amnount from tax could
   # But we need to be able to display the tax rate on the UI, so we first need to retrieve the tax rate for the 
   # order and then use that for the label and the actual calculation
-  if Spree::Config[:use_taxcloud]
     def adjust(order)
       if self.calculator.class.name == "Spree::Calculator::TaxCloudCalculator"
         if order.retailer
@@ -18,7 +17,9 @@ Spree::TaxRate.class_eval do
           taxcloud_rate = 0
         end
         label = "#{tax_category.name} #{taxcloud_rate * 100}%"
-      else
+      elsif self.calculator.class.name == "Spree::Calculator::FlatRate"
+        label = "#{tax_category.name}"
+      else 
         label = "#{tax_category.name} #{amount * 100}%"
       end
       
@@ -46,6 +47,5 @@ Spree::TaxRate.class_eval do
 #                                :label => label,
 #                                :mandatory => false)
     end
-  end
 
 end

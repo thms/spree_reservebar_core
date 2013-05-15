@@ -1,5 +1,5 @@
 
-<% engraving_item = @order.line_items.select { |line_item| line_item.variant.sku == "JWBCEB" }.first %>
+<% engraving_item = @order.line_items.select { |line_item| line_item.variant.sku.start_with?("JWBCEB") }.first %>
 <% if engraving_item && engraving_item.preferred_customization %>
 
 	<div style="border:1px solid #888;padding:6px;">

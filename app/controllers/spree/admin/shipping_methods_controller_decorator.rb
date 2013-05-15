@@ -65,12 +65,23 @@ Spree::Admin::ShippingMethodsController.class_eval do
         :po_number => "TEST#{Time.now.to_i}",
         :image_type => ActiveShipping::DEFAULT_IMAGE_TYPE,
         :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE,
-        :service_type => shipping_method.calculator.class.service_type
+        :service_type => shipping_method.calculator.class.service_type,
+        :saturday_delivery => shipping_method.calculator.class.respond_to?(:saturday_delivery) ? shipping_method.calculator.class.saturday_delivery : false,
+        :ship_timestamp => shipping_method.calculator.class.respond_to?(:saturday_delivery) ? next_thursday : Time.now
+        
     )
     headers['Content-Type'] = "application/zpl"
     headers['Content-Disposition'] = "attachment; filename=label_test.zpl"
     render :text => response.label 
     
+  end
+  
+  private 
+  
+  def next_thursday
+    date  = Date.parse('Thursay')
+    delta = date > Date.today ? 0 : 7
+    date + delta
   end
   
 end

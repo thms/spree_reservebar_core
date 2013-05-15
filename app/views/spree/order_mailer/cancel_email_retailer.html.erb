@@ -1,0 +1,57 @@
+<table width="657" cellspacing="0" cellpadding="0" border="0" align="center" id="Table_01" _moz_dirty="">
+	<tbody><tr>
+		<td width="657" valign="top" height="15" align="left"><br /></td>
+		<td width="100%" valign="top" align="left">&nbsp;</td>
+		<td width="100%" valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left" width="18px">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td width="54" valign="top" height="15" align="left"><br /></td>
+	</tr>
+	<tr>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" align="left">
+			<img width="277" height="57" alt="" src="http://<%= Spree::Config[:site_url] %>/assets/mailer/logo.jpg"></td>
+		<td valign="top" align="left">&nbsp;</td>
+		<td width="254" valign="top" height="57" align="right" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; color:#593D2B"><a style=" color:#593D2B; list-style:none; text-decoration:none" target="_blank" href="http://<%= Spree::Config[:site_url] %>/admin">Retailer</a> Portal</td>
+		<td width="54" valign="top" height="57" align="left"><br /></td>
+	</tr>
+	<tr>
+		<td width="657" valign="top" height="15" align="left" colspan="6" style="border-bottom:4px double #593D2B">&nbsp;</td>
+    </tr>
+	<tr>
+	  <td width="657" valign="top" height="25" align="left" colspan="6">&nbsp;</td>
+  </tr>
+	<tr>
+		<td valign="top" align="left">&nbsp;</td>
+		<td valign="top" height="45" align="left" style="margin:0;font: 23px Georgia, 'Times New Roman', Times, serif; font-weight:bold; color:#C13828" colspan="4"><%= I18n.t('order_mailer.retailer_canceled_email.subject') %></td>
+		<td valign="top" align="left">&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top" align="left"><br /></td>
+		<td valign="top" colspan="4"><table width="100%">
+		  <tbody><tr>
+		    <td width="100%" valign="top" align="left" style="margin:0;font: 11px Georgia, 'Times New Roman', Times, serif; font-weight:normal; text-justify:distribute"><p>Dear <%= @order.retailer.name %>:</p>
+		      <p>RE: Order Number: <a href="http://<%= Spree::Config[:site_url] %>/admin/orders/<%= @order.number %>"><%= @order.number %></a></p>
+		      <p>This order has been canceled. Please do not accept or ship any of the packages.</p>
+		      <p>Please immediately contact <a href="mailto:orders@reservebar.com">orders@reservebar.com</a> or call 203-968-0365 if you have any questions, problems or concerns about this order.</p>
+		  		<p>Gratefully yours,<br>
+		    		ReserveBar.com<br>
+	    			Good Spirits. Delivered.</p>
+	    	</td>
+	      </tr>
+	    </tbody></table></td>
+		<td valign="top" align="left"><br /></td>
+	</tr>
+	<tr>
+		<td width="657" valign="top" height="26" align="left" colspan="6"><br /></td>
+	</tr>
+
+
+	<tr>
+	  <td valign="top" height="26" align="center" colspan="4">&nbsp;</td>
+  </tr>
+
+
+</tbody>
+</table>

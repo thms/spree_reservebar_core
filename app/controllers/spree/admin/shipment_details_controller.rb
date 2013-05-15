@@ -84,7 +84,8 @@ class Spree::Admin::ShipmentDetailsController  < Spree::Admin::ResourceControlle
           :po_number => shipment.order.number,
           :image_type => ActiveShipping::DEFAULT_IMAGE_TYPE,
           :label_stock_type => ActiveShipping::DEFAULT_STOCK_TYPE,
-          :service_type => shipment.shipping_method.calculator.class.service_type
+          :service_type => shipment.shipping_method.calculator.class.service_type,
+          :saturday_delivery => shipment.shipping_method.calculator.class.respond_to?(:saturday_delivery) ? shipment.shipping_method.calculator.class.saturday_delivery : false
       )
       # store response
       if response.success?

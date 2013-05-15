@@ -1,4 +1,4 @@
-<% if line_item.variant.sku == "JWBCEB" && line_item.preferred_customization %>
+<% if line_item.variant.sku.start_with?("JWBCEB") && line_item.preferred_customization %>
 		
 	<div>
 		<b>Your Engraving: </b><small>(please hit 'Update' if you change it)</small>

@@ -12,8 +12,7 @@
   <tr>
     <td class="cell"><%=item.variant.product.sku unless @receipt%></td>
     <td class="cell"><%=sanitize(item.variant.full_name, :tags => %w(sup))%>
-	<% if item.variant.sku == "JWBCEB" && item.preferred_customization %>
-
+	<% if item.variant.sku.start_with?("JWBCEB") && item.preferred_customization %>
 		<div>
 			<b>Your Engraving:</b>
 			<% customization_data = JSON.parse(item.preferred_customization) %>

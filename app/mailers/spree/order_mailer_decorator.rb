@@ -16,6 +16,13 @@ Spree::OrderMailer.class_eval do
     mail(:to => order.email, :reply_to => "order@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
   end
 
+  def cancel_email_retailer(order, resend = false)
+    @order = order
+    subject = (resend ? "[#{t(:resend).upcase}] " : '')
+    subject += "#{t('order_mailer.cancel_email.subject')}"
+    mail(:to => order.retailer.email, :reply_to => "orders@reservebar.com", :bcc => Spree::Config[:mail_bcc], :subject => subject)
+  end
+
   def giftor_shipped_email(order, resend=false)
     @order = order
     subject = (resend ? "[#{t(:resend).upcase}] " : "")

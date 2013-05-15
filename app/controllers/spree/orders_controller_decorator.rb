@@ -18,7 +18,8 @@ Spree::OrdersController.class_eval do
     if params[:customization]
       # Find line item that can be customized, and set its preferred_customization_data
       begin
-        line_item = @order.line_items.joins(:variant).where(:spree_variants => {:sku => 'JWBCEB'}).first
+        #line_item = @order.line_items.joins(:variant).where(:spree_variants => {:sku => 'JWBCEB'}).first
+        line_item = @order.line_items.joins(:variant).where("spree_variants.sku like 'JWBCEB%'").first
         line_item.preferred_customization = params[:customization].to_json 
       rescue Exception => e
         # Don't do anything for now
@@ -27,7 +28,8 @@ Spree::OrdersController.class_eval do
     else # Check if a customizable SKU has been added without the customizatiob data in the form
       # Find line item that can be customized, and set its preferred_customization_data
       begin
-        line_item = @order.line_items.joins(:variant).where(:spree_variants => {:sku => 'JWBCEB'}).first
+        #line_item = @order.line_items.joins(:variant).where(:spree_variants => {:sku => 'JWBCEB'}).first
+        line_item = @order.line_items.joins(:variant).where("spree_variants.sku like 'JWBCEB%'").first
         line_item.preferred_customization = {'type' => 'jwb_engraving', 'data' => {'line1' => '', 'line2' => '', 'line3' => ''}}.to_json
       rescue Exception => e
         # Don't do anything for now

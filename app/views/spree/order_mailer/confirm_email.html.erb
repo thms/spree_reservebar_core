@@ -159,7 +159,7 @@
 		      <tr>
 		        <td width="50%" height="21" style="text-align:right;background:<%= bgcolor -%>;font-size:12px;font-family:Georgia;text-decoration:none;font-weight:400;min-height:15.75pt"><%= sanitize(item.variant.product.name, :tags => %w(sup)) %>
 			
-					<% if item.variant.sku == "JWBCEB" && item.preferred_customization %>
+					<% if item.variant.sku.start_with?("JWBCEB") && item.preferred_customization %>
 
 						<div>
 							<b>Your Engraving:</b>

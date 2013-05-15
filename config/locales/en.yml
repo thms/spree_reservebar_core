@@ -37,6 +37,8 @@ en:
         subject:  "Your Gift Has Been Shipped"
     retailer_submitted_email:
         subject: "New Order Submitted"
+    retailer_canceled_email:
+        subject: "Order Canceled"
     accepted_notification:
         subject: "Order Accepted Notification"
     regular_reminder_email:

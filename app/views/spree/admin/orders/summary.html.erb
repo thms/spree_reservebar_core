@@ -3,10 +3,12 @@
 <div class="toolbar order-links" data-hook="admin_order_show_buttons">
 	<% if @current_retailer && @current_retailer.id == @order.retailer_id %>
 		<div style="float:left;font-size:16px;margin-right:40px;"><b>Order Status:</b> <%= t("order_state.#{@order.extended_state}") %> </div>
-		<% if @order.accepted_at.blank? %>
-			<%= button_link_to 'Accept Order', accept_admin_order_path(@order), :confirm => t(:are_you_sure) %>
-		<% elsif @order.packed_at.blank? %>
-			<%= button_link_to 'Order Complete', order_complete_admin_order_path(@order), :confirm => t(:are_you_sure) %>
+		<% unless @order.state == 'canceled' %>
+			<% if @order.accepted_at.blank? %>
+				<%= button_link_to 'Accept Order', accept_admin_order_path(@order), :confirm => t(:are_you_sure) %>
+			<% elsif @order.packed_at.blank? %>
+				<%= button_link_to 'Order Complete', order_complete_admin_order_path(@order), :confirm => t(:are_you_sure) %>
+			<% end %>
 		<% end %>
 	<% end %>
 </div>
@@ -60,7 +62,7 @@
     <% @order.line_items.each do |item| %>
       <tr data-hook="order_details_line_item_row">
         <td width="400"><%= sanitize(item.variant.product.name, :tags => %w(sup)) %> <%= "(" + variant_options(item.variant) + ")" unless item.variant .option_values.empty? %>
-		<% if item.variant.sku == "JWBCEB" && item.preferred_customization %>
+		<% if item.variant.sku.start_with?("JWBCEB") && item.preferred_customization %>
 
 			<div>
 				<b>Requires Custom Engraving</b>
@@ -102,7 +104,7 @@
       <td><%= t(shipment.state.to_sym, :scope => :state_names, :default => shipment.state.to_s.humanize) %></td>
       <td><%= shipment.shipped_at.to_s(:date_time24) if shipment.shipped_at %></td>
       <td class="actions" data-hook="admin_shipments_index_row_actions">
-		<% unless @order.accepted_at.blank? %>
+		<% unless @order.accepted_at.blank? || (@order.state == 'canceled') %>
 			<% if shipment.shipment_detail.nil? %>
 				<%= link_to_with_icon 'fedex-icon', 'Create FedEx Shipment', admin_order_shipment_shipment_details_url(@order, shipment), :method => :post %>
 			<% else %>
