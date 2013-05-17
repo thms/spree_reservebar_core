@@ -1,0 +1,47 @@
+<% if tracker = Spree::Tracker.current  %>
+
+  <%= javascript_tag do %>
+	var _gaq = _gaq || [];
+  	_gaq.push(['_setAccount', '<%= tracker.analytics_id %>']);
+  	_gaq.push(['_trackPageview']);
+
+  <% if flash[:commerce_tracking] %>
+
+      // report e-commerce transaction information when applicable
+      _gaq.push(['_addTrans',
+      "<%= @order.number %>",    //Order Number
+      "<%= @order.retailer.name -%>",    //Affiliation
+      "<%= @order.total %>",    //Order total
+      "<%= @order.adjustments.tax.sum(:amount).to_s %>",    //Tax Amount
+      "<%= @order.adjustments.shipping.sum(:amount).to_s %>",    //Ship Amount
+      "<%= @order.ship_address.city -%>",    //City
+      "<%= @order.ship_address.state.name -%>",    //State
+      "<%= @order.ship_address.country.iso3 -%>"    //Country
+      ]);
+      <% @order.line_items.each do |line_item| %>
+        _gaq.push(['_addItem',"<%= @order.number %>", "<%= line_item.variant.sku %>", "<%= line_item.variant.product.name %>",
+          "<%= line_item.variant.product.shipping_category.name -%>", "<%= line_item.price %>", "<%= line_item.quantity %>"]);
+		<% if line_item.gift_package %>
+        	_gaq.push(['_addItem', "<%= @order.number %>", "<%= line_item.gift_package.sku %>", "<%= line_item.gift_package.title %>",
+          	"PACKAGING", "<%= line_item.gift_package.price %>", "<%= line_item.quantity %>"]);
+		<% end %>
+      <% end %>
+
+	<% @order.adjustments.promotion.eligible.each do |adjustment| %>
+		_gaq.push(['_addItem', "<%= @order.number %>", 
+		"<%= adjustment.originator.promotion.code.blank? ? adjustment.originator.promotion.description :  adjustment.originator.promotion.code %>", 
+		"<%= adjustment.originator.promotion.code.blank? ? adjustment.originator.promotion.description :  adjustment.originator.promotion.code %>",
+          "PROMO", "<%= adjustment.amount %>", "1"]);
+	<% end %>
+      _gaq.push(['_trackTrans']);
+
+  <% end %>
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	<% end %>
+
+<% end %>

@@ -48,6 +48,12 @@ Spree::Product.class_eval do
     end
   end
   
+  
+  # used to determine whether a product is active - uses same logic as the scope, but on the product instance itself
+  def active?
+    !deleted? && available_on <= Time.now
+  end
+  
   # Methods to find all states that this product can ship to, based on existing retailers and their settings
   # Used on product page to sow where this product can be shipped to
   # This could probably do with some pretty heavy caching

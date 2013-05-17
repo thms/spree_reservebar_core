@@ -164,7 +164,6 @@ Spree::Admin::OrdersController.class_eval do
   end
 
   # used for testing only to preview the email
-
   def regular_reminder_email
     @retailers = Spree::Retailer.active
     
@@ -173,9 +172,8 @@ Spree::Admin::OrdersController.class_eval do
     end
   end
   
-  # Retailer view of order, build up separately here and potentially fold into the show with a different render statement
+  # Retailer view of order
   def summary
-    
   end
 
 

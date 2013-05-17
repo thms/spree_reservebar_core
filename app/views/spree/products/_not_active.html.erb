@@ -1,0 +1,10 @@
+<% unless @product.active? %>
+	<div class="product-not-active">
+	<%= @product.name -%> is currently not available for sale. Please use the navigation or search bar above to look for other Spirits, Champagne or Wine products that might satisfy your gifting needs. 
+	</div>
+
+	<%= javascript_tag do %>
+		$('#cart-form').hide();
+	<% end %>
+
+<% end %>
