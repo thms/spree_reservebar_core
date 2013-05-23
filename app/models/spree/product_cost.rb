@@ -6,5 +6,10 @@ module Spree
     belongs_to :retailer
     belongs_to :variant
     
+    
+    def shipping_surcharge_is_not_zero
+      where('shipping_surcharge_is_not_zero > 0')
+    end
+    
   end
 end

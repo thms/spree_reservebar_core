@@ -20,9 +20,22 @@ Spree::LineItem.class_eval do
     
   end
   
-  # Calculate any shipping surcharges for a line item,based on the shipping surcharges for the product
+  # Calculate any shipping surcharges for a line item,based on the global shipping surcharges for the product
+  # and the retailer specific surcharges. Retailer specific takes precedence over global
   def shipping_surcharge
-    variant.product.shipping_surcharge * quantity
+    # can only calculate retailer specific surcharge if we know the retailer
+    if self.order.retailer_id
+      begin
+        surcharge = variant.product_costs.where(:retailer_id => self.order.retailer_id).first.shipping_surcharge * quantity
+      rescue
+        surcharge = 0.0
+      end
+    end
+    # old global surcharge:
+    if surcharge == 0.0
+      surcharge = variant.product.shipping_surcharge * quantity
+    end
+    surcharge
   end
   
   # Allows use to add arbitrary customization data to any line item

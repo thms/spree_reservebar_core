@@ -1,7 +1,7 @@
 <% require 'csv' %>
 <% if params[:type] == 'order' %>
 <% if current_user.has_role?("admin") %>
-OrderNumber,Order details link,Customer email address,Ship-to State,Product name,OrderDate,OrderState,PaymentState,ShipmentState,Order Total,Total product(s) price,GiftPackagingCost(not paid to retailer),ShippingCost,Tax,Promo name,Promo discount ($),RB margin (Product price - product cost),RB margin after discount (RB margin - promo discount),Retailer,ProductCostForRetailer,TotalDisbursementToRetailer (product cost + sales tax)
+OrderNumber,Order details link,Customer email address,Ship-to State,Product name,OrderDate,AcceptedDate,OrderState,PaymentState,ShipmentState,Order Total,Total product(s) price,GiftPackagingCost(not paid to retailer),ShippingCost,Tax,Promo name,Promo discount ($),RB margin (Product price - product cost),RB margin after discount (RB margin - promo discount),Retailer,ProductCostForRetailer,TotalDisbursementToRetailer (product cost + sales tax)
 <%= CSV.generate do |csv|
   @orders.each do |order|
     names_array = order.line_items.map{|line_item|line_item.product.try(:name)}.compact
@@ -11,6 +11,7 @@ OrderNumber,Order details link,Customer email address,Ship-to State,Product name
 				order.ship_address.state.abbr,
 				names_array.empty? ? nil : strip_tags(names_array.join('|')).gsub(/&quot;|,/, ''),
 				(@show_only_completed ? order.completed_at : order.created_at).to_date,
+				order.accepted_at.nil? ? nil : order.accepted_at.to_date,
 				order.state,
 				order.payment_state,
 				order.shipment_state,
@@ -31,11 +32,12 @@ OrderNumber,Order details link,Customer email address,Ship-to State,Product name
 end %>
 
 <% else %>
-OrderNumber,OrderDate,Ship-to State,OrderState,PaymentState,ShipmentState,Tax,ProductCostForRetailer,TotalDisbursementToRetailer
+OrderNumber,OrderDate,AcceptedDate,Ship-to State,OrderState,PaymentState,ShipmentState,Tax,ProductCostForRetailer,TotalDisbursementToRetailer
 <%= CSV.generate do |csv|
   @orders.each do |order|
     csv << [	order.number, 
 				(@show_only_completed ? order.completed_at : order.created_at).to_date,
+				order.accepted_at.nil? ? nil : order.accepted_at.to_date,
 				order.ship_address.state.abbr,
 				order.state,
 				order.payment_state,
@@ -51,7 +53,7 @@ end %>
 
 <% else %>
 <% if current_user.has_role?("admin") %>
-OrderNumber,Order details link,Customer email address,Ship-to State,Product name,Number of bottles,Multiple products in the order,OrderDate,OrderState,PaymentState,ShipmentState,Product price,GiftPackagingCost(not paid to retailer),RB margin (Product price - product cost),Promo,Total promo discount($),Retailer,ProductCostForRetailer
+OrderNumber,Order details link,Customer email address,Ship-to State,Product name,Number of bottles,Multiple products in the order,OrderDate,AcceptedDate,OrderState,PaymentState,ShipmentState,Product price,GiftPackagingCost(not paid to retailer),RB margin (Product price - product cost),Promo,Total promo discount($),Retailer,ProductCostForRetailer
 <%= CSV.generate do |csv|
   @orders.each do |order|
     line_items = order.line_items
@@ -64,6 +66,7 @@ OrderNumber,Order details link,Customer email address,Ship-to State,Product name
 				line_item.quantity,
 				(line_items.size > 1 ? "Yes" : "No"),
 				(@show_only_completed ? order.completed_at : order.created_at).to_date,
+				order.accepted_at.nil? ? nil : order.accepted_at.to_date,
 				order.state,
 				order.payment_state,
 				order.shipment_state,
