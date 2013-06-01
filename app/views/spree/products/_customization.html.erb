@@ -18,8 +18,8 @@
 	</div>
 </div>
 
-<%= javascript_tag do %>
 
+<script type="text/javascript">
 	validateAndPreviewEngraving = function(line, element) {
 		var value = element.value;
 		value = value.replace(/[!12?]/gi, '');
@@ -28,6 +28,20 @@
 		element.value = value;
 		$("#preview" + line).html(value);
 	}
-<% end %>
+	
+	$(document).ready(function() {
+		var params = $.url().param();
+		// test if param is set on url on not set on form, then set form value to url value
+		if ( ($("[name='customization[data][line1]']").value == null) && (params['field1'] != null) ) {
+			$("[name='customization[data][line1]']").val(params['field1'].toUpperCase());
+		}
+		if ( ($("[name='customization[data][line2]']").value == null) && (params['field2'] != null) ) {
+			$("[name='customization[data][line2]']").val(params['field2'].toUpperCase());
+		}
+		if ( ($("[name='customization[data][line3]']").value == null) && (params['field3'] != null) ) {
+			$("[name='customization[data][line3]']").val(params['field3'].toUpperCase());
+		}
+	});
 
+</script>
 <% end %>
