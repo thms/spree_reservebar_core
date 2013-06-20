@@ -1,10 +1,16 @@
 Spree::Creditcard.class_eval do
   
-  # Override to make sure w get rid of spaces before trying to ge the type, fails otherwise
+  # Override to make sure we get rid of spaces before trying to get the type, fails otherwise
   # sets self.cc_type while we still have the card number
   def set_card_type
     self.cc_type ||= CardDetector.type?(self.number.to_s.gsub(/\s/,''))
   end
+  
+  # Since we are only asking for the full name on card, but model has both, this always has an additional space
+  def name
+    "#{first_name} #{last_name}".strip
+  end
+  
   
   
   # The implementation in this version of spree does not work, it is missing the credit card number / last four digits
@@ -39,7 +45,7 @@ Spree::Creditcard.class_eval do
   end
   
   
-  ### THOMAS: The following three methods are duplicated here, so we can have the reponse set and logged, will become obsolete
+  ### THOMAS: The following three methods are duplicated here, so we can have the response set and logged, will become obsolete
   ## once we update to Active Merchant 1.28 or higher
   def authorize(amount, payment)
     # ActiveMerchant is configured to use cents so we need to multiply order total by 100

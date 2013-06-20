@@ -5,9 +5,6 @@
 <h2>Final Retailer Assignment</h2>
 <p>This lists per state the final assignment of an order to a retailer in a given state, if the order only contained this product. It takes the entire routing logic, geo ranges, county rules, in-state vs out of state, profit and retailer route, into account.</p>
 
-@product = Spree::Product.find_by_permalink('ardberg-oiskey')
-state = Spree::State.find_by_abbr('NY')
-
 <table class="index">
 <% 
 	order = Spree::Order.new
