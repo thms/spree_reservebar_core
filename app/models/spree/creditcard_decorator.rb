@@ -1,5 +1,13 @@
 Spree::Creditcard.class_eval do
   
+  
+  # Associations to make it easy to find credit cards for a given retailer or user (when using CIM gateways and reuse - credit cards)
+  belongs_to :user
+  belongs_to :retailer
+  
+  scope :not_deleted, where(:deleted_at => nil)
+  scope :tokenized, where("gateway_customer_profile_id != ''")
+  
   # Override to make sure we get rid of spaces before trying to get the type, fails otherwise
   # sets self.cc_type while we still have the card number
   def set_card_type
@@ -140,6 +148,18 @@ Spree::Creditcard.class_eval do
   end
   
   #### END MONKEY PATCH
+  
+  # test for equality of two tokenized cards 
+  # Used so that we can show only one subset
+  def same_as?(other_card)
+    (cc_type == other_card.cc_type) && (last_digits == other_card.last_digits) && (name == other_card.name) && (user_id == other_card.user_id) && (year == other_card.year) && (month == other_card.month)
+  end
+  
+  # find all cards that are the same but tokenzied on different gateways, useful for deleting all cards
+  # Criteria: same user_id, number & name
+  def all_cards_like_this
+    user.creditcards.where(:cc_type => cc_type, :last_digits => last_digits, :first_name => first_name, :last_name => last_name, :year => year, :month => month)
+  end
   
   
 end

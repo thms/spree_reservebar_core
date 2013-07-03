@@ -178,6 +178,10 @@ Spree::CheckoutController.class_eval do
   end
   
     
+    def rescue_from_spree_gateway_error(exception)
+      flash[:error] = t(:spree_gateway_error_flash_for_checkout_detailed) + exception.message
+      render :edit
+    end
     
   
 end

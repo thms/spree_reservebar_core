@@ -7,5 +7,9 @@
 				required: "Please select a shipping method."
 			}
 		});
+		
+		if ($("input[name='order[shipping_method_id]']").size() == 1) {
+			$("input[name='order[shipping_method_id]']").attr('checked', 'checked');
+		}
 	});
 <% end %>

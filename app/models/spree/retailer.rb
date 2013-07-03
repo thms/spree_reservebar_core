@@ -17,6 +17,9 @@ module Spree
     # Routes assign a product to a given retailer, used for retailer assignment
     has_many :routes
     
+    # Find credit cards that are usable on this retailer's CIM gateway
+    has_many :creditcards
+    
     # Assign counties to retailers
     has_and_belongs_to_many :counties, :join_table => :spree_counties_retailers
 
