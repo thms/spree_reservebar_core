@@ -152,13 +152,19 @@ Spree::Creditcard.class_eval do
   # test for equality of two tokenized cards 
   # Used so that we can show only one subset
   def same_as?(other_card)
-    (cc_type == other_card.cc_type) && (last_digits == other_card.last_digits) && (name == other_card.name) && (user_id == other_card.user_id) && (year == other_card.year) && (month == other_card.month)
+    ##(cc_type == other_card.cc_type) && (last_digits == other_card.last_digits) && (name == other_card.name) && (user_id == other_card.user_id) && (year == other_card.year) && (month == other_card.month)
+    card_data == other_card.card_data
   end
   
   # find all cards that are the same but tokenzied on different gateways, useful for deleting all cards
   # Criteria: same user_id, number & name
   def all_cards_like_this
     user.creditcards.where(:cc_type => cc_type, :last_digits => last_digits, :first_name => first_name, :last_name => last_name, :year => year, :month => month)
+  end
+  
+  # hahs that has the unique charactersitics when a card is tokenized across mulitple gateways
+  def card_data
+    {:cc_type => cc_type, :last_digits => last_digits, :first_name => first_name, :last_name => last_name, :year => year, :month => month}
   end
   
   
