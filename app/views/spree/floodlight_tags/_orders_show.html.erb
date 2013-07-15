@@ -94,4 +94,37 @@ Creation Date: 11/29/2012
 
 <!-- End of DoubleClick Floodlight Tag: Please do not remove -->
 
+
+<% 	
+	quantities = []
+	total_price = 0
+	prices = []
+	products = []
+	categories = []
+	items = @order.line_items.select {|l| l.product.name.include? "Gemeos" } 
+	items.each do |item|
+		quantities << item.quantity
+		prices << item.product.price
+		total_price = total_price + (item.product.price * item.quantity)
+		products << item.product.name.gsub(' ','+')
+		categories << "Hennessy"
+	end
+	products = products.join('|')
+	prices = prices.join('|')
+	quantities = quantities.join('|')
+	categories = categories.join('|')
+%>
+
+<%= "<!--
+Start of DoubleClick Floodlight Tag: Please do not remove
+Activity name of this tag: Hennessy Gemeos Reservebar Sales Confirmation
+URL of the webpage where the tag is expected to be placed: http://reservebar.com/
+This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
+Creation Date: 11/29/2012
+-->".html_safe %>
+<iframe src="http://3988497.fls.doubleclick.net/activityi;src=3988497;type=rbog;cat=reser298;qty=1;cost=<%= total_price -%>;u10=<%= quantities -%>;u9=<%= prices -%>;u8=<%= categories -%>;u7=<%= products -%>;ord=<%= @order.number -%>?" width="1" height="1" frameborder="0" style="display:none"></iframe>
+
+<!-- End of DoubleClick Floodlight Tag: Please do not remove -->
+
+
 <% end %>
