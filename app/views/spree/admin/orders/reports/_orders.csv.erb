@@ -1,0 +1,49 @@
+<% if current_user.has_role?("admin") %>
+OrderNumber,Order Date,AcceptedDate,ProductName,Number of Bottles,Website Product Price,Total Bottle Price,Gift Packaging Charge (not paid to retailer),Shipping Charge,Tax,Promo discount($),Order Total,Retail Bottle Price,TotalDisbursementToRetailer (product cost + sales tax),Promo name, Order Status Payment Status,ShipmentStatus,Retailer,Ship-to State,Customer email address
+<%= CSV.generate do |csv|
+  @orders.each do |order|
+  	names_array = order.line_items.map{|line_item|line_item.product.try(:name)}.compact
+  	prices_array = order.line_items.map{|line_item|line_item.price}.compact
+    csv << [	order.number, 
+				(order.completed_at.nil? ? order.created_at : order.completed_at).to_date,
+				order.accepted_at.nil? ? nil : order.accepted_at.to_date,
+				names_array.empty? ? nil : strip_tags(names_array.join('|')).gsub(/&quot;|,/, ''),
+				order.number_of_bottles,
+				prices_array.empty? ? nil : prices_array.join('|'),
+				order.line_items.map{|line_item| line_item.price * line_item.quantity}.sum,
+				order.gift_packaging_total,
+				order.ship_total, 
+				order.tax_total, 
+				order.adjustments.eligible.promotion.first.try(:amount),
+				order.total, 
+				0,
+				order.retailer ? order.total_amount_due_to_retailer : 0,
+				order.adjustments.eligible.promotion.first.try(:label),				
+				order.state,
+				order.payment_state,
+				order.shipment_state,
+				order.retailer ? order.retailer.name : '', 
+				order.ship_address ? order.ship_address.state.abbr : '',
+				order.email
+			]
+  end
+end %>
+
+<% else %>
+OrderNumber,OrderDate,AcceptedDate,Ship-to State,OrderState,PaymentState,ShipmentState,Tax,ProductCostForRetailer,TotalDisbursementToRetailer
+<%= CSV.generate do |csv|
+  @orders.each do |order|
+    csv << [	order.number, 
+				(@show_only_completed ? order.completed_at : order.created_at).to_date,
+				order.accepted_at.nil? ? nil : order.accepted_at.to_date,
+				order.ship_address.state.abbr,
+				order.state,
+				order.payment_state,
+				order.shipment_state,
+				order.tax_total, 
+				(order.line_items.collect {|line_item| line_item.product_cost_for_retailer }).sum,
+				order.retailer ? order.total_amount_due_to_retailer : 0
+			]
+  end
+end %>
+<% end %>

@@ -25,18 +25,51 @@ Spree::LineItem.class_eval do
   def shipping_surcharge
     # can only calculate retailer specific surcharge if we know the retailer
     if self.order.retailer_id
-      begin
-        surcharge = variant.product_costs.where(:retailer_id => self.order.retailer_id).first.shipping_surcharge * quantity
-      rescue
-        surcharge = 0.0
-      end
+      surcharge = retailer_shipping_surcharge
     end
     # old global surcharge:
     if surcharge == 0.0
-      surcharge = variant.product.shipping_surcharge * quantity
+      surcharge = global_product_shipping_surcharge
     end
     surcharge
   end
+  
+  def global_product_shipping_surcharge
+    variant.product.shipping_surcharge * quantity
+  end
+  
+  def retailer_shipping_surcharge
+    begin
+      return variant.product_costs.where(:retailer_id => self.order.retailer_id).first.shipping_surcharge * quantity
+    rescue
+      return 0.0
+    end
+  end
+  
+  
+  # Returns the total revenue of gift packaging for a given SKU
+  def gift_packaging_revenue_for_sku(sku)
+    amount = 0.0
+    begin
+      amount = adjustments.eligible.gift_packaging.first.amount if adjustments.eligible.gift_packaging.first.originator.sku == sku
+    rescue
+      amount = 0.0
+    end
+    amount
+  end
+  
+  # Returns the total cost of gift packaging for a given SKU
+  def gift_packaging_cost_for_sku(sku)
+    amount = 0.0
+    cost_per_item = Spree::Variant.find_by_sku(sku).cost_price
+    begin
+      amount = (quantity * cost_per_item) if adjustments.eligible.gift_packaging.first.originator.sku == sku
+    rescue
+      amount = 0.0
+    end
+    amount
+  end
+  
   
   # Allows use to add arbitrary customization data to any line item
   # To be used with the Johnnie Walker Blue Label, might later replace with spree_flexi_variants

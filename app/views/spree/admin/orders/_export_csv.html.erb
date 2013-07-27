@@ -6,4 +6,6 @@
 	query[:search][:created_at_less_than] = params[:search][:completed_at_less_than] if params[:search][:completed_at_less_than]
 %>
 <%= link_to 'Orders report', '/admin/orders/export.csv?type=order&' + query.to_query %> / 
-<%= link_to 'Product sales report', '/admin/orders/export.csv?type=product&' + query.to_query %>
+<%= link_to 'Product sales report', '/admin/orders/export.csv?type=product&' + query.to_query %> / 
+<%= link_to 'P&L total report', '/admin/orders/export.csv?type=pl_total&' + query.to_query %> / 
+<%= link_to 'P&L detail report', '/admin/orders/export.csv?type=pl_detail&' + query.to_query %>

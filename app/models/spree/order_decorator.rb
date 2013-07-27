@@ -42,6 +42,25 @@ Spree::Order.class_eval do
 	def shipping_surcharge
 	  line_items.inject(0.0) {|charge, line_item| charge = charge + (line_item.quantity * line_item.shipping_surcharge)}
   end
+  
+  def global_product_shipping_surcharge
+	  line_items.inject(0.0) {|charge, line_item| charge = charge + (line_item.quantity * line_item.global_product_shipping_surcharge)}
+  end
+  
+  def retailer_shipping_surcharge
+	  line_items.inject(0.0) {|charge, line_item| charge = charge + (line_item.quantity * line_item.retailer_shipping_surcharge)}
+  end
+  
+  # returns the shipping charges as pulled from Fedex, before any uplifts have been applied.
+  # TODO: Implement
+  def ship_fedex
+    0.0
+  end
+  
+  # Returns the state fulfillment fee, either from the tax implemenation or another one
+  def state_fulfillment_fee
+    adjustments.eligible.tax.where(:label => 'Additional State Fulfillment Fee').first.amount rescue 0.0
+  end
 	
 	# Pseudo states that embedd special logic for reservebar.com
 	# uses packed_at column to allow the retailer to indicate that he pas packed the item and it is ready for pick up 
