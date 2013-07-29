@@ -16,7 +16,7 @@ OrderNumber,Order Date,AcceptedDate,ProductName,Number of Bottles,Website Produc
 				order.tax_total, 
 				order.adjustments.eligible.promotion.first.try(:amount),
 				order.total, 
-				0,
+				order.line_items.collect {|line_item| line_item.product_cost_for_retailer }.sum,
 				order.retailer ? order.total_amount_due_to_retailer : 0,
 				order.adjustments.eligible.promotion.first.try(:label),				
 				order.state,

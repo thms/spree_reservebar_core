@@ -12,7 +12,7 @@ OrderNumber,Order Date,Order Total,SKU,Website Product Price,Retail Product Pric
 	    csv << [	order.number, 
 					(order.completed_at.nil? ? order.created_at : order.completed_at).to_date,
 					order.total,
-					line_item.variant.sku,
+					line_item.variant.name,
 					website_bottle_price,
 					retailer_bottle_cost,
 					website_bottle_price - retailer_bottle_cost,
