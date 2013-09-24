@@ -51,7 +51,7 @@ module Spree
           profit_scores = profit_scores.reduce Hash.new, :merge
         
           # score in-state vs out of state (to break a potential tie if two retailers can fulfil the order with equal profit)
-          in_state_scores = retailers.map {|retailer| {retailer.id => order.ship_address.state_id == retailer.physical_address.state_id ? 1 : 0}}
+          in_state_scores = retailers.map {|retailer| {retailer.id => order.ship_address.state_id == retailer.physical_address.state_id ? 50 : 0}}
           in_state_scores = in_state_scores.reduce Hash.new, :merge
         
           # score specifically routed products in the order
