@@ -5,15 +5,21 @@ $(function() {
 	
 	$("#age-gate-dialog").dialog({
 		autoOpen: true,
-		height: 500,
-		width: 500,
+		height: 'auto',
+		width: '80%',
+		maxWidth: 500,
 		modal: true,
 		closeOnEscape: false,
 		resizable: false,
 		draggable: false,
 		title: "",
 		dialogClass: "age-gate-dialog",
-		beforeClose: function( event, ui ) {return false;}
+		beforeClose: function( event, ui ) {return false;},
+		open: function(event, ui){ 
+           fluidDialog(); // needed when autoOpen is set to true in this codepen
+        },
+        fluid: true,
+		zIndex: 3000
 	});
 
 });
@@ -23,7 +29,7 @@ $(function() {
 .age-gate-dialog .ui-widget-header .ui-icon {display:none;}
 </style>
 
-<div id="age-gate-dialog">
+<div id="age-gate-dialog" title="Age Gate"> 
 
 	<center>
 		<figure id="logo" class="columns alpha six" data-hook>
