@@ -10,6 +10,11 @@ Spree::Order.class_eval do
 	
 	accepts_nested_attributes_for :gift
 
+  scope :not_older_than_thirty_days,
+    lambda {
+      where("created_at > ?", Time.now - 30.days)
+    }
+  
   scope :non_accepted_hours,
     lambda {|n|
       where(["spree_orders.accepted_at is ? and spree_orders.updated_at < ? and spree_orders.state = ?", nil, Time.now - n.hours, "complete"])

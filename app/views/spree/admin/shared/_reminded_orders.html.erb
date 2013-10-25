@@ -6,7 +6,7 @@
 		<th width="220" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order submitted at (EDT)</th>
 		<th width="200" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Hours since submitted</th>
 	</tr>
-	<% @not_viewed_since_submitted = retailer.not_viewed_since_submitted %>
+	<% @not_viewed_since_submitted = retailer.not_viewed_since_submitted.not_older_than_thirty_days %>
 	<% if @not_viewed_since_submitted.empty? %>
 	<tr>
 		<td colspan="3" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;">No late orders</td>
@@ -30,7 +30,7 @@
 		<th width="220" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order viewed at (EDT)</th>
 		<th width="200" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Hours since viewed</th>
 	</tr>
-	<% @not_accepted_since_viewed = retailer.not_accepted_since_viewed %>
+	<% @not_accepted_since_viewed = retailer.not_accepted_since_viewed.not_older_than_thirty_days %>
 	<% if @not_accepted_since_viewed.empty? %>
 	<tr>
 		<td colspan="3" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;">No late orders</td>
@@ -54,7 +54,7 @@
 		<th width="220" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Order accepted at (EDT)</th>
 		<th width="200" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;background-color:#EEE;">Hours since accepted</th>
 	</tr>
-	<% @not_ready_shipping_since_accepted = retailer.not_ready_shipping_since_accepted %>
+	<% @not_ready_shipping_since_accepted = retailer.not_ready_shipping_since_accepted.not_older_than_thirty_days %>
 	<% if @not_ready_shipping_since_accepted.empty? %>
 	<tr>
 		<td colspan="3" style="border-bottom:1px solid #CCC;border-right:1px solid #CCC;">No late orders</td>

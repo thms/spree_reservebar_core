@@ -1,0 +1,5 @@
+<%= f.field_container :headline do %>
+  <%= f.label :headline, t(:headline) %><br />
+  <%= error_message_on :taxon, :headline, :class => 'fullwidth title' %>
+  <%= text_field :taxon, :headline %>
+<% end %>
