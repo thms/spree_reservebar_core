@@ -23,6 +23,12 @@ Spree::Taxon.class_eval do
     fs << Spree::ProductFilters.selective_holiday_filter(self) if Spree::ProductFilters.respond_to?(:selective_holiday_filter)
     fs
   end
-
+  
+  after_save :touch_root
+  
+  def touch_root
+    root.touch unless self.root?
+  end
+  
 
 end
