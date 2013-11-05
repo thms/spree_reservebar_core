@@ -1,0 +1,58 @@
+<% if @product.has_variants? %>
+	<% 	has_selected = false
+		data = []
+		selected_id = 0
+		@product.variants.active.each_with_index do |v,index|
+  			next if v.option_values.empty? || (!v.in_stock && !Spree::Config[:show_zero_stock_products])
+  			selected = !has_selected && (v.in_stock || Spree::Config[:allow_backorders])
+			selected_id = v.id if selected 
+  			has_selected = true if selected
+			data << {:id => v.id, :selected => selected, :disabled => !v.in_stock && !Spree::Config[:allow_backorders], :label => (variant_options v), :image => v.images.last.attachment(:product)}
+		end
+	%>
+	<div id="product-variants">
+		<div class="grey">
+			<% if @product.sku == "AO1" %>
+				<span>Select your complimentary limited-edition gift box.</span>
+			<% else %>
+				<h6 class="product-section-title"><%= t(:variants) %></h6>
+			<% end %>
+			<%= select_tag("products[#{@product.id}]", options_for_select(data.map {|d| [d[:label], d[:id]] }, selected_id )) %>
+		</div>
+		<div class="slider-wrapper theme-default">
+			<div id="variant_slider" style="height:240px;width:100%; background-color:#000;" class="nivoSlider">
+				<% data.each do |item| %>
+					<div data-variant-id="<%= item[:id] -%>" style="border:1px solid black;height:240px;width:100%;">
+						<%= image_tag(item[:image], :style => "width:240px;height:240px;") %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+<% end%>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+	  $('#variant_slider').nivoSlider({
+		manualAdvance: true,
+		effect: 'fade',
+		directionNav: true,
+		controlNav: false, 
+		startSlide: 0
+	});
+	$('.nivo-slice img').css('position','relative');
+  });
+</script>
+<style type="text/css">
+.nivo-slice img {
+	width: 169px !important;
+	position:relative;
+	margin:0px auto;
+}
+.theme-default .nivoSlider img {position:relative;}
+</style>
+
+
+$('#variant_slider').nivoSlider().data('nivoslider').setActiveSlide(1);
+
