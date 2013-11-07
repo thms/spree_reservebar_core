@@ -51,8 +51,8 @@ $(document).ready(function() {
 			}
 			var next_element_id = $('#product-variants option:selected').next().val();
 			var prev_element_id = $('#product-variants option:selected').prev().val();
-			$("[data-variant-id=" + next_element_id + "]").css('left', '180px').show();
-			$("[data-variant-id=" + prev_element_id + "]").css('left', '-180px').show();
+			$("[data-variant-id=" + next_element_id + "]").css('left', '250px').show();
+			$("[data-variant-id=" + prev_element_id + "]").css('left', '-250px').show();
 			
 		  }
 	
@@ -62,8 +62,8 @@ $(document).ready(function() {
 			$("[data-variant-id=" + this.value + "]").css('left', '0px').show();
 			var next_element_id = $('#product-variants option:selected').next().val();
 			var prev_element_id = $('#product-variants option:selected').prev().val();
-			$("[data-variant-id=" + next_element_id + "]").css('left', '180px').show();
-			$("[data-variant-id=" + prev_element_id + "]").css('left', '-180px').show();
+			$("[data-variant-id=" + next_element_id + "]").css('left', '250px').show();
+			$("[data-variant-id=" + prev_element_id + "]").css('left', '-250px').show();
 		});
 
 		$('#slider-right').on('click', function (event) {
