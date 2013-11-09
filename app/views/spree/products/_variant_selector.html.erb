@@ -7,7 +7,7 @@
   			selected = !has_selected && (v.in_stock || Spree::Config[:allow_backorders])
 			selected_id = v.id if selected 
   			has_selected = true if selected
-			data << {:id => v.id, :selected => selected, :disabled => !v.in_stock && !Spree::Config[:allow_backorders], :label => (variant_options v), :image => v.images.last.attachment(:large)}
+			data << {:id => v.id, :selected => selected, :disabled => !v.in_stock && !Spree::Config[:allow_backorders], :label => (variant_options(v).split(': ').last), :image => v.images.last.attachment(:large)}
 		end
 	%>
 	<div id="product-variants">
@@ -20,14 +20,14 @@
 			<%= select_tag("products[#{@product.id}]", options_for_select(data.map {|d| [d[:label], d[:id]] }, selected_id )) %>
 		</div>
 		<div id="variant_slider">
-			<% data.each do |item| %>
-				<div data-variant-id="<%= item[:id] -%>" class="slider-item">
-					<%= image_tag(item[:image], :style => "width:240px;") %>
-				</div>
-			<% end %>
+			<div id="variant-slider-items">
+				<% data.each do |item| %>
+					<%= image_tag(item[:image], :style => "width:240px;", 'data-variant-id' => item[:id]) %>
+				<% end %>
+			</div>
 			<div id="slider-gradient"></div>
-			<%= image_tag 'leftarrow.png', :id => 'slider-left' %>
-			<%= image_tag 'rightarrow.png', :id => 'slider-right' %>
+			<div id='slider-left'></div>
+			<div id='slider-right'></div>
 		</div>
 	</div>
 <% end%>
