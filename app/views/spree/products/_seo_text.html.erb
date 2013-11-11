@@ -1,3 +1,38 @@
 <div class="seo_text">
 	<%= @product.seo_text.html_safe rescue '' %>
 </div>
+
+
+<% 
+begin
+	if @product.has_variants?
+		image_url = "http://#{request.host}#{@product.variants.first.images.first.attachment(:small)}"
+	else
+		image_url = "http://#{request.host}#{@product.images.first.attachment(:small)}"
+	end
+rescue
+	image_url = '/bla'
+end
+
+
+twitter_card('product') do |card|
+	card.title strip_tags(@product.name)
+	card.description truncate(strip_tags(@product.description), :length => 200)
+	card.image image_url do |image|
+		image.width 50
+		image.height 100
+	end
+	card.label1	'Price'
+	card.data1 number_to_currency(@product.price)
+end
+
+opengraph() do |graph|
+	graph.type 'product'
+	graph.title strip_tags(@product.name)
+	#graph.url url_for(@product, :only_path => false)
+	graph.description truncate(strip_tags(@product.description), :length => 200)
+	graph.image image_url
+	graph.price @product.price
+	graph.currency 'USD'
+end
+%>
