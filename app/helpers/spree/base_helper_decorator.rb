@@ -10,5 +10,6 @@ Spree::BaseHelper.class_eval do
     options.delete(:format_as_currency) ? number_to_currency(amount) : amount
   end
 
+
   
 end

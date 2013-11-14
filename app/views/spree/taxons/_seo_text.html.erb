@@ -1,0 +1,17 @@
+<% 
+image_url = "http://#{request.host}#{@taxon.icon(:normal)}"
+
+twitter_card('summary_large_image') do |card|
+	card.title strip_tags(@taxon.name)
+	card.description truncate(strip_tags(@taxon.description), :length => 200)
+	card.image image_url 
+end
+
+opengraph() do |graph|
+	graph.type 'product'
+	graph.title strip_tags(@taxon.name)
+	#graph.url url_for(@taxon, :only_path => false)
+	graph.description truncate(strip_tags(@taxon.description), :length => 200)
+	graph.image image_url
+end
+%>
