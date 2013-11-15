@@ -17,7 +17,7 @@ end
 
 twitter_card('product') do |card|
 	card.title strip_tags(@product.name)
-	card.description truncate(strip_tags(@product.description), :length => 200)
+	card.description truncate(@product.meta_description, :length => 200)
 	card.image image_url do |image|
 		image.width 50
 		image.height 100
@@ -30,7 +30,7 @@ opengraph() do |graph|
 	graph.type 'product'
 	graph.title strip_tags(@product.name)
 	#graph.url url_for(@product, :only_path => false)
-	graph.description truncate(strip_tags(@product.description), :length => 200)
+	graph.description truncate(@product.meta_description, :length => 200)
 	graph.image image_url
 	graph.price @product.price
 	graph.currency 'USD'
