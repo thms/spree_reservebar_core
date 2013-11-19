@@ -24,10 +24,18 @@ Spree::Taxon.class_eval do
     fs
   end
   
+  # To enable the cache keys for the main menu, we need to touch the root taxon
   after_save :touch_root
+  
+  # To enable the caching for the taxon page, we need to touch the parent
+  after_save :touch_parent
   
   def touch_root
     root.touch unless self.root?
+  end
+  
+  def touch_parent
+    parent.touch unless self.root?
   end
   
 

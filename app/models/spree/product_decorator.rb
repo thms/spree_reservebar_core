@@ -19,6 +19,12 @@ Spree::Product.class_eval do
     Product.taxons_id_in_tree_any(taxon).scope :find 
   }
   
+  after_save :touch_taxons
+  
+  def touch_taxons
+    self.taxons.map(&:touch)
+  end
+  
   # Used by autosuggest to remove deleted products
   def self.deleted
     where('deleted_at is not ?', nil)
