@@ -46,6 +46,25 @@ Spree::LineItem.class_eval do
     end
   end
   
+  # calculate the fulfillment fee for this line item through the product_costs.fulfillment fee times qty
+  # If there is a fee defined for this retailer and sku, it is used.
+  # Otherwise the retailer's global fulfillment fee is used.
+  def fulfillment_fee
+    begin
+      if variant.product_costs.where(:retailer_id => self.order.retailer_id).first.fulfillment_fee > 0
+        variant.product_costs.where(:retailer_id => self.order.retailer_id).first.fulfillment_fee * quantity
+      else
+        self.order.retailer.fulfillment_fee * quantity
+      end
+    rescue
+      begin
+        self.order.retailer.fulfillment_fee * quantity
+      rescue
+        0.0
+      end
+    end
+  end
+  
   
   # Returns the total revenue of gift packaging for a given SKU
   def gift_packaging_revenue_for_sku(sku)

@@ -3,9 +3,10 @@
 <h1><%= t(:retailer_cost_reimbursements) %></h1>
 <p>These product costs are used for profit based order routing and to calculate the reimbursements for each retailer. They should be filled in for all retailers and all products to allow accurate routing and reporting</p>
 <p>The shipping surcharge will be added the shipping cost in an invisible manner. It should be zero for most products.</p>
+<p>The fulfillment fee  will be added the shipping cost in a visible manner and is taxable.</p>
 
 <div id="new_product_cost" data-hook></div>
-<h3>Shipping Cost & Shipping Surcharges</h3>
+<h3>Shipping Cost, Shipping Surcharges & Fulfillment Fees</h3>
 <div>
 	Retailer gets reimbursed for shipping cost:
 	<%= best_in_place @retailer, :reimburse_shipping_cost,  :path => [:admin, @retailer, :update_shipping], :type => :select, :collection => [[true,"Yes"],[false,"No"]] %>
@@ -20,6 +21,7 @@
 	<th>Option Types</th>
     <th>Cost</th>
     <th>Shipping Surcharge</th>
+    <th>Fulfillment Fee</th>
     <th data-hook="admin_product_cost_index_header_actions"></th>
   </tr>
 
@@ -33,6 +35,7 @@
   <td></td>
   <td><%= best_in_place product_cost, :cost_price, :path => [:admin, @retailer, product_cost] %></td> 
   <td class="<%= product_cost.shipping_surcharge != 0 ? 'yellow' : '' -%>"><%= best_in_place product_cost, :shipping_surcharge, :path => [:admin, @retailer, product_cost] %></td> 
+  <td><%= best_in_place product_cost, :fulfillment_fee, :path => [:admin, @retailer, product_cost] %></td> 
   <td><%= link_to 'Destroy', admin_retailer_product_cost_path(@retailer, product_cost), confirm: 'Are you sure?', method: :delete %></td>
 </tr>
 
@@ -47,6 +50,7 @@
 	    <td><%= product_cost.variant.options_text %></td>
 	    <td><%= best_in_place product_cost, :cost_price, :path => [:admin, @retailer, product_cost] %></td> 
 	    <td><%= best_in_place product_cost, :shipping_surcharge, :path => [:admin, @retailer, product_cost] %></td> 
+	    <td><%= best_in_place product_cost, :fulfillment_fee, :path => [:admin, @retailer, product_cost] %></td> 
 	    <td><%= link_to 'Destroy', admin_retailer_product_cost_path(@retailer, product_cost), confirm: 'Are you sure?', method: :delete %></td>
 	</tr>
 <% end %>

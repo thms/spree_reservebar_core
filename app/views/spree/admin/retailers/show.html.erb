@@ -49,6 +49,11 @@
 		<td><%= check_box_tag '', 'reimburse_shipping_cost', @retailer.reimburse_shipping_cost, :disabled => true %></td>
 	</tr>
 	
+	<tr>
+		<td>Global Fulfillment Fee</td>
+		<td><%= @retailer.fulfillment_fee %></td>
+	</tr>
+	
 	
 	<tr><td colspan=2 style="background-color:#ccc;"></td></tr>
 	

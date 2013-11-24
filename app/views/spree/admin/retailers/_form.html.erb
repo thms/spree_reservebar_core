@@ -57,6 +57,10 @@
     <%= f.check_box :reimburse_shipping_cost %> <span class="required">*</span> [If true, the retailer gets reimbursed for the shipping cost]
   </div>
 
+  <div class="field">
+ 	<%= f.label :global_fulfillment_fee %>
+	<%= f.text_field :fulfillment_fee %> <span class="required">*</span> USD per bottle [This gets applied to every item on the order, unless that specific item has a different fee set under 'Product Costs & Fulfillment Fees']
+  </div>
 
 </fieldset>
 

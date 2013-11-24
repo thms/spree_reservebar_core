@@ -76,6 +76,8 @@ Spree::CheckoutController.class_eval do
     # And save the association between order and retailer
     if retailer.id != current_order.retailer_id
       current_order.retailer = retailer
+      # Create the fulfillment fee adjustment for the order, now that we know the retailer:
+      current_order.create_fulfillment_fee!
       # Somehow this got lost along the way, force it here, where the retailer (and therefore the tax rate) is known
       # If the retailer is changed, we need to recreate the tax charge
       current_order.create_tax_charge!
