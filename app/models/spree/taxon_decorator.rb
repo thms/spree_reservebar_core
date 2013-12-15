@@ -24,18 +24,25 @@ Spree::Taxon.class_eval do
     fs
   end
   
-  # To enable the cache keys for the main menu, we need to touch the root taxon
+  # To enable the cache keys for the main menu, we need to touch the root taxon after save and before destroy
   after_save :touch_root
+  before_destroy :touch_root
   
-  # To enable the caching for the taxon page, we need to touch the parent
+  # To enable the caching for the taxon page, we need to touch the parent after save and before destroy
   after_save :touch_parent
+  before_destroy :touch_parent
+  
   
   def touch_root
     root.touch unless self.root?
+    true
   end
   
+  # Maybe, we need to touch all parents to get this correct, so that if we have several levels all levels get purged.
+  # TODO: Check the above
   def touch_parent
     parent.touch unless self.root?
+    true
   end
   
 

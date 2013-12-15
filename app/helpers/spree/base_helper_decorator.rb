@@ -11,5 +11,8 @@ Spree::BaseHelper.class_eval do
   end
 
 
-  
+  # Show an adjustment from a TaxRate without the actual Tax Rate, e.g. "Sales Tax" iso "Sales Tax 8.875%"
+  def hide_rate(text)
+    text.gsub(/[\d\.%]*/,'').strip
+  end
 end

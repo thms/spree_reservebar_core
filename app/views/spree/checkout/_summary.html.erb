@@ -18,7 +18,7 @@
       <% order.adjustments.eligible.each do |adjustment| %>
       <% next unless (adjustment.originator_type == 'Spree::TaxRate') && (adjustment.amount > 0.0) %>
         <tr>
-          <td><%= adjustment.label %>: </td>
+          <td><%= hide_rate(adjustment.label) %>: </td>
           <td><%= number_to_currency adjustment.amount %></td>
         </tr>
       <% end %>

@@ -1,5 +1,19 @@
 Spree::User.class_eval do
 
+
+  # remove the original devise validation for uniqueness of 
+  # email with lower(email), and replace it with  a version that does not use the lower() function so we can 
+  # make use of fucking indices instead of table scans.
+  def self.remove_email_uniq_validation
+    email_uniq_validation = _validators[:email].find{ |validator| validator.is_a? ActiveRecord::Validations::UniquenessValidator }
+    _validators[:email].delete(email_uniq_validation)
+    filter = _validate_callbacks.find{ |c| c.raw_filter == email_uniq_validation }.filter
+    skip_callback :validate, filter
+  end
+  remove_email_uniq_validation
+  validates_uniqueness_of :email, :case_sensitive => true, :allow_blank => true, :if => :email_changed?
+
+
 	has_and_belongs_to_many :retailers, :join_table => :spree_retailers_users
 	has_many :sent_gifts, :class_name => "Gift", :foreign_key => "sender_id"
   has_many :complete_orders, :class_name => "Spree::Order", :conditions => "spree_orders.state = 'complete'"

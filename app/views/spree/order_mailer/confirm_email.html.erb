@@ -44,7 +44,8 @@
 		  	<p>Please see below for Order Details.</p>
 		  	<p>Thank you again for your order. We look forward to serving you and exceeding your expectations every time here at ReserveBar.com. If you have any questions, please visit our FAQ page on our site.<br></p>
 		
-				<p>As a valued customer, you can use promo code 'VALUEDCUSTOMER' at checkout to get $10 off your next purchase.</p>
+				<p><b><bigger>As a valued customer, you can use promo code 'VALUEDCUSTOMER' at checkout to get $10 off your next purchase.</bigger></b></p>
+				
 				<p>Gratefully yours,<br>
 				  ReserveBar.com<br>
 			  Good Spirits. Delivered.</p></td>
@@ -202,7 +203,7 @@
 		      <% @order.adjustments.eligible.each do |adjustment| %>
 					<% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
 						<tr class="total">
-						  <td colspan="2" valign="bottom" height="18" style="text-align: right; font-family: georgia,serif;padding-right:15px;"><strong><%= adjustment.label %></strong></td>
+						  <td colspan="2" valign="bottom" height="18" style="text-align: right; font-family: georgia,serif;padding-right:15px;"><strong><%= hide_rate(adjustment.label) %></strong></td>
 						  <td valign="bottom" height="18" style="font-family: georgia,serif;"><span><%= number_to_currency adjustment.amount %></span></td>
 						</tr>
 					<% end %>
