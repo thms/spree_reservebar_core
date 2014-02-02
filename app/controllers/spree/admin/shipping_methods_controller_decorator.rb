@@ -37,7 +37,7 @@ Spree::Admin::ShippingMethodsController.class_eval do
           :phone          => "2123456789", 
           :address1       => "45 E Houston",
           :address2       => "",
-          :company        => "AMCE Evil",
+          :company_name   => "AMCE Evil",
           :address_type   => 'commercial' # Required for ground delivery
       )
     else
