@@ -1,5 +1,5 @@
 <% if current_user.has_role?("admin") %>
-OrderNumber,Order Date,AcceptedDate,ProductName,Number of Bottles,Website Product Price,Total Bottle Price,Gift Packaging Charge (not paid to retailer),Shipping Charge,Tax,Promo discount($),Order Total,Retail Bottle Price,TotalDisbursementToRetailer (product cost + sales tax),Promo name, Order Status Payment Status,ShipmentStatus,Retailer,Ship-to State,Customer email address
+OrderNumber,Order Date,AcceptedDate,ProductName,Number of Bottles,Website Product Price,Total Bottle Price,Gift Packaging Charge (not paid to retailer),Shipping Charge,State Fulfillment Fee,Tax,Promo discount($),Order Total,Retail Bottle Price,TotalDisbursementToRetailer (product cost + sales tax),Promo name, Order Status Payment Status,ShipmentStatus,Retailer,Ship-to State,Customer email address
 <%= CSV.generate do |csv|
   @orders.each do |order|
   	names_array = order.line_items.map{|line_item|line_item.product.try(:name)}.compact
@@ -13,6 +13,7 @@ OrderNumber,Order Date,AcceptedDate,ProductName,Number of Bottles,Website Produc
 				order.line_items.map{|line_item| line_item.price * line_item.quantity}.sum,
 				order.gift_packaging_total,
 				order.ship_total, 
+        order.state_fulfillment_fee,
 				order.tax_total, 
 				order.adjustments.eligible.promotion.first.try(:amount),
 				order.total, 
