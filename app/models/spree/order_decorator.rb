@@ -75,9 +75,9 @@ Spree::Order.class_eval do
     0.0
   end
   
-  # Returns the state fulfillment fee, either from the tax implemenation or another one
+  # Returns the state fulfillment fee
   def state_fulfillment_fee
-    adjustments.eligible.tax.where(:label => 'Additional State Fulfillment Fee').first.amount rescue 0.0
+    adjustments.eligible.where(:label => 'Additional State Fulfillment Fee').first.amount rescue 0.0
   end
 	
 	# Pseudo states that embedd special logic for reservebar.com
