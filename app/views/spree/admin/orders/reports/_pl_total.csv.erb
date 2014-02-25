@@ -1,5 +1,5 @@
 <% if current_user.has_role?("admin") %>
-OrderNumber,Order Date,Order Total,Total Website Bottle(s) Price,Total Retail Bottle(s) Price,Total Bottle(s) Gross Profit,Gift Suede Bag Revenue,Gift Suede Bag Cost,Gross Gift Suede Bag Profit,Gift Blk Matte Revenue,Gift Blk Matte Cost,Gross Gift Blk Matte Box Profit,Total Gift Packaging Profit,Total Shipping Charged to Customer,Shipping Cost Pulled From FedEx API,Gross Shipping Profit,Shipping Charge Uplift,SKU Shipping Surcharge By State,Product Shipping Surcharge (Imposed Across All States),Total Shipping Surcharges,State Fulfillment Fee,TOTAL GROSS PROFIT PER ORDER
+OrderNumber,Order Date,Order Total,Total Website Bottle(s) Price,Total Retail Bottle(s) Price,Total Bottle(s) Gross Profit,Gift Suede Bag Revenue,Gift Suede Bag Cost,Gross Gift Suede Bag Profit,Gift Blk Matte Revenue,Gift Blk Matte Cost,Gross Gift Blk Matte Box Profit,Total Gift Packaging Profit,Total Shipping Charged to Customer,Shipping Cost Pulled From FedEx API,Gross Shipping Profit,Nationwide Shipping Surcharge,SKU Nationwide Shipping Surcharge,SKU Retailer-Specific Shipping Surcharge,Total Shipping Surcharges,State Fulfillment Fee,TOTAL GROSS PROFIT PER ORDER
 <%= CSV.generate do |csv|
   @orders.each do |order|
 	website_bottle_price = order.line_items.map{|line_item| line_item.price * line_item.quantity}.sum
@@ -31,8 +31,8 @@ OrderNumber,Order Date,Order Total,Total Website Bottle(s) Price,Total Retail Bo
 				order.ship_fedex,
 				order.ship_total - order.ship_fedex,
 				shipping_charge_uplift,
-				order.retailer_shipping_surcharge,
 				order.global_product_shipping_surcharge,
+				order.retailer_shipping_surcharge,
 				shipping_charge_uplift + order.shipping_surcharge,
 				order.state_fulfillment_fee,
 				total_profit
